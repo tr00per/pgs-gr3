@@ -70,6 +70,7 @@
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Data" />
     <Reference Include="System.Xml">
       <Private>False</Private>
     </Reference>
@@ -83,6 +84,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameCore\Avatar.cs" />
+    <Compile Include="GameCore\Event.cs" />
+    <Compile Include="GameCore\EventManager.cs" />
+    <Compile Include="GameCore\GameObject.cs" />
+    <Compile Include="GameCore\Map.cs" />
+    <Compile Include="GameCore\Menu.cs" />
+    <Compile Include="GameCore\Missile.cs" />
+    <Compile Include="GameCore\Obstacle.cs" />
+    <Compile Include="GameCore\Pack.cs" />
+    <Compile Include="GameCore\Player.cs" />
+    <Compile Include="GraphicsCore\MapGraphics.cs" />
+    <Compile Include="GraphicsCore\MenuGraphics.cs" />
+    <Compile Include="GraphicsCore\ObjectGraphics.cs" />
+    <Compile Include="NetworkEngine\Connector.cs" />
+    <Compile Include="NetworkEngine\DataPackage.cs" />
+    <Compile Include="NetworkEngine\Server.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
