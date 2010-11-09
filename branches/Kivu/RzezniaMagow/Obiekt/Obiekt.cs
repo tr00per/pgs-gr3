@@ -24,6 +24,10 @@ namespace RzezniaMagow
             ID = x;
             pozycja = new Vector2();
         }
+        public Obiekt(float x, float y)
+        {
+            pozycja = new Vector2(x, y);
+        }
 
         public Obiekt(float x, float y, byte z)
         {
@@ -49,7 +53,11 @@ namespace RzezniaMagow
         public Vector2 getPozycja
         {
             get { return pozycja; }
-            set { pozycja = value; }
+            set 
+            { 
+                pozycja.X = value.X;
+                pozycja.Y = value.Y;
+            }
         }
 
 

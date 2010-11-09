@@ -16,22 +16,27 @@ namespace RzezniaMagow
         private short punkty;
         private short iloscZgonow;
 
-
+        private List<Pocisk> listaPociskow;
 
 
 
         public Gracz() : base()
         {
             pozycjaKursora = new Vector2();
+            listaPociskow = new List<Pocisk>();
         }
 
         public Gracz(float x , float y, byte id): base(x , y, id)
         {
             pozycjaKursora = new Vector2();
+            listaPociskow = new List<Pocisk>();
+            punkty = 0;
+            zycie = 100;
+            iloscZgonow = 0;
 
         }
 
-        public Gracz(String name, byte avat, byte id): base(id)
+        public Gracz(String name, byte avat)
         {
             pozycjaKursora = new Vector2();
             nick = name;
@@ -39,7 +44,8 @@ namespace RzezniaMagow
             punkty = 0;
             zycie = 100;
             iloscZgonow = 0;
-
+            listaPociskow = new List<Pocisk>();
+       
 
         }
 
@@ -51,51 +57,60 @@ namespace RzezniaMagow
             punkty = kopia.punkty;
             zycie = kopia.zycie;
             iloscZgonow = kopia.iloscZgonow;
+            listaPociskow = new List<Pocisk>();
+
+            
+            
 
         }
 
 
         #region GET - SET
 
-        public Vector2 PozycjaKursora
+        public Vector2 getPozycjaKursora
         {
             get { return pozycjaKursora; }
             set { pozycjaKursora = value; }
         }
 
 
-        public byte TypAvatara
+        public byte getTypAvatara
         {
             get { return typAvatara; }
             set { typAvatara = value; }
         }
 
 
-        public String Nick
+        public String getNick
         {
             get { return nick; }
             set { nick = value; }
         }
 
 
-        public short Punkty
+        public short getPunkty
         {
             get { return punkty; }
             set { punkty = value; }
         }
 
 
-        public short IloscZgonow
+        public short getIloscZgonow
         {
             get { return iloscZgonow; }
             set { iloscZgonow = value; }
         }
 
 
-        public short Zycie
+        public short getZycie
         {
             get { return zycie; }
             set { zycie = value; }
+        }
+
+        public List<Pocisk> getListaPociskow
+        {
+            get { return listaPociskow; }
         }
 
         #endregion

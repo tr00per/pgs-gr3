@@ -18,6 +18,10 @@ namespace RzezniaMagow
         {
 
         }
+        public Pocisk(float x, float y, byte typ) : base(x,y)
+        {
+            typPocisku = typ;
+        }
 
 
 
@@ -45,7 +49,7 @@ namespace RzezniaMagow
         }
 
 
-        public byte TypPocisku
+        public byte getTypPocisku
         {
             get { return typPocisku; }
             set { typPocisku = value; }
