@@ -88,7 +88,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Kamera2D.cs" />
+    <Compile Include="Grafika\Kamera2D.cs" />
     <Compile Include="Obiekt\Bonus.cs" />
     <Compile Include="Obiekt\Bron.cs" />
     <Compile Include="SytemIO\Klawiatura.cs" />
