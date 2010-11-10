@@ -371,7 +371,7 @@ namespace RzezniaMagow
                     }
                 case 4:
                     {
-                        tablica = new byte[6 + 20 * listGracz.Count + 11*listPocisk.Count];
+                        tablica = new byte[6 + 21 * listGracz.Count + 11*listPocisk.Count];
                         addProtocolType(typ);
                         addNumberOfPlayers((byte)listGracz.Count);
 
