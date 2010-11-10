@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace RzezniaMagow
 {
-    class Obiekt
+    public class Obiekt
     {
         private Vector2 pozycja;
         private byte ID;

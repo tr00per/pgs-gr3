@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace RzezniaMagow
 {
-    class Gracz : Obiekt
+    public  class Gracz : Obiekt
     {
 
         private Vector2 pozycjaKursora;

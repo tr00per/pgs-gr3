@@ -16,8 +16,9 @@ namespace RzezniaMagow
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class Game1 : Microsoft.Xna.Framework.Game
+    public class Game : Microsoft.Xna.Framework.Game
     {
+        
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         ClientProtokol klient;
@@ -25,15 +26,18 @@ namespace RzezniaMagow
         byte[] trescPakietu;
         byte[] odebranyPakiet;
 
-        Gracz zawodnik;
+        public static  Gracz zawodnik;
         Klawiatura klawiatura;
         Myszka mysz;
 
         List<Gracz> listaGraczy;
         List<Pocisk> listaPociskow;
+        Texture2D test;
+
+        public static Kamera2d kamera;
 
 
-        public Game1()
+        public Game()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -50,6 +54,8 @@ namespace RzezniaMagow
 
             graphics.IsFullScreen = false;
 
+            kamera = new Kamera2d();
+
         }
 
         /// <summary>
@@ -63,8 +69,9 @@ namespace RzezniaMagow
             graphics.PreferredBackBufferWidth = 1024;
             graphics.PreferredBackBufferHeight = 768;
 
+           
 
-            IsMouseVisible = true;
+            
             
             base.Initialize();
         }
@@ -77,6 +84,9 @@ namespace RzezniaMagow
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+
+            test = Content.Load<Texture2D>("Angels");
 
             // TODO: use this.Content to load your game content here
         }
@@ -142,6 +152,7 @@ namespace RzezniaMagow
             //System.Console.WriteLine("break");
 
             mysz.procesMyszy();
+            klawiatura.procesKlawiatury();
 
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
@@ -159,6 +170,16 @@ namespace RzezniaMagow
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
+
+            spriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.SaveState, kamera.get_transformation(graphics));
+
+            spriteBatch.Draw(test, new Vector2(100, 100), Color.White);
+
+            spriteBatch.End();
+
+
+
 
             // TODO: Add your drawing code here
 

@@ -28,6 +28,7 @@ namespace RzezniaMagow
 
         public Keys KONSOLA = Keys.Tab;
 
+        private int walkSpeed = 1;
 
 
         public Klawiatura()
@@ -63,34 +64,45 @@ namespace RzezniaMagow
 
             if (this.stanKlawiatury.IsKeyDown(DOL))
             {
+                Game.kamera.Pozycja = new Vector2(Game.kamera.Pozycja.X, Game.kamera.Pozycja.Y - walkSpeed);
 
-
+                Game.zawodnik.getPozycja = new Vector2(Game.zawodnik.getPozycja.X, Game.zawodnik.getPozycja.Y - walkSpeed);
+                System.Console.WriteLine("dol");
             }
             if (this.stanKlawiatury.IsKeyDown(GORA))
             {
+                Game.kamera.Pozycja = new Vector2(Game.kamera.Pozycja.X, Game.kamera.Pozycja.Y + walkSpeed);
 
+                Game.zawodnik.getPozycja = new Vector2(Game.zawodnik.getPozycja.X, Game.zawodnik.getPozycja.Y + walkSpeed);
+                System.Console.WriteLine("gora");
             }
 
 
             if (this.stanKlawiatury.IsKeyDown(LEWO))
             {
+                Game.kamera.Pozycja = new Vector2(Game.kamera.Pozycja.X + walkSpeed, Game.kamera.Pozycja.Y);
 
+                Game.zawodnik.getPozycja = new Vector2(Game.zawodnik.getPozycja.X + walkSpeed, Game.zawodnik.getPozycja.Y);
+                System.Console.WriteLine("lewo");
             }
 
             if (this.stanKlawiatury.IsKeyDown(PRAWO))
             {
+                Game.kamera.Pozycja = new Vector2(Game.kamera.Pozycja.X - walkSpeed, Game.kamera.Pozycja.Y);
 
+                Game.zawodnik.getPozycja = new Vector2(Game.zawodnik.getPozycja.X - walkSpeed, Game.zawodnik.getPozycja.Y);
+                System.Console.WriteLine("prawo");
             }
 
             if (KeyJustPressed(STRZAL))
             {
-
+                System.Console.WriteLine("strzal");
             }
 
             if (KeyJustPressed(KONSOLA))
             {
 
-
+                System.Console.WriteLine("konsola");
             }
 
 

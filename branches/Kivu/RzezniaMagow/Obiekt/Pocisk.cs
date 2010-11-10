@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace RzezniaMagow
 {
-    class Pocisk : Obiekt
+    public class Pocisk : Obiekt
     {
         private byte typPocisku;
         private byte IDOwnera;
