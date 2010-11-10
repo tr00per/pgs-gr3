@@ -235,6 +235,9 @@ namespace RzezniaMagow
                                 short życie = tresc[offset];
                                 offset+=2;
 
+                                byte typBroni = tresc[offset];
+                                offset++;
+
                             }
 
                             //pobranie informacje o pociskach aktulanie znajdujących się na mapie

@@ -171,6 +171,13 @@ namespace RzezniaMagow
             offset++;
         }
 
+        public void addWeaponType(byte x)
+        {
+            byte[] tab = BitConverter.GetBytes(x);
+            tab.CopyTo(tablica, offset);
+            offset++;
+        }
+
         public void addShotType(byte x)
         {
             byte[] tab = BitConverter.GetBytes(x);
@@ -373,7 +380,8 @@ namespace RzezniaMagow
                             addPlayerID(listGracz.ElementAt(i).getID);
                             addPlayerPosition(listGracz.ElementAt(i).getPozycja.X, listGracz.ElementAt(i).getPozycja.Y);
                             addCursorPosition(listGracz.ElementAt(i).getPozycjaKursora.X, listGracz.ElementAt(i).getPozycjaKursora.Y);
-                            addPlayerHealth(listGracz.ElementAt(i).getZycie); 
+                            addPlayerHealth(listGracz.ElementAt(i).getZycie);
+                            addWeaponType(listGracz.ElementAt(i).getAktualnaBron.getTypBroni);
                         }
 
                         addNumberOfShots((byte)listPocisk.Count);

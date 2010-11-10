@@ -34,7 +34,7 @@ namespace RzezniaMagow
                     MouseState currentMouseState = Mouse.GetState();
 
            
-            if(currentMouseState != originalMouseState)
+            if(currentMouseState.LeftButton != originalMouseState.LeftButton)
                 if (currentMouseState.LeftButton == ButtonState.Pressed)
                     {
                         System.Console.WriteLine("strzal z myszki");
