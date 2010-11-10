@@ -26,6 +26,8 @@ namespace RzezniaMagow
         byte[] odebranyPakiet;
 
         Gracz zawodnik;
+        Klawiatura klawiatura;
+        Myszka mysz;
 
         List<Gracz> listaGraczy;
         List<Pocisk> listaPociskow;
@@ -43,6 +45,10 @@ namespace RzezniaMagow
             odebranyPakiet = new byte[255];
             listaGraczy = new List<Gracz>();
             listaPociskow = new List<Pocisk>();
+            klawiatura = new Klawiatura();
+            mysz = new Myszka();
+
+            graphics.IsFullScreen = false;
 
         }
 
@@ -54,7 +60,11 @@ namespace RzezniaMagow
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            graphics.PreferredBackBufferWidth = 1024;
+            graphics.PreferredBackBufferHeight = 768;
+
+
+            IsMouseVisible = true;
             
             base.Initialize();
         }
@@ -88,50 +98,50 @@ namespace RzezniaMagow
         protected override void Update(GameTime gameTime)
         {
 
-            listaGraczy.Add(zawodnik);
+            //listaGraczy.Add(zawodnik);
 
-            listaGraczy.Add(new Gracz(3.77f,6.43f, 34));
-            listaGraczy.ElementAt(1).getListaPociskow.Add(new Pocisk(zawodnik.getPozycja.X, zawodnik.getPozycja.Y, 2));
-            listaGraczy.ElementAt(1).getListaPociskow.Add(new Pocisk(zawodnik.getPozycja.X, zawodnik.getPozycja.Y, 2));
-            listaGraczy.ElementAt(1).getListaPociskow.Add(new Pocisk(zawodnik.getPozycja.X, zawodnik.getPozycja.Y, 2));
+            //listaGraczy.Add(new Gracz(3.77f,6.43f, 34));
+            //listaGraczy.ElementAt(1).getListaPociskow.Add(new Pocisk(zawodnik.getPozycja.X, zawodnik.getPozycja.Y, 2));
+            //listaGraczy.ElementAt(1).getListaPociskow.Add(new Pocisk(zawodnik.getPozycja.X, zawodnik.getPozycja.Y, 2));
+            //listaGraczy.ElementAt(1).getListaPociskow.Add(new Pocisk(zawodnik.getPozycja.X, zawodnik.getPozycja.Y, 2));
 
-            listaGraczy.Add(new Gracz(3.11f, 4.43f, 19));
-            listaGraczy.ElementAt(1).getListaPociskow.Add(new Pocisk(zawodnik.getPozycja.X, zawodnik.getPozycja.Y, 3));
-            listaGraczy.ElementAt(1).getListaPociskow.Add(new Pocisk(zawodnik.getPozycja.X, zawodnik.getPozycja.Y, 3));
-            listaGraczy.ElementAt(1).getListaPociskow.Add(new Pocisk(zawodnik.getPozycja.X, zawodnik.getPozycja.Y, 3));
-
-
-            zawodnik.getListaPociskow.Add(new Pocisk(zawodnik.getPozycja.X,zawodnik.getPozycja.Y, 1));
-            zawodnik.getListaPociskow.Add(new Pocisk(zawodnik.getPozycja.X,zawodnik.getPozycja.Y, 1));
-            zawodnik.getListaPociskow.Add(new Pocisk(zawodnik.getPozycja.X,zawodnik.getPozycja.Y, 1));
-            zawodnik.getListaPociskow.Add(new Pocisk(zawodnik.getPozycja.X,zawodnik.getPozycja.Y, 1));
+            //listaGraczy.Add(new Gracz(3.11f, 4.43f, 19));
+            //listaGraczy.ElementAt(1).getListaPociskow.Add(new Pocisk(zawodnik.getPozycja.X, zawodnik.getPozycja.Y, 3));
+            //listaGraczy.ElementAt(1).getListaPociskow.Add(new Pocisk(zawodnik.getPozycja.X, zawodnik.getPozycja.Y, 3));
+            //listaGraczy.ElementAt(1).getListaPociskow.Add(new Pocisk(zawodnik.getPozycja.X, zawodnik.getPozycja.Y, 3));
 
 
-            for (int i = 0; i < listaGraczy.Count; i++)
-            {
-                for (int j = 0; j < listaGraczy.ElementAt(i).getListaPociskow.Count; j++)
-                {
-                    listaPociskow.Add(listaGraczy.ElementAt(i).getListaPociskow.ElementAt(j));
-                }
-            }
+            //zawodnik.getListaPociskow.Add(new Pocisk(zawodnik.getPozycja.X,zawodnik.getPozycja.Y, 1));
+            //zawodnik.getListaPociskow.Add(new Pocisk(zawodnik.getPozycja.X,zawodnik.getPozycja.Y, 1));
+            //zawodnik.getListaPociskow.Add(new Pocisk(zawodnik.getPozycja.X,zawodnik.getPozycja.Y, 1));
+            //zawodnik.getListaPociskow.Add(new Pocisk(zawodnik.getPozycja.X,zawodnik.getPozycja.Y, 1));
 
 
-                //klient.createPackage(zawodnik, 2);
-                //trescPakietu = klient.getTablica;
-
-                //serwer.unpack(trescPakietu);
-
-                //odebranyPakiet = serwer.getTablica;
-
-            serwer.createPackage(listaGraczy, listaPociskow, 4, 1);
-            trescPakietu = serwer.getTablica;
-
-            klient.unpack(trescPakietu);
+            //for (int i = 0; i < listaGraczy.Count; i++)
+            //{
+            //    for (int j = 0; j < listaGraczy.ElementAt(i).getListaPociskow.Count; j++)
+            //    {
+            //        listaPociskow.Add(listaGraczy.ElementAt(i).getListaPociskow.ElementAt(j));
+            //    }
+            //}
 
 
-            System.Console.WriteLine("break");
+            //    //klient.createPackage(zawodnik, 2);
+            //    //trescPakietu = klient.getTablica;
+
+            //    //serwer.unpack(trescPakietu);
+
+            //    //odebranyPakiet = serwer.getTablica;
+
+            //serwer.createPackage(listaGraczy, listaPociskow, 4, 1);
+            //trescPakietu = serwer.getTablica;
+
+            //klient.unpack(trescPakietu);
 
 
+            //System.Console.WriteLine("break");
+
+            mysz.procesMyszy();
 
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
