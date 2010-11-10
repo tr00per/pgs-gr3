@@ -20,6 +20,8 @@ namespace RzezniaMagow
     {
         public static Gracz zawodnik;
         public static GraphicsDeviceManager graphics;
+        public static ContentManager Content;
+        public static Mapa map;
         SpriteBatch spriteBatch;
         ClientProtokol klient;
         SerwerProtocol serwer;
@@ -36,7 +38,7 @@ namespace RzezniaMagow
 
         public static Kamera2d kamera;
 
-
+       
         Texture2D karta1;
         Texture2D karta2;
         Texture2D karta3;
@@ -46,10 +48,11 @@ namespace RzezniaMagow
 
         public Game()
         {
+            
             graphics = new GraphicsDeviceManager(this);
+            Content = new ContentManager(Services);
             Content.RootDirectory = "Content";
-            zawodnik = new Gracz("kivu", 1);
-            zawodnik.getPozycja = new Vector2(0, 0);
+            
             klient = new ClientProtokol();
             serwer = new SerwerProtocol();
             trescPakietu = new byte[255];
@@ -59,9 +62,12 @@ namespace RzezniaMagow
             klawiatura = new Klawiatura();
             mysz = new Myszka();
 
-           
 
+            map = new Mapa(200, 200);
+            zawodnik = new Gracz("kivu", 1);
+            zawodnik.getPozycja = new Vector2(0, 0);
             kamera = new Kamera2d();
+            
 
         }
 
@@ -73,14 +79,16 @@ namespace RzezniaMagow
         /// </summary>
         protected override void Initialize()
         {
+            base.Initialize();
             graphics.PreferredBackBufferWidth = 800;
             graphics.PreferredBackBufferHeight = 600;
 
 
             IsMouseVisible = true;
             graphics.IsFullScreen = false;
+
+
             
-            base.Initialize();
         }
 
         /// <summary>
@@ -96,10 +104,10 @@ namespace RzezniaMagow
             test = Content.Load<Texture2D>("Angels");
             karta1 = Content.Load<Texture2D>("Angus");
             karta2 = Content.Load<Texture2D>("Anti");
-            karta3 = Content.Load<Texture2D>("Arbor");
+            karta3 = Content.Load<Texture2D>("Anti");
             karta4 = Content.Load<Texture2D>("Arena");
             cel = Content.Load<Texture2D>("cel");
-
+            map.LoadContent(Content.Load<Texture2D>(@"Maps\mapa"));
             // TODO: use this.Content to load your game content here
         }
 
@@ -191,6 +199,7 @@ namespace RzezniaMagow
             spriteBatch.Draw(karta1, new Vector2(0,0), Color.White);
             spriteBatch.Draw(karta2, new Vector2(0, 500), Color.White);
             spriteBatch.Draw(karta3, new Vector2(500, 500), Color.White);
+            map.Draw(gameTime, spriteBatch);
             //spriteBatch.Draw(karta4, new Vector2(500, 0), Color.White);
 
 
