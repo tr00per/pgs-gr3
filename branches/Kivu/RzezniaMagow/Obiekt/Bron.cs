@@ -44,7 +44,7 @@ namespace RzezniaMagow
         public short getObrazienia
         {
             get { return obrazenia; }
-            set { damage = value; }
+            set { obrazenia = value; }
         }
 
         public String getNazwa
