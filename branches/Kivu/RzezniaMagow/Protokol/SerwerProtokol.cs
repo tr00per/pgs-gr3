@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace RzezniaMagow
 {
-    class SerwerProtocol
+    public class SerwerProtocol
     {
 
         static int offset = 0;

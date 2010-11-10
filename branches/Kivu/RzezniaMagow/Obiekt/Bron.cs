@@ -5,7 +5,7 @@ using System.Text;
 
 namespace RzezniaMagow
 {
-    class Bron
+    public class Bron
     {
 
         private String nazwa;
@@ -16,6 +16,7 @@ namespace RzezniaMagow
         public Bron()
         {
         }
+
         public Bron(String s, short dam, byte typ, short czas)
         {
             nazwa = s;

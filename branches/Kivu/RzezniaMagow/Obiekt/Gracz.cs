@@ -18,12 +18,16 @@ namespace RzezniaMagow
 
         private List<Pocisk> listaPociskow;
 
+        private Bron aktualnaBron;
+
+       
 
 
         public Gracz() : base()
         {
             pozycjaKursora = new Vector2();
             listaPociskow = new List<Pocisk>();
+            aktualnaBron = new Bron();
         }
 
         public Gracz(float x , float y, byte id): base(x , y, id)
@@ -33,6 +37,7 @@ namespace RzezniaMagow
             punkty = 0;
             zycie = 100;
             iloscZgonow = 0;
+            aktualnaBron = new Bron();
 
         }
 
@@ -45,7 +50,7 @@ namespace RzezniaMagow
             zycie = 100;
             iloscZgonow = 0;
             listaPociskow = new List<Pocisk>();
-       
+            aktualnaBron = new Bron();
 
         }
 
@@ -58,7 +63,7 @@ namespace RzezniaMagow
             zycie = kopia.zycie;
             iloscZgonow = kopia.iloscZgonow;
             listaPociskow = new List<Pocisk>();
-
+            aktualnaBron = kopia.aktualnaBron;
             
             
 
@@ -111,6 +116,12 @@ namespace RzezniaMagow
         public List<Pocisk> getListaPociskow
         {
             get { return listaPociskow; }
+        }
+
+        public Bron AktualnaBron
+        {
+            get { return aktualnaBron; }
+            set { aktualnaBron = value; }
         }
 
         #endregion
