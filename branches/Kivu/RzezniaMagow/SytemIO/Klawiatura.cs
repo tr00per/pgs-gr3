@@ -28,7 +28,7 @@ namespace RzezniaMagow
 
         public Keys KONSOLA = Keys.Tab;
 
-        private int walkSpeed = 1;
+        private int walkSpeed = 2;
 
 
         public Klawiatura()
@@ -64,34 +64,38 @@ namespace RzezniaMagow
 
             if (this.stanKlawiatury.IsKeyDown(DOL))
             {
-                Game.kamera.Pozycja = new Vector2(Game.kamera.Pozycja.X, Game.kamera.Pozycja.Y - walkSpeed);
+                
+                Game.zawodnik.getPozycja = new Vector2(Game.zawodnik.getPozycja.X, Game.zawodnik.getPozycja.Y + walkSpeed);
 
-                Game.zawodnik.getPozycja = new Vector2(Game.zawodnik.getPozycja.X, Game.zawodnik.getPozycja.Y - walkSpeed);
-                System.Console.WriteLine("dol");
+                Game.kamera.getPozycja = Game.zawodnik.getPozycja;
+
             }
             if (this.stanKlawiatury.IsKeyDown(GORA))
             {
-                Game.kamera.Pozycja = new Vector2(Game.kamera.Pozycja.X, Game.kamera.Pozycja.Y + walkSpeed);
+                
+                Game.zawodnik.getPozycja = new Vector2(Game.zawodnik.getPozycja.X, Game.zawodnik.getPozycja.Y - walkSpeed);
 
-                Game.zawodnik.getPozycja = new Vector2(Game.zawodnik.getPozycja.X, Game.zawodnik.getPozycja.Y + walkSpeed);
-                System.Console.WriteLine("gora");
+                Game.kamera.getPozycja = Game.zawodnik.getPozycja;
+
+
             }
 
 
             if (this.stanKlawiatury.IsKeyDown(LEWO))
             {
-                Game.kamera.Pozycja = new Vector2(Game.kamera.Pozycja.X + walkSpeed, Game.kamera.Pozycja.Y);
+                
+                Game.zawodnik.getPozycja = new Vector2(Game.zawodnik.getPozycja.X - walkSpeed, Game.zawodnik.getPozycja.Y);
 
-                Game.zawodnik.getPozycja = new Vector2(Game.zawodnik.getPozycja.X + walkSpeed, Game.zawodnik.getPozycja.Y);
-                System.Console.WriteLine("lewo");
+                Game.kamera.getPozycja = Game.zawodnik.getPozycja;
             }
 
             if (this.stanKlawiatury.IsKeyDown(PRAWO))
             {
-                Game.kamera.Pozycja = new Vector2(Game.kamera.Pozycja.X - walkSpeed, Game.kamera.Pozycja.Y);
+                
+                Game.zawodnik.getPozycja = new Vector2(Game.zawodnik.getPozycja.X + walkSpeed, Game.zawodnik.getPozycja.Y);
 
-                Game.zawodnik.getPozycja = new Vector2(Game.zawodnik.getPozycja.X - walkSpeed, Game.zawodnik.getPozycja.Y);
-                System.Console.WriteLine("prawo");
+                Game.kamera.getPozycja = Game.zawodnik.getPozycja;
+
             }
 
             if (KeyJustPressed(STRZAL))

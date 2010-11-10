@@ -87,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Kamera2D.cs" />
+    <Compile Include="Obiekt\Bron.cs" />
     <Compile Include="SytemIO\Klawiatura.cs" />
     <Compile Include="Protokol\ClientProtokol.cs" />
     <Compile Include="Obiekt\Gracz.cs" />

@@ -15,7 +15,8 @@ namespace RzezniaMagow
 
 
         MouseState originalMouseState;
-        int leftrightRot = 0;
+        
+        
 
 
         public Myszka()
@@ -32,25 +33,29 @@ namespace RzezniaMagow
 
                     MouseState currentMouseState = Mouse.GetState();
 
-                    if (currentMouseState.LeftButton == ButtonState.Pressed)
+           
+            if(currentMouseState != originalMouseState)
+                if (currentMouseState.LeftButton == ButtonState.Pressed)
                     {
-                        
+                        System.Console.WriteLine("strzal z myszki");
+                        Game.zawodnik.getPozycjaKursora = new Vector2(currentMouseState.X + Game.kamera.getPozycja.X - Game.graphics.PreferredBackBufferWidth / 2, currentMouseState.Y + Game.kamera.getPozycja.Y - Game.graphics.PreferredBackBufferHeight / 2);
+                       //System.Console.WriteLine(currentMouseState.X + "    " + currentMouseState.Y); 
                     }
 
 
                     if (currentMouseState.X != originalMouseState.X)
                     {
-                        if(currentMouseState.X>0 && currentMouseState.X<1024 && currentMouseState.Y>0 && currentMouseState.Y<768)
+                        if (currentMouseState.X > 0 && currentMouseState.X < 800 && currentMouseState.Y > 0 && currentMouseState.Y < 600)
 
-                        System.Console.WriteLine("pozycja X: " + currentMouseState.X + " pozycja Y: " + currentMouseState.Y);
+                           // Game.zawodnik.getPozycjaKursora = new Vector2(currentMouseState.X, currentMouseState.Y);
+                        System.Console.WriteLine(currentMouseState.X+"    "+ currentMouseState.Y); 
                         
                     }
 
-
+                
                    
                     this.originalMouseState = Mouse.GetState();
-                    leftrightRot = 0;
-
+                   
                 
             
         }

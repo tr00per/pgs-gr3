@@ -18,15 +18,15 @@ namespace RzezniaMagow
     /// </summary>
     public class Game : Microsoft.Xna.Framework.Game
     {
-        
-        GraphicsDeviceManager graphics;
+        public static Gracz zawodnik;
+        public static GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         ClientProtokol klient;
         SerwerProtocol serwer;
         byte[] trescPakietu;
         byte[] odebranyPakiet;
 
-        public static  Gracz zawodnik;
+        
         Klawiatura klawiatura;
         Myszka mysz;
 
@@ -37,12 +37,19 @@ namespace RzezniaMagow
         public static Kamera2d kamera;
 
 
+        Texture2D karta1;
+        Texture2D karta2;
+        Texture2D karta3;
+        Texture2D karta4;
+
+        Texture2D cel;
+
         public Game()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             zawodnik = new Gracz("kivu", 1);
-            zawodnik.getPozycja = new Vector2(3.22f, 4.31f);
+            zawodnik.getPozycja = new Vector2(0, 0);
             klient = new ClientProtokol();
             serwer = new SerwerProtocol();
             trescPakietu = new byte[255];
@@ -52,7 +59,7 @@ namespace RzezniaMagow
             klawiatura = new Klawiatura();
             mysz = new Myszka();
 
-            graphics.IsFullScreen = false;
+           
 
             kamera = new Kamera2d();
 
@@ -66,12 +73,12 @@ namespace RzezniaMagow
         /// </summary>
         protected override void Initialize()
         {
-            graphics.PreferredBackBufferWidth = 1024;
-            graphics.PreferredBackBufferHeight = 768;
+            graphics.PreferredBackBufferWidth = 800;
+            graphics.PreferredBackBufferHeight = 600;
 
-           
 
-            
+            IsMouseVisible = true;
+            graphics.IsFullScreen = false;
             
             base.Initialize();
         }
@@ -87,6 +94,11 @@ namespace RzezniaMagow
 
 
             test = Content.Load<Texture2D>("Angels");
+            karta1 = Content.Load<Texture2D>("Angus");
+            karta2 = Content.Load<Texture2D>("Anti");
+            karta3 = Content.Load<Texture2D>("Arbor");
+            karta4 = Content.Load<Texture2D>("Arena");
+            cel = Content.Load<Texture2D>("cel");
 
             // TODO: use this.Content to load your game content here
         }
@@ -172,9 +184,19 @@ namespace RzezniaMagow
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
 
-            spriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.SaveState, kamera.get_transformation(graphics));
+            spriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.SaveState, kamera.getTransformation(graphics));
 
-            spriteBatch.Draw(test, new Vector2(100, 100), Color.White);
+            
+
+            spriteBatch.Draw(karta1, new Vector2(0,0), Color.White);
+            spriteBatch.Draw(karta2, new Vector2(500, 500), Color.White);
+            spriteBatch.Draw(karta3, new Vector2(500, -500), Color.White);
+            spriteBatch.Draw(karta4, new Vector2(-500, -500), Color.White);
+
+
+
+            spriteBatch.Draw(test, zawodnik.getPozycja, Color.White);
+            spriteBatch.Draw(cel, zawodnik.getPozycjaKursora, Color.White);
 
             spriteBatch.End();
 
