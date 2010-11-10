@@ -118,7 +118,7 @@ namespace RzezniaMagow
             get { return listaPociskow; }
         }
 
-        public Bron AktualnaBron
+        public Bron getAktualnaBron
         {
             get { return aktualnaBron; }
             set { aktualnaBron = value; }

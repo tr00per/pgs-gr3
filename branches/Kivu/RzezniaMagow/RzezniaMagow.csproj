@@ -73,6 +73,8 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml">
       <Private>False</Private>
     </Reference>
@@ -87,6 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Kamera2D.cs" />
+    <Compile Include="Obiekt\Bonus.cs" />
     <Compile Include="Obiekt\Bron.cs" />
     <Compile Include="SytemIO\Klawiatura.cs" />
     <Compile Include="Protokol\ClientProtokol.cs" />

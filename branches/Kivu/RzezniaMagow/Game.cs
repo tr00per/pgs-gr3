@@ -189,9 +189,9 @@ namespace RzezniaMagow
             
 
             spriteBatch.Draw(karta1, new Vector2(0,0), Color.White);
-            spriteBatch.Draw(karta2, new Vector2(500, 500), Color.White);
-            spriteBatch.Draw(karta3, new Vector2(500, -500), Color.White);
-            spriteBatch.Draw(karta4, new Vector2(-500, -500), Color.White);
+            spriteBatch.Draw(karta2, new Vector2(0, 500), Color.White);
+            spriteBatch.Draw(karta3, new Vector2(500, 500), Color.White);
+            spriteBatch.Draw(karta4, new Vector2(500, 0), Color.White);
 
 
 

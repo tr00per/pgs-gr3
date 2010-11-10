@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 
 namespace RzezniaMagow
 {
-    public class Bron
+    public class Bron : Obiekt
     {
 
         private String nazwa;
@@ -17,7 +18,7 @@ namespace RzezniaMagow
         {
         }
 
-        public Bron(String s, short dam, byte typ, short czas)
+        public Bron(float x , float y,String s, short dam, byte typ, short czas) : base (x,y)
         {
             nazwa = s;
             obrazenia = dam;
@@ -26,6 +27,26 @@ namespace RzezniaMagow
 
         }
 
+        public Bron(String s, short dam, byte typ, short czas)
+
+        {
+            nazwa = s;
+            obrazenia = dam;
+            typBroni = typ;
+            czasLadowania = czas;
+
+        }
+
+        public Bron(Bron kopia)
+        {
+            nazwa = kopia.nazwa;
+            obrazenia = kopia.obrazenia;
+            typBroni = kopia.typBroni;
+            czasLadowania = kopia.czasLadowania;
+            getPozycja = new Vector2();
+
+
+        }
 
 
 

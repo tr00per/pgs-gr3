@@ -27,6 +27,7 @@ namespace RzezniaMagow
         public Obiekt(float x, float y)
         {
             pozycja = new Vector2(x, y);
+            ID = 0;
         }
 
         public Obiekt(float x, float y, byte z)
