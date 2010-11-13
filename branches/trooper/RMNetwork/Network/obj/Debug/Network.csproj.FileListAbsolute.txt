@@ -1,0 +1,5 @@
+D:\STUDIA\sem9\PGS\RMNetwork\Network\bin\Debug\Network.dll
+D:\STUDIA\sem9\PGS\RMNetwork\Network\bin\Debug\Network.pdb
+D:\STUDIA\sem9\PGS\RMNetwork\Network\obj\Debug\ResolveAssemblyReference.cache
+D:\STUDIA\sem9\PGS\RMNetwork\Network\obj\Debug\Network.dll
+D:\STUDIA\sem9\PGS\RMNetwork\Network\obj\Debug\Network.pdb
