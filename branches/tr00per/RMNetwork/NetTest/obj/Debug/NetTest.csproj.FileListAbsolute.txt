@@ -1,7 +1,0 @@
-D:\STUDIA\sem9\PGS\RMNetwork\NetTest\bin\Debug\NetTest.exe
-D:\STUDIA\sem9\PGS\RMNetwork\NetTest\bin\Debug\NetTest.pdb
-D:\STUDIA\sem9\PGS\RMNetwork\NetTest\bin\Debug\Network.dll
-D:\STUDIA\sem9\PGS\RMNetwork\NetTest\bin\Debug\Network.pdb
-D:\STUDIA\sem9\PGS\RMNetwork\NetTest\obj\Debug\ResolveAssemblyReference.cache
-D:\STUDIA\sem9\PGS\RMNetwork\NetTest\obj\Debug\NetTest.exe
-D:\STUDIA\sem9\PGS\RMNetwork\NetTest\obj\Debug\NetTest.pdb
