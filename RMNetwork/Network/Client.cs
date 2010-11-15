@@ -25,7 +25,6 @@ namespace Network
         /// <param name="statusCB">Callback for client status reports and server messages.</param>
         public Client(StatusCallback statusCB)
         {
-            cli = new TcpClient();
             statusCallback = statusCB;
             listenerSem = new Semaphore(1, 1);
             id = 0;
@@ -48,6 +47,8 @@ namespace Network
         /// <returns>If client si successfuly connected.</returns>
         public bool connect(string address, int port, string nick, byte avatar)
         {
+            cli = new TcpClient();
+
             IPAddress ip = IPAddress.Parse(address);
             statusCallback("Connecting to " + address + ":" + port.ToString());
             cli.Connect(ip, port);
@@ -121,7 +122,8 @@ namespace Network
                 listener.Interrupt();
             }
 
-            cli.Client.Disconnect(true);
+            cli.Client.Close();
+            cli.Close();
         }
 
         /// <summary>
