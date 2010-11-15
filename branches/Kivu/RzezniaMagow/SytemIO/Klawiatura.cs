@@ -113,7 +113,7 @@ namespace RzezniaMagow
             }
             if (this.stanKlawiatury.IsKeyDown(DOL))
             {
-                if (Game.zawodnik.getPozycja.Y < Game.map.getTekstura.Height)
+                if (Game.zawodnik.getPozycja.Y + Game.zawodnik.getTekstura.Height < Game.map.getTekstura.Height)
                 Game.zawodnik.getPozycja = new Vector2(Game.zawodnik.getPozycja.X, Game.zawodnik.getPozycja.Y + walkSpeed);
 
                 Game.kamera.getPozycja = Game.zawodnik.getPozycja;
@@ -140,7 +140,7 @@ namespace RzezniaMagow
 
             if (this.stanKlawiatury.IsKeyDown(PRAWO))
             {
-                if (Game.zawodnik.getPozycja.X < Game.map.getTekstura.Width)
+                if (Game.zawodnik.getPozycja.X  + Game.zawodnik.getTekstura.Width< Game.map.getTekstura.Width)
                 Game.zawodnik.getPozycja = new Vector2(Game.zawodnik.getPozycja.X + walkSpeed, Game.zawodnik.getPozycja.Y);
 
                 Game.kamera.getPozycja = Game.zawodnik.getPozycja;

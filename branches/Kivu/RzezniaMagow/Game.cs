@@ -34,7 +34,7 @@ namespace RzezniaMagow
 
         List<Gracz> listaGraczy;
         List<Pocisk> listaPociskow;
-        Texture2D test;
+        
 
         public static Kamera2d kamera;
 
@@ -45,7 +45,7 @@ namespace RzezniaMagow
         Texture2D karta4;
 
         Texture2D cel;
-        bool flaga = true;
+       
 
         public Game()
         {
@@ -64,7 +64,7 @@ namespace RzezniaMagow
             mysz = new Myszka();
 
 
-            map = new Mapa(200, 200);
+            map = new Mapa(0, 0);
             zawodnik = new Gracz("kivu", 1);
             zawodnik.getPozycja = new Vector2(0, 0);
             kamera = new Kamera2d();
@@ -102,7 +102,7 @@ namespace RzezniaMagow
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
 
-            test = Content.Load<Texture2D>("Angels");
+           
             karta1 = Content.Load<Texture2D>("Angus");
             karta2 = Content.Load<Texture2D>("Anti");
             karta3 = Content.Load<Texture2D>("Anti");
@@ -111,6 +111,7 @@ namespace RzezniaMagow
             
             cel = Content.Load<Texture2D>("cel");
             map.LoadContent(Content.Load<Texture2D>(@"Maps\mapa"));
+            zawodnik.LoadContent(Content.Load<Texture2D>(@"Avatar\Angels"));
             // TODO: use this.Content to load your game content here
         }
 
@@ -214,7 +215,7 @@ namespace RzezniaMagow
 
 
 
-            spriteBatch.Draw(test, zawodnik.getPozycja, Color.White);
+            spriteBatch.Draw(zawodnik.getTekstura, zawodnik.getPozycja, Color.White);
 
             
             spriteBatch.Draw(cel, zawodnik.getPozycjaKursora, Color.White);

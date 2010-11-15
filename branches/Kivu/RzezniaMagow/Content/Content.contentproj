@@ -38,7 +38,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Angels.jpg">
+    <Compile Include="Avatar\Angels.jpg">
       <Name>Angels</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>

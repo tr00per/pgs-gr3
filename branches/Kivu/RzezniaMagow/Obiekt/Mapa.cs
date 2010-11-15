@@ -16,9 +16,9 @@ namespace RzezniaMagow
         
 
 
-        public Mapa(float x, float y)
+        public Mapa(float x, float y): base(x, y)
         {
-            pozycja = new Vector2(x, y);
+            
             
         }
 
