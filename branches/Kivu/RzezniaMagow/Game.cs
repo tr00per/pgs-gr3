@@ -45,6 +45,7 @@ namespace RzezniaMagow
         Texture2D karta4;
 
         Texture2D cel;
+        bool flaga = true;
 
         public Game()
         {
@@ -106,6 +107,8 @@ namespace RzezniaMagow
             karta2 = Content.Load<Texture2D>("Anti");
             karta3 = Content.Load<Texture2D>("Anti");
             karta4 = Content.Load<Texture2D>("Arena");
+
+            
             cel = Content.Load<Texture2D>("cel");
             map.LoadContent(Content.Load<Texture2D>(@"Maps\mapa"));
             // TODO: use this.Content to load your game content here
@@ -127,6 +130,11 @@ namespace RzezniaMagow
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+
+            //wysy³anie do logiki klienta informacji o graczu
+
+
+
 
             //listaGraczy.Add(zawodnik);
 
@@ -199,12 +207,16 @@ namespace RzezniaMagow
             spriteBatch.Draw(karta1, new Vector2(0,0), Color.White);
             spriteBatch.Draw(karta2, new Vector2(0, 500), Color.White);
             spriteBatch.Draw(karta3, new Vector2(500, 500), Color.White);
+
+           
             map.Draw(gameTime, spriteBatch);
             //spriteBatch.Draw(karta4, new Vector2(500, 0), Color.White);
 
 
 
             spriteBatch.Draw(test, zawodnik.getPozycja, Color.White);
+
+            
             spriteBatch.Draw(cel, zawodnik.getPozycjaKursora, Color.White);
 
             spriteBatch.End();

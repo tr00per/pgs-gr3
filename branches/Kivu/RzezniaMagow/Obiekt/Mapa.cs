@@ -13,6 +13,7 @@ namespace RzezniaMagow
 
         private String nazwaPliku;
         
+        
 
 
         public Mapa(float x, float y)
@@ -30,6 +31,9 @@ namespace RzezniaMagow
         {
 
             base.Draw(gameTime, spriteBatch);
+
+
+
 
         }
         

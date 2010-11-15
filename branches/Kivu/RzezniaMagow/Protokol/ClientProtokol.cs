@@ -10,7 +10,7 @@ namespace RzezniaMagow
     {
 
 
-        static int offset = 0;
+        static int offset = 2;
 
         int nickLenght = 16;
         private byte[] tablica;
@@ -301,36 +301,36 @@ namespace RzezniaMagow
 
              switch (typ)
                 {
-                    case 0:
-                        {
-                            tablica = new byte[2];
-                            addProtocolType(typ);
-                            addCheckSum(0);
+                    //case 0:
+                    //    {
+                    //        tablica = new byte[2];
+                    //        addProtocolType(typ);
+                    //        addCheckSum(0);
 
-                            break;
-                        }
-                    case 1:
-                        {
-                            tablica = new byte[2];
-                            addProtocolType(typ);
-                            addCheckSum(1);
+                    //        break;
+                    //    }
+                    //case 1:
+                    //    {
+                    //        tablica = new byte[2];
+                    //        addProtocolType(typ);
+                    //        addCheckSum(1);
 
-                            break;
-                        }
-                    case 2:
-                        {
-                            tablica = new byte[20];
-                            addProtocolType(typ);
-                            addPlayerNick(gracz.getNick);
-                            addPlayerAvatar(gracz.getTypAvatara);
-                            addCheckSum(calculateCheckSum(tablica));
-                            break;
-                        }
-                    case 3:
-                        {
+                    //        break;
+                    //    }
+                    //case 2:
+                    //    {
+                    //        tablica = new byte[20];
+                    //        addProtocolType(typ);
+                    //        addPlayerNick(gracz.getNick);
+                    //        addPlayerAvatar(gracz.getTypAvatara);
+                    //        addCheckSum(calculateCheckSum(tablica));
+                    //        break;
+                    //    }
+                    //case 3:
+                    //    {
                            
-                            break;
-                        }
+                    //        break;
+                    //    }
                     case 4:
                         {
                             tablica = new byte[22];
@@ -354,17 +354,17 @@ namespace RzezniaMagow
 
                             break;
                         }
-                    case 5:
-                        {
-                            tablica = new byte[2];
-                            addProtocolType(typ);
-                            addCheckSum(5);
-                            break;
-                        }
-                    case 6:
-                        {
-                            break;
-                        }
+                    //case 5:
+                    //    {
+                    //        tablica = new byte[2];
+                    //        addProtocolType(typ);
+                    //        addCheckSum(5);
+                    //        break;
+                    //    }
+                    //case 6:
+                    //    {
+                    //        break;
+                    //    }
                     default: break;
                 }
 
