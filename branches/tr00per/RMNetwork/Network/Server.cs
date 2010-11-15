@@ -13,10 +13,9 @@ namespace Network
     {
         private bool running = false;
         private int maxClients;
-        private List<byte[]> dataQuery;
-        private Semaphore dataQuerySem;
+		
         private TcpListener srv;
-        private Semaphore srvSem;
+
         private List<TcpClient> clients;
         private Semaphore clientsSem;
         
@@ -39,11 +38,8 @@ namespace Network
             this.maxClients = maxClients;
 
             clientsSem = new Semaphore(1, 1);
-            srvSem = new Semaphore(1, 1);
-            dataQuerySem = new Semaphore(1, 1);
             slSem = new Semaphore(1, 1);
 
-            dataQuery = new List<byte[]>();
             clients = new List<TcpClient>();
             srv = new TcpListener(IPAddress.Any, port);
         }
