@@ -131,25 +131,23 @@ namespace RzezniaMagow
 
         public void unpack(byte[] tresc)
         {
-            if (CheckValueOfSum(tresc))
-            {
-
+            
                 byte typ = tresc[0];
 
                 switch (typ)
                 {
-                    case 0:
-                        {
-                            //otrzymano potwierdzenie od serwera,
+                    //case 0:
+                    //    {
+                    //        //otrzymano potwierdzenie od serwera,
 
-                            break;
-                        }
-                    case 1:
-                        {
-                            // otrzymano negatywną odpowiedź od serwera, należy wysłac pakiet ponownie
+                    //        break;
+                    //    }
+                    //case 1:
+                    //    {
+                    //        // otrzymano negatywną odpowiedź od serwera, należy wysłac pakiet ponownie
 
-                            break;
-                        }
+                    //        break;
+                    //    }
                     case 2:
                         {
                             //wiadomość od serwera z ID przypisanym do gracza
@@ -268,12 +266,12 @@ namespace RzezniaMagow
 
                             break;
                         }
-                    case 5:
-                        {
-                            //klient otrzymał od serwera pakiet oznaczający koniec gry
+                    //case 5:
+                    //    {
+                    //        //klient otrzymał od serwera pakiet oznaczający koniec gry
 
-                            break;
-                        }
+                    //        break;
+                    //    }
                     case 6:
                         {
                             //klient otrzymał od serwera jakąś wiadomość, którą należy wyświetlic na ekranie/konsoli
@@ -287,20 +285,14 @@ namespace RzezniaMagow
                     default: break;
                 }
             }
-            else
-            {
+           
 
-                //otrzymany pakiet zawiera błędy, nie zgadza sie check suma
-
-            }
-
-        }
+        
 
         public void createPackage(Gracz gracz, byte typ)
         {
 
-             switch (typ)
-                {
+             
                     //case 0:
                     //    {
                     //        tablica = new byte[2];
@@ -331,8 +323,8 @@ namespace RzezniaMagow
                            
                     //        break;
                     //    }
-                    case 4:
-                        {
+                    //case 4:
+                    //    {
                             tablica = new byte[22];
                             addProtocolType(typ);
                             addPlayerID(gracz.getID);
@@ -352,8 +344,8 @@ namespace RzezniaMagow
 
                             addCheckSum(calculateCheckSum(tablica));
 
-                            break;
-                        }
+                           
+                        //}
                     //case 5:
                     //    {
                     //        tablica = new byte[2];
@@ -365,11 +357,7 @@ namespace RzezniaMagow
                     //    {
                     //        break;
                     //    }
-                    default: break;
-                }
-
-
-
+                   
         }
 
         public byte calculateCheckSum(byte[] tab)
