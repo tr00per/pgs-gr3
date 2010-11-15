@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Network;
 
-namespace NetTest
+
+namespace RzezniaMagow
 {
-    public class ServerLogic: Network.ServerAbstract
+    public class ServerLogic: ServerAbstract
     {
         public Server server;
 
@@ -26,7 +26,7 @@ namespace NetTest
         {
             byte[] d = (byte[])data;
             byte id = d[0];
-			Console.WriteLine(id + " send something to server.");
+			//Console.WriteLine(id + " send something to server.");
         }
 
         override protected internal void playerParted(byte id)

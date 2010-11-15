@@ -129,11 +129,8 @@ namespace RzezniaMagow
             offset++;
         }
 
-        public void unpack(byte[] tresc)
+        public void unpack(byte[] tresc, int typ)
         {
-            
-                byte typ = tresc[0];
-
                 switch (typ)
                 {
                     //case 0:
@@ -164,7 +161,7 @@ namespace RzezniaMagow
 
                             break;
                         }
-                    case 3:
+                    case 8:
                         {
                             // klient otrzymuje od serwera informację o wszystkich graczach biorących udział w grze
                             // na początku każdej rundy
@@ -176,6 +173,9 @@ namespace RzezniaMagow
 
                             for (int i = 0; i < iloscGraczy; i++)
                             {
+
+                                Gracz gracz;
+
                                 //pobranie ID gracza
                                 byte gracz_ID = tresc[offset];
                                 offset++;
@@ -190,19 +190,28 @@ namespace RzezniaMagow
                                 offset += 4;
                                 float y = BitConverter.ToSingle(tresc, offset);
                                 offset += 4;
-                                //pobranie ilosci punktow gracza
-                                short punkty = BitConverter.ToInt16(tresc, offset);
+                                
+                                gracz = new Gracz(gracz_ID,nick,typAvatara);
+                                gracz.getPozycja = new Vector2(x,y);
+
+                                gracz.getPunkty = BitConverter.ToInt16(tresc, offset);
                                 offset += 2;
-                                //pobranie ilości zgonów gracza
-                                short smierci = BitConverter.ToInt16(tresc, offset);
+
+                                gracz.getIloscZgonow = BitConverter.ToInt16(tresc, offset);
                                 offset += 2;
+
+
+                                Game.client.listaGraczy.Add(gracz);
+
+
                             }
                             //pobranie numeru aktualnej rundy
-                            short nrRundy = BitConverter.ToInt16(tresc, offset);
+                            Game.client.getNrRundy = BitConverter.ToInt16(tresc, offset);
+                            
 
                             break;
                         }
-                    case 4:
+                    case 16:
                         {
                             //klient otrzymuję od serwera informację w czasie trwania rozgrywki
 
@@ -211,11 +220,16 @@ namespace RzezniaMagow
                             byte iloscGraczy = tresc[offset];
                             offset++;
 
-                            for (int i = 0; i < iloscGraczy; i++)
+                            byte[] listaIDgraczy = new byte[Game.client.listaGraczy.Count];
+
+                            for (int m = 0; m < iloscGraczy; m++)
                             {
+                                
                                 //pobranie ID gracza
                                 byte gracz_ID = tresc[offset];
                                 offset++;
+                                listaIDgraczy[m] = gracz_ID;
+                               
 
                                 //pobranie pozycji startowej
                                 float x = BitConverter.ToSingle(tresc, offset);
@@ -230,13 +244,39 @@ namespace RzezniaMagow
                                 offset += 4;
 
                                 //pobranie ilości życia gracza
-                                short życie = tresc[offset];
+                                short zycie = tresc[offset];
                                 offset+=2;
 
                                 byte typBroni = tresc[offset];
                                 offset++;
 
+                                for (int i = 0; i < Game.client.listaGraczy.Count; i++)
+                                {
+                                    if (Game.client.listaGraczy.ElementAt(i).getID == gracz_ID)
+                                    {
+                                        Game.client.listaGraczy.ElementAt(i).getPozycja = new Vector2(x, y);
+                                        Game.client.listaGraczy.ElementAt(i).getPozycjaKursora = new Vector2(xKursora, yKursora);
+                                        Game.client.listaGraczy.ElementAt(i).getZycie = zycie;
+                                        Game.client.listaGraczy.ElementAt(i).getAktualnaBron.getTypBroni = typBroni;
+                                    }
+                                }
                             }
+
+                            if (iloscGraczy != Game.client.listaGraczy.Count)
+                            {
+                                for (int i = 0; i < Game.client.listaGraczy.Count; i++)
+                                {
+                                    bool flagaUsuniecia = true;
+                                    for (int j = 0; j < listaIDgraczy.Length; j++)
+                                    {
+                                        if(Game.client.listaGraczy.ElementAt(i).getID == listaIDgraczy[j])
+                                        flagaUsuniecia = false;
+                                    }
+                                    if (flagaUsuniecia)
+                                        Game.client.listaGraczy.RemoveAt(i);
+                                }
+                            }
+
 
                             //pobranie informacje o pociskach aktulanie znajdujących się na mapie
                             short iloscPocisków = BitConverter.ToInt16(tresc, offset);
@@ -244,6 +284,8 @@ namespace RzezniaMagow
 
                             if (iloscPocisków > 0)
                             {
+                                byte[] listaIDPociskow = new byte[iloscPocisków];
+
                                 for (int i = 0; i < iloscPocisków; i++)
                                 {
                                     //pobranie ID pocisku
@@ -261,6 +303,23 @@ namespace RzezniaMagow
                                     offset += 4;
                                     float y = BitConverter.ToSingle(tresc, offset);
                                     offset += 4;
+
+                                    Game.client.listaPociskow.Add(new Pocisk(x,y,pocisk_ID,pociskType,pociskOwner));
+
+                                }
+                                if (iloscPocisków != Game.client.listaPociskow.Count)
+                                {
+                                    for (int i = 0; i < Game.client.listaPociskow.Count; i++)
+                                    {
+                                        bool flagaUsuniecia = true;
+                                        for (int j = 0; j < listaIDPociskow.Length; j++)
+                                        {
+                                            if (Game.client.listaPociskow.ElementAt(i).getID == listaIDPociskow[j])
+                                                flagaUsuniecia = false;
+                                        }
+                                        if (flagaUsuniecia)
+                                            Game.client.listaPociskow.RemoveAt(i);
+                                    }
                                 }
                             }
 
@@ -272,7 +331,7 @@ namespace RzezniaMagow
 
                     //        break;
                     //    }
-                    case 6:
+                    case 64:
                         {
                             //klient otrzymał od serwera jakąś wiadomość, którą należy wyświetlic na ekranie/konsoli
 
@@ -289,7 +348,7 @@ namespace RzezniaMagow
 
         
 
-        public void createPackage(Gracz gracz, byte typ)
+        public byte[] createPackage(Gracz gracz)
         {
 
              
@@ -326,7 +385,8 @@ namespace RzezniaMagow
                     //case 4:
                     //    {
                             tablica = new byte[22];
-                            addProtocolType(typ);
+                            offset = 2;
+                            
                             addPlayerID(gracz.getID);
                             addPlayerPosition(gracz.getPozycja.X, gracz.getPozycja.Y);
                             addCursorPosition(gracz.getPozycjaKursora.X, gracz.getPozycjaKursora.Y);
@@ -342,9 +402,9 @@ namespace RzezniaMagow
                                 addShotType(0);
                             }
 
-                            addCheckSum(calculateCheckSum(tablica));
+                            //addCheckSum(calculateCheckSum(tablica));
 
-                           
+                            return tablica; 
                         //}
                     //case 5:
                     //    {
@@ -360,35 +420,35 @@ namespace RzezniaMagow
                    
         }
 
-        public byte calculateCheckSum(byte[] tab)
-        {
-            byte suma = 0;
+        //public byte calculateCheckSum(byte[] tab)
+        //{
+        //    byte suma = 0;
 
-            for (int i = 0; i < tab.Length; i++)
-            {
-                suma += tab[i];
-            }
-            return suma;
-        }
-
-
-        public bool CheckValueOfSum(byte[] tab)
-        {
-            byte suma = 0;
-
-            for (int i = 0; i < tab.Length; i++)
-            {
-                suma += tab[i];
-            }
-            suma -= tab[1];
+        //    for (int i = 0; i < tab.Length; i++)
+        //    {
+        //        suma += tab[i];
+        //    }
+        //    return suma;
+        //}
 
 
-            if (tab[1] == suma)
-                return true;
-            else
-                return false;
+        //public bool CheckValueOfSum(byte[] tab)
+        //{
+        //    byte suma = 0;
 
-        }
+        //    for (int i = 0; i < tab.Length; i++)
+        //    {
+        //        suma += tab[i];
+        //    }
+        //    suma -= tab[1];
+
+
+        //    if (tab[1] == suma)
+        //        return true;
+        //    else
+        //        return false;
+
+        //}
 
 
 

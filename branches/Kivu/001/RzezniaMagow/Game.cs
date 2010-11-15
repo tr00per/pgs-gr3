@@ -22,26 +22,15 @@ namespace RzezniaMagow
         public static GraphicsDeviceManager graphics;
         public static ContentManager content;
         public static Mapa map;
+        public static ClientLogic client;
         SpriteBatch spriteBatch;
-        ClientProtokol klient;
-        SerwerProtocol serwer;
-        byte[] trescPakietu;
-        byte[] odebranyPakiet;
-
         
         Klawiatura klawiatura;
         Myszka mysz;
 
-        List<Gracz> listaGraczy;
-        List<Pocisk> listaPociskow;
-        
-
         public static Kamera2d kamera;
-
        
-        Texture2D karta1;
-        Texture2D karta2;
-        Texture2D karta3;
+
         Texture2D karta4;
 
         Texture2D cel;
@@ -53,20 +42,14 @@ namespace RzezniaMagow
             graphics = new GraphicsDeviceManager(this);
             content = new ContentManager(Services);
             content.RootDirectory = "Content";
-            
-            klient = new ClientProtokol();
-            serwer = new SerwerProtocol();
-            trescPakietu = new byte[255];
-            odebranyPakiet = new byte[255];
-            listaGraczy = new List<Gracz>();
-            listaPociskow = new List<Pocisk>();
+
+            client = new ClientLogic();
             klawiatura = new Klawiatura();
             mysz = new Myszka();
 
 
             map = new Mapa(0, 0);
-            zawodnik = new Gracz("kivu", 1);
-            zawodnik.getPozycja = new Vector2(0, 0);
+            
             kamera = new Kamera2d();
             
 
@@ -88,7 +71,8 @@ namespace RzezniaMagow
             IsMouseVisible = true;
             graphics.IsFullScreen = false;
 
-
+            zawodnik = new Gracz(7, "kivu", 1);
+            zawodnik.getPozycja = new Vector2(0, 0);
             
         }
 
@@ -103,15 +87,13 @@ namespace RzezniaMagow
 
 
            
-            karta1 = content.Load<Texture2D>("Angus");
-            karta2 = content.Load<Texture2D>("Anti");
-            karta3 = content.Load<Texture2D>("Anti");
+            
             karta4 = content.Load<Texture2D>("Arena");
 
             
             cel = content.Load<Texture2D>("cel");
             map.LoadContent(content.Load<Texture2D>(@"Maps\mapa"));
-            zawodnik.LoadContent(content.Load<Texture2D>(@"Avatar\Angels"));
+           // zawodnik.LoadContent(content.Load<Texture2D>(@"Avatar\Angels"));
             // TODO: use this.Content to load your game content here
         }
 
@@ -134,51 +116,8 @@ namespace RzezniaMagow
 
             //wysy³anie do logiki klienta informacji o graczu
 
-
-
-
-            //listaGraczy.Add(zawodnik);
-
-            //listaGraczy.Add(new Gracz(3.77f,6.43f, 34));
-            //listaGraczy.ElementAt(1).getListaPociskow.Add(new Pocisk(zawodnik.getPozycja.X, zawodnik.getPozycja.Y, 2));
-            //listaGraczy.ElementAt(1).getListaPociskow.Add(new Pocisk(zawodnik.getPozycja.X, zawodnik.getPozycja.Y, 2));
-            //listaGraczy.ElementAt(1).getListaPociskow.Add(new Pocisk(zawodnik.getPozycja.X, zawodnik.getPozycja.Y, 2));
-
-            //listaGraczy.Add(new Gracz(3.11f, 4.43f, 19));
-            //listaGraczy.ElementAt(1).getListaPociskow.Add(new Pocisk(zawodnik.getPozycja.X, zawodnik.getPozycja.Y, 3));
-            //listaGraczy.ElementAt(1).getListaPociskow.Add(new Pocisk(zawodnik.getPozycja.X, zawodnik.getPozycja.Y, 3));
-            //listaGraczy.ElementAt(1).getListaPociskow.Add(new Pocisk(zawodnik.getPozycja.X, zawodnik.getPozycja.Y, 3));
-
-
-            //zawodnik.getListaPociskow.Add(new Pocisk(zawodnik.getPozycja.X,zawodnik.getPozycja.Y, 1));
-            //zawodnik.getListaPociskow.Add(new Pocisk(zawodnik.getPozycja.X,zawodnik.getPozycja.Y, 1));
-            //zawodnik.getListaPociskow.Add(new Pocisk(zawodnik.getPozycja.X,zawodnik.getPozycja.Y, 1));
-            //zawodnik.getListaPociskow.Add(new Pocisk(zawodnik.getPozycja.X,zawodnik.getPozycja.Y, 1));
-
-
-            //for (int i = 0; i < listaGraczy.Count; i++)
-            //{
-            //    for (int j = 0; j < listaGraczy.ElementAt(i).getListaPociskow.Count; j++)
-            //    {
-            //        listaPociskow.Add(listaGraczy.ElementAt(i).getListaPociskow.ElementAt(j));
-            //    }
-            //}
-
-
-            //    //klient.createPackage(zawodnik, 2);
-            //    //trescPakietu = klient.getTablica;
-
-            //    //serwer.unpack(trescPakietu);
-
-            //    //odebranyPakiet = serwer.getTablica;
-
-            //serwer.createPackage(listaGraczy, listaPociskow, 4, 1);
-            //trescPakietu = serwer.getTablica;
-
-            //klient.unpack(trescPakietu);
-
-
-            //System.Console.WriteLine("break");
+            if(client.getCzyGra && gameTime.ElapsedGameTime.Milliseconds/10==5)
+            client.sendUpdate(client.clientProtocol.createPackage(zawodnik));
 
             mysz.procesMyszy();
             klawiatura.procesKlawiatury();
@@ -203,27 +142,22 @@ namespace RzezniaMagow
 
             spriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.SaveState, kamera.getTransformation(graphics));
 
-            
 
-            spriteBatch.Draw(karta1, new Vector2(0,0), Color.White);
-            spriteBatch.Draw(karta2, new Vector2(0, 500), Color.White);
-            spriteBatch.Draw(karta3, new Vector2(500, 500), Color.White);
+           if (client.getCzyGra)
+           {
+                map.Draw(gameTime, spriteBatch);
+               
 
-           
-            map.Draw(gameTime, spriteBatch);
-            //spriteBatch.Draw(karta4, new Vector2(500, 0), Color.White);
+                
+                //spriteBatch.Draw(karta4, new Vector2(500, 0), Color.White);
 
+                spriteBatch.Draw(zawodnik.getTekstura, zawodnik.getPozycja, Color.White);
+                spriteBatch.Draw(cel, zawodnik.getPozycjaKursora, Color.White);
 
-
-            spriteBatch.Draw(zawodnik.getTekstura, zawodnik.getPozycja, Color.White);
-
-            
-            spriteBatch.Draw(cel, zawodnik.getPozycjaKursora, Color.White);
+                
+            }
 
             spriteBatch.End();
-
-
-
 
             // TODO: Add your drawing code here
 

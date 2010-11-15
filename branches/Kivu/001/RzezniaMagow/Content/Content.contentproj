@@ -45,17 +45,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Angus.jpg">
+    <Compile Include="Avatar\Angus.jpg">
       <Name>Angus</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Anti.jpg">
+    <Compile Include="Avatar\Anti.jpg">
       <Name>Anti</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Arbor.jpg">
+    <Compile Include="Avatar\Arbor.jpg">
       <Name>Arbor</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>

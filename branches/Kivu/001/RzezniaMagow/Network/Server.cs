@@ -7,7 +7,7 @@ using System.IO;
 using System.Threading;
 using System.Net;
 
-namespace Network
+namespace RzezniaMagow
 {
     public class Server
     {

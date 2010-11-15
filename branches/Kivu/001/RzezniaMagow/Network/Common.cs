@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Net.Sockets;
 
-namespace Network
+namespace RzezniaMagow
 {
     abstract public class Common
     {
         public static byte PACKET_OK = 1;
         public static byte PACKET_FAIL = 2;
-        public static byte PACKET_HANDSHAKE = 4;
-        public static byte PACKET_BEGIN = 8;
-        public static byte PACKET_COMMON = 16;
+        public static byte PACKET_HANDSHAKE = 4;//dodanie nowego gracza
+        public static byte PACKET_BEGIN = 8;//rozpoczecie rundy
+        public static byte PACKET_COMMON = 16;//pakiety wysyłane w czasie gry
         public static byte PACKET_END = 32;
         public static byte PACKET_SRVMSG = 64;
 
@@ -54,6 +54,7 @@ namespace Network
         {
             NetworkStream io = (NetworkStream)arg.AsyncState;
             io.EndWrite(arg);
+
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 
-namespace Network
+namespace RzezniaMagow
 {
     public delegate void StatusCallback(string msg);
 
@@ -85,6 +85,8 @@ namespace Network
             if (Common.correctPacket(packet, Common.PACKET_HANDSHAKE))
             {
                 id = packet[Common.PACKET_HEADER_SIZE];
+                Game.zawodnik = new Gracz(8, nick, avatar);
+               
             }
             else
             {
@@ -195,13 +197,13 @@ namespace Network
         /// Sends given data to the server asynchronously.
         /// </summary>
         /// <param name="data">Serialized data, without packet header.</param>
-        protected void sendUpdate(byte[] data)
+        public void sendUpdate(byte[] data)
         {
             byte[] packet = new byte[data.Length + Common.PACKET_HEADER_SIZE];
             data.CopyTo(packet, Common.PACKET_HEADER_SIZE);
             packet[0] = Common.PACKET_COMMON;
             packet[1] = Common.checksum(packet);
-
+            //System.Console.WriteLine(packet[14].ToString());
             NetworkStream io = cli.GetStream();
             io.BeginWrite(packet, 0, packet.Length, new AsyncCallback(Common.asyncWrite), io);
         }
