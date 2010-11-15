@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Network;
 
-namespace NetTest
+namespace Logic
 {
     public class ServerLogic: Network.ServerAbstract
     {
