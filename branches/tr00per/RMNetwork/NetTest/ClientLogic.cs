@@ -6,7 +6,7 @@ using Network;
 
 namespace NetTest
 {
-    class ClientLogic: Client
+    public class ClientLogic: Client
     {
         public ClientLogic()
             : base(status)
@@ -14,6 +14,10 @@ namespace NetTest
         }
 
         override protected void updateArrived(byte[] data)
+        {
+        }
+
+        protected override void beginRound(byte[] data)
         {
         }
 

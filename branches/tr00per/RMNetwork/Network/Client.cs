@@ -19,6 +19,10 @@ namespace Network
         private bool running;
         private byte id;
 
+        /// <summary>
+        /// Create new network client. It has to be connected manually.
+        /// </summary>
+        /// <param name="statusCB">Callback for client status reports and server messages.</param>
         public Client(StatusCallback statusCB)
         {
             cli = new TcpClient();
@@ -27,11 +31,21 @@ namespace Network
             id = 0;
         }
 
+        /// <summary>
+        /// Get id returnet by server during handshaking.
+        /// It's immutable and can't be accessed otherwise.
+        /// </summary>
         protected byte getID()
         {
             return id;
         }
 
+        /// <summary>
+        /// Connect and handshake with given server.
+        /// </summary>
+        /// <param name="nick">Screen name of a player. Max 16 chars.</param>
+        /// <param name="avatar">ID of chosen avatar.</param>
+        /// <returns>If client si successfuly connected.</returns>
         public bool connect(string address, int port, string nick, byte avatar)
         {
             IPAddress ip = IPAddress.Parse(address);
@@ -40,7 +54,7 @@ namespace Network
             
             statusCallback("Connected. Handshaking...");
             NetworkStream io = cli.GetStream();
-            Thread.Sleep(750);
+            Thread.Sleep(500);
             if (cli.Available > 0)
             {
                 byte[] pckt = new byte[2];
@@ -92,6 +106,9 @@ namespace Network
             return running;
         }
 
+        /// <summary>
+        /// Say goodbye to the server and disconnect.
+        /// </summary>
         public void disconnect()
         {
             running = false;
@@ -104,10 +121,14 @@ namespace Network
                 listener.Interrupt();
             }
 
-            cli.Client.Close();
-            cli.Close();
+            cli.Client.Disconnect(true);
         }
 
+        /// <summary>
+        /// This runs in a seperate thread.
+        /// Listen for incoming packets from server and run appropriate callback.
+        /// Incorrect packets are silently ignored.
+        /// </summary>
         private void listen()
         {
             int pending = 0;
@@ -120,30 +141,45 @@ namespace Network
                     NetworkStream io = cli.GetStream();
                     io.Read(packet, 0, pending);
 
-                    if (!Common.correctPacket(packet, Common.PACKET_COMMON | Common.PACKET_SRVMSG))
+                    if (!Common.correctPacket(packet, Common.PACKET_COMMON | Common.PACKET_SRVMSG | Common.PACKET_END | Common.PACKET_BEGIN))
                     {
                         statusCallback("Incorrect packet: " + packet[0] + ", " + packet[1] + ".");
                         continue;
                     }
 
-                    if (packet[0] == Common.PACKET_SRVMSG)
+                    if (packet[0] == Common.PACKET_COMMON)
+                    {
+                        listenerSem.WaitOne();
+                        updateArrived(packet.Skip(Common.PACKET_HEADER_SIZE).ToArray());
+                        listenerSem.Release();
+                    }
+                    else if (packet[0] == Common.PACKET_SRVMSG)
                     {
                         //TODO do the proper conversion w/check
                         Encoding enc = new UTF8Encoding();
                         string msg = enc.GetString(packet, Common.PACKET_HEADER_SIZE, pending - Common.PACKET_HEADER_SIZE);
                         statusCallback(msg.Trim());
                     }
-                    else if (packet[0] == Common.PACKET_COMMON)
+                    else if (packet[0] == Common.PACKET_BEGIN)
                     {
                         listenerSem.WaitOne();
-                        updateArrived(packet.Skip(Common.PACKET_HEADER_SIZE).ToArray());
+                        beginRound(packet.Skip(Common.PACKET_HEADER_SIZE).ToArray());
                         listenerSem.Release();
+                    }
+                    else if (packet[0] == Common.PACKET_END) //server shutdown or kicked out
+                    {
+                        statusCallback("Server disconnected.");
+                        running = false;
+                        cli.Client.Disconnect(true);
                     }
                 }
                 //Thread.Sleep(5); -- works fine without it :]
             }
         }
 
+        /// <summary>
+        /// Helper. Send Goodbye to server.
+        /// </summary>
         private void sayGoodbye()
         {
             byte[] goodbye = new byte[Common.PACKET_HEADER_SIZE + 1];
@@ -153,6 +189,10 @@ namespace Network
             cli.GetStream().Write(goodbye, 0, Common.PACKET_HEADER_SIZE);
         }
 
+        /// <summary>
+        /// Sends given data to the server asynchronously.
+        /// </summary>
+        /// <param name="data">Serialized data, without packet header.</param>
         protected void sendUpdate(byte[] data)
         {
             byte[] packet = new byte[data.Length + Common.PACKET_HEADER_SIZE];
@@ -164,6 +204,14 @@ namespace Network
             io.BeginWrite(packet, 0, packet.Length, new AsyncCallback(Common.asyncWrite), io);
         }
 
+        /// <summary>
+        /// Callback. When common packet arrives.
+        /// </summary>
         abstract protected void updateArrived(byte[] data);
+
+        /// <summary>
+        /// Callback. When new round begins.
+        /// </summary>
+        abstract protected void beginRound(byte[] data);
     }
 }

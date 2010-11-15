@@ -24,14 +24,21 @@ namespace Network
 
         private Thread incomingThread, defaultThread;
 
+        /// <summary>
+        /// Creates network server. Server has to be started by startServer().
+        /// </summary>
+        /// <param name="logFile">External file for server logs.</param>
         public Server(ServerAbstract listener, int port, int maxClients, String logFile)
             : this(listener, port, maxClients)
         {
             FileStream fout = new FileStream(logFile, FileMode.Create);
             StreamWriter sw = new StreamWriter(fout);
             Console.SetOut(sw);
-     }
+        }
 
+        /// <summary>
+        /// Creates server object. Server has to be started by startServer().
+        /// </summary>
         public Server(ServerAbstract listener, int port, int maxClients)
         {
             this.sl = listener;
@@ -44,6 +51,10 @@ namespace Network
             srv = new TcpListener(IPAddress.Any, port);
         }
 
+        /// <summary>
+        /// Start server.
+        /// Run threads for accepting connections (incomingWait) and common communication (defaultWait).
+        /// </summary>
         public void startServer()
         {
             if (running)
@@ -57,7 +68,7 @@ namespace Network
 
             //run incomingWait and regular handle in seperate threads
             incomingThread = new Thread(new ThreadStart(this.incomingWait));
-            defaultThread = new Thread(new ThreadStart(this.defaultHook));
+            defaultThread = new Thread(new ThreadStart(this.defaultWait));
             incomingThread.IsBackground = true;
 
             srv.Start();
@@ -72,6 +83,10 @@ namespace Network
             return running;
         }
 
+        /// <summary>
+        /// Stop server.
+        /// Disconnect all remaining clients, then kill threads.
+        /// </summary>
         public void stopServer()
         {
             if (!running)
@@ -80,16 +95,21 @@ namespace Network
             }
 
             Console.WriteLine("Stopping server...");
+
             running = false;
+
+            Console.WriteLine("Disconnecting clients...");
+            broadcast(Common.PACKET_END, new byte[] {0});
 
             //stop running threads and force connections to close
             clientsSem.WaitOne();
             foreach (TcpClient cli in clients)
             {
                 cli.Client.Close();
-                cli.Close();
             }
             clientsSem.Release();
+
+            Console.WriteLine("Killing threads...");
             Thread.Sleep(100);
             if (incomingThread.IsAlive)
             {
@@ -104,6 +124,9 @@ namespace Network
             Console.WriteLine("Stopped.");
         }
 
+        /// <summary>
+        /// This runs in a seperate thread, accepts connections (in child threads - incomingAccept).
+        /// </summary>
         private void incomingWait()
         {
             Console.WriteLine("Awaiting connections...");
@@ -118,6 +141,10 @@ namespace Network
             }
         }
 
+        /// <summary>
+        /// Child thread of incomingWait.
+        /// Accepts connection and does handshaking.
+        /// </summary>
         private void incomingAccept(IAsyncResult arg)
         {
             TcpListener server = (TcpListener)arg.AsyncState;
@@ -168,7 +195,11 @@ namespace Network
             sl.sendMessage(nick + " is ready.");
         }
 
-        private void defaultHook()
+        /// <summary>
+        /// Default communication in the incoming direction.
+        /// This runs in a seperate thread.
+        /// </summary>
+        private void defaultWait()
         {
             Console.WriteLine("Listening to clients...");
             int pending = 0;
@@ -190,6 +221,7 @@ namespace Network
                             continue;
                         }
 
+                        //client says goodbye
                         if (packet[0] == Common.PACKET_END)
                         {
                             slSem.WaitOne();
@@ -215,14 +247,18 @@ namespace Network
             }
         }
 
+        /// <summary>
+        /// Sends concurrently broadcast message.
+        /// </summary>
+        /// <param name="type">Packet type</param>
+        /// <param name="data">Content of the packet (without header)</param>
         internal void broadcast(byte type, byte[] data)
         {
             byte[] packet = new byte[data.Length + Common.PACKET_HEADER_SIZE];
             data.CopyTo(packet, Common.PACKET_HEADER_SIZE);
             packet[0] = type;
             packet[1] = Common.checksum(packet);
-            
-
+  
             clientsSem.WaitOne();
             foreach (TcpClient cli in clients)
             {

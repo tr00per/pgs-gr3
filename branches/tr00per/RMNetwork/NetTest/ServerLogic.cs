@@ -6,7 +6,7 @@ using Network;
 
 namespace NetTest
 {
-    class ServerLogic: Network.ServerAbstract
+    public class ServerLogic: Network.ServerAbstract
     {
         public Server server;
 
