@@ -20,7 +20,7 @@ namespace RzezniaMagow
     {
         public static Gracz zawodnik;
         public static GraphicsDeviceManager graphics;
-        public static ContentManager Content;
+        public static ContentManager content;
         public static Mapa map;
         SpriteBatch spriteBatch;
         ClientProtokol klient;
@@ -51,8 +51,8 @@ namespace RzezniaMagow
         {
             
             graphics = new GraphicsDeviceManager(this);
-            Content = new ContentManager(Services);
-            Content.RootDirectory = "Content";
+            content = new ContentManager(Services);
+            content.RootDirectory = "Content";
             
             klient = new ClientProtokol();
             serwer = new SerwerProtocol();
@@ -103,15 +103,15 @@ namespace RzezniaMagow
 
 
            
-            karta1 = Content.Load<Texture2D>("Angus");
-            karta2 = Content.Load<Texture2D>("Anti");
-            karta3 = Content.Load<Texture2D>("Anti");
-            karta4 = Content.Load<Texture2D>("Arena");
+            karta1 = content.Load<Texture2D>("Angus");
+            karta2 = content.Load<Texture2D>("Anti");
+            karta3 = content.Load<Texture2D>("Anti");
+            karta4 = content.Load<Texture2D>("Arena");
 
             
-            cel = Content.Load<Texture2D>("cel");
-            map.LoadContent(Content.Load<Texture2D>(@"Maps\mapa"));
-            zawodnik.LoadContent(Content.Load<Texture2D>(@"Avatar\Angels"));
+            cel = content.Load<Texture2D>("cel");
+            map.LoadContent(content.Load<Texture2D>(@"Maps\mapa"));
+            zawodnik.LoadContent(content.Load<Texture2D>(@"Avatar\Angels"));
             // TODO: use this.Content to load your game content here
         }
 
