@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System.IO;
 using System.Threading;
-using NetTest;
+
 
 
 namespace RzezniaMagow
@@ -18,7 +18,7 @@ namespace RzezniaMagow
 
 
         ServerLogic sl = new ServerLogic();
-        ClientLogic cl;
+        
 
         private KeyboardState stanKlawiatury;
         private KeyboardState poprzedniStanKlawiatury;
@@ -87,17 +87,18 @@ namespace RzezniaMagow
             if (KeyJustPressed(Keys.D2))
             {
 
-                ClientLogic cl = new ClientLogic();
-                cl.connect("127.0.0.1", 20000, "tr00per", 1);
-                Console.WriteLine("CLIENT RUNNING: " + cl.isRunning().ToString());
+                Game.client = new ClientLogic();
+                if (Game.client.connect("127.0.0.1", 20000, "tr00per", 2))
+                    Game.client.getCzyGra = true;
+                Console.WriteLine("CLIENT RUNNING: " + Game.client.isRunning().ToString());
                 Console.WriteLine("WAITING...");
 
             }
 
             if (KeyJustPressed(Keys.D3))
             {
-                cl.disconnect();
-                Console.WriteLine("CLIENT RUNNING: " + cl.isRunning().ToString());
+                Game.client.disconnect();
+                Console.WriteLine("CLIENT RUNNING: " + Game.client.isRunning().ToString());
 
 
             }

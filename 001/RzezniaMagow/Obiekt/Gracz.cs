@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace RzezniaMagow
 {
@@ -19,6 +20,8 @@ namespace RzezniaMagow
         private List<Pocisk> listaPociskow;
 
         private Bron aktualnaBron;
+
+
 
        
 
@@ -41,8 +44,9 @@ namespace RzezniaMagow
 
         }
 
-        public Gracz(String name, byte avat)
+        public Gracz(byte id, String name, byte avat): base()
         {
+            getID = id;
             pozycjaKursora = new Vector2();
             nick = name;
             typAvatara = avat;
@@ -51,8 +55,18 @@ namespace RzezniaMagow
             iloscZgonow = 0;
             listaPociskow = new List<Pocisk>();
             aktualnaBron = new Bron();
+            if (typAvatara == 1)
+                this.LoadContent(Game.content.Load<Texture2D>(@"Avatar\Angels"));
+            if (typAvatara == 2)
+                this.LoadContent(Game.content.Load<Texture2D>(@"Avatar\Angus"));
+            if (typAvatara == 3)
+                this.LoadContent(Game.content.Load<Texture2D>(@"Avatar\Anti"));
+            if (typAvatara == 4)
+                this.LoadContent(Game.content.Load<Texture2D>(@"Avatar\Arbor"));
 
         }
+
+
 
         public Gracz(Gracz kopia) : base(kopia)
         {
@@ -105,7 +119,7 @@ namespace RzezniaMagow
             get { return iloscZgonow; }
             set { iloscZgonow = value; }
         }
-
+       
 
         public short getZycie
         {
