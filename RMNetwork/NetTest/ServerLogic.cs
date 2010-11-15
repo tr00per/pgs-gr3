@@ -26,7 +26,7 @@ namespace NetTest
         {
             byte[] d = (byte[])data;
             byte id = d[0];
-
+			Console.WriteLine(id + " send something to server.");
         }
 
         override protected void playerParted(byte id)
