@@ -32,9 +32,9 @@ namespace NetTest
                 Thread.Sleep(Math.Max(c, 5));
             }
             Console.WriteLine("DONE.");
-            cl.disconnect();
-            Console.WriteLine("CLIENT RUNNING: " + cl.isRunning().ToString());
+            //cl.disconnect();
             sl.server.stopServer();
+            Console.WriteLine("CLIENT RUNNING: " + cl.isRunning().ToString());
             Console.WriteLine("SERVER RUNNING: " + sl.server.isRunning().ToString());
 
             Console.WriteLine("DONE!");
