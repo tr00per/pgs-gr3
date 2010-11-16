@@ -23,8 +23,8 @@ namespace RzezniaMagow
         public static ContentManager content;
         public static Mapa map;
         public static ClientLogic client;
-        SpriteBatch spriteBatch;
-        
+        public static SpriteBatch spriteBatch;
+        public static ScreenManager screenManager;
         Klawiatura klawiatura;
         Myszka mysz;
 
@@ -47,6 +47,7 @@ namespace RzezniaMagow
             klawiatura = new Klawiatura();
             mysz = new Myszka();
 
+            screenManager = new ScreenManager(this);
 
             map = new Mapa(0, 0);
             
@@ -69,10 +70,13 @@ namespace RzezniaMagow
 
 
             IsMouseVisible = true;
-            graphics.IsFullScreen = false;
+            graphics.IsFullScreen = true;
 
             zawodnik = new Gracz(7, "kivu", 1);
             zawodnik.getPozycja = new Vector2(0, 0);
+            
+
+           
             
         }
 
@@ -84,15 +88,23 @@ namespace RzezniaMagow
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            screenManager = new ScreenManager(this);
+
+            Components.Add(screenManager);
+
+            // Activate the first screens.
+            screenManager.AddScreen(new BackgroundScreen(), null);
+            screenManager.AddScreen(new MainMenuScreen(), null);
+            screenManager.LoadContent();
 
 
-           
-            
             karta4 = content.Load<Texture2D>("Arena");
 
             
             cel = content.Load<Texture2D>("cel");
-            map.LoadContent(content.Load<Texture2D>(@"Maps\mapa"));
+            map.LoadContent(content.Load<Texture2D>("Maps/mapa"));
+           
+
            // zawodnik.LoadContent(content.Load<Texture2D>(@"Avatar\Angels"));
             // TODO: use this.Content to load your game content here
         }
@@ -116,8 +128,8 @@ namespace RzezniaMagow
 
             //wysy³anie do logiki klienta informacji o graczu
 
-            if(client.getCzyGra && gameTime.ElapsedGameTime.Milliseconds/10==5)
-            client.sendUpdate(client.clientProtocol.createPackage(zawodnik));
+            //if(client.getCzyGra && gameTime.ElapsedGameTime.Milliseconds/10==5)
+            //client.sendUpdate(client.clientProtocol.createPackage(zawodnik));
 
             mysz.procesMyszy();
             klawiatura.procesKlawiatury();

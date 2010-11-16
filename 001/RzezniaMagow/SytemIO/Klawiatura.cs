@@ -32,7 +32,7 @@ namespace RzezniaMagow
 
         public Keys KONSOLA = Keys.Tab;
 
-        private int walkSpeed = 2;
+        private int walkSpeed = 4;
 
 
         public Klawiatura()
@@ -61,7 +61,9 @@ namespace RzezniaMagow
 
             if (KeyJustPressed(Keys.Escape))
             {
-
+                
+               // Game.screenManager.Visible = true;
+                //Game.client.getCzyGra = false;
 
             }
 
