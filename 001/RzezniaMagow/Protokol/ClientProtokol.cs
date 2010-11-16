@@ -305,12 +305,7 @@ namespace RzezniaMagow
 
                             break;
                         }
-                    //case 5:
-                    //    {
-                    //        //klient otrzymał od serwera pakiet oznaczający koniec gry
-
-                    //        break;
-                    //    }
+                   
                     case 64:
                         {
                             //klient otrzymał od serwera jakąś wiadomość, którą należy wyświetlic na ekranie/konsoli
