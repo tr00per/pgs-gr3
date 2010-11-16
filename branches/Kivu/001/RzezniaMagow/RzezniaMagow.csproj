@@ -92,6 +92,15 @@
     <Compile Include="Grafika\SpriteManager.cs" />
     <Compile Include="Logic\ClientLogic.cs" />
     <Compile Include="Logic\ServerLogic.cs" />
+    <Compile Include="Menu\BackgroundScreen.cs" />
+    <Compile Include="Menu\GameScreen.cs" />
+    <Compile Include="Menu\InputState.cs" />
+    <Compile Include="Menu\MainMenuScreen.cs" />
+    <Compile Include="Menu\MenuEntry.cs" />
+    <Compile Include="Menu\MenuScreen.cs" />
+    <Compile Include="Menu\PauseMenuScreen.cs" />
+    <Compile Include="Menu\PlayerIndexEventArgs.cs" />
+    <Compile Include="Menu\ScreenManager.cs" />
     <Compile Include="Network\Client.cs" />
     <Compile Include="Network\Common.cs" />
     <Compile Include="Network\Server.cs" />
