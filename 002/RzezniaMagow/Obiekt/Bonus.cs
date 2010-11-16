@@ -11,8 +11,12 @@ namespace RzezniaMagow
         public enum typBonusu { apteczka, bron };
 
         private typBonusu typBon;
-        
 
+        public RzezniaMagow.Bonus.typBonusu TypBon
+        {
+            get { return typBon; }
+            set { typBon = value; }
+        }
         
 
 
