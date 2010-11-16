@@ -136,18 +136,7 @@ namespace RzezniaMagow
 
                 switch (typ)
                 {
-                    //case 0:
-                    //    {
-                    //        //otrzymano potwierdzenie od serwera,
-
-                    //        break;
-                    //    }
-                    //case 1:
-                    //    {
-                    //        // otrzymano negatywną odpowiedź od serwera, należy wysłac pakiet ponownie
-
-                    //        break;
-                    //    }
+                 
                     case 2:
                         {
                             //wiadomość od serwera z ID przypisanym do gracza
