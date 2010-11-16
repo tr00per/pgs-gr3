@@ -139,34 +139,14 @@ namespace RzezniaMagow
 
                     //        break;
                     //    }
-                    //case 1:
-                    //    {
-                    //        // otrzymano negatywną odpowiedź od serwera, należy wysłac pakiet ponownie
-
-                    //        break;
-                    //    }
-                    case 2:
-                        {
-                            //wiadomość od serwera z ID przypisanym do gracza
-
-
-
-                            //pobranie ID_gracza
-                            byte id_gracza = tresc[2];
-
-                            // w odpowiedz serwer powienien wysłać potwierdzenie odbioru pakietu
-                            // a nastepnie wysłać pakiet z przypisanym ID gracza
-                            // i otrzymać kolejne potwierdzenie od klienta
-
-
-                            break;
-                        }
+                    
                     case 8:
                         {
                             // klient otrzymuje od serwera informację o wszystkich graczach biorących udział w grze
                             // na początku każdej rundy
                             // po otrzymaniu pakietu klient odsyła potwierdzenie
-                            offset = 2;
+
+                            offset = 0;
 
                             byte iloscGraczy = tresc[offset];
                             offset++;
@@ -215,7 +195,7 @@ namespace RzezniaMagow
                         {
                             //klient otrzymuję od serwera informację w czasie trwania rozgrywki
 
-                            offset = 2;
+                            offset = 0;
 
                             byte iloscGraczy = tresc[offset];
                             offset++;
@@ -264,7 +244,7 @@ namespace RzezniaMagow
 
                             if (iloscGraczy != Game.client.listaGraczy.Count)
                             {
-                                for (int i = 0; i < Game.client.listaGraczy.Count; i++)
+                                for (int i = Game.client.listaGraczy.Count; i > 0; i--)
                                 {
                                     bool flagaUsuniecia = true;
                                     for (int j = 0; j < listaIDgraczy.Length; j++)
@@ -309,7 +289,7 @@ namespace RzezniaMagow
                                 }
                                 if (iloscPocisków != Game.client.listaPociskow.Count)
                                 {
-                                    for (int i = 0; i < Game.client.listaPociskow.Count; i++)
+                                    for (int i = Game.client.listaPociskow.Count; i > 0; i--)
                                     {
                                         bool flagaUsuniecia = true;
                                         for (int j = 0; j < listaIDPociskow.Length; j++)
@@ -335,18 +315,15 @@ namespace RzezniaMagow
                         {
                             //klient otrzymał od serwera jakąś wiadomość, którą należy wyświetlic na ekranie/konsoli
 
-                            offset = 2;
+                            offset = 0;
 
-                            String s = Encoding.ASCII.GetString(tresc, offset, tresc.Length - 2);
+                            String s = Encoding.ASCII.GetString(tresc, offset, tresc.Length);
 
                             break;
                         }
                     default: break;
                 }
             }
-           
-
-        
 
         public byte[] createPackage(Gracz gracz)
         {

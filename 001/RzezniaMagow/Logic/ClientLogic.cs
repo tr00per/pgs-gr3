@@ -38,7 +38,7 @@ namespace RzezniaMagow
         protected override void beginRound(byte[] data)
         {
             //tutaj cuda wianki o tym co sie dzieje przed poczatkiem rundy
-
+            listaGraczy = new List<Gracz>();
             clientProtocol.unpack(data, 8);
 
         }

@@ -85,7 +85,9 @@ namespace RzezniaMagow
             if (Common.correctPacket(packet, Common.PACKET_HANDSHAKE))
             {
                 id = packet[Common.PACKET_HEADER_SIZE];
-                Game.zawodnik = new Gracz(8, nick, avatar);
+                Game.zawodnik = new Gracz(id, nick, avatar);
+                Game.zawodnik.getPozycja = new Microsoft.Xna.Framework.Vector2(500, 500);
+                Game.kamera.getPozycja = Game.zawodnik.getPozycja;
                
             }
             else
@@ -139,6 +141,7 @@ namespace RzezniaMagow
 
             while (running)
             {
+                
                 if (cli.Connected && (pending = cli.Available) > 0)
                 {
                     byte[] packet = new byte[pending];
