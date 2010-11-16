@@ -70,13 +70,8 @@ namespace RzezniaMagow
 
 
             IsMouseVisible = true;
+ 
             graphics.IsFullScreen = true;
-
-            zawodnik = new Gracz(7, "kivu", 1);
-            zawodnik.getPozycja = new Vector2(0, 0);
-            
-
-           
             
         }
 
@@ -128,11 +123,13 @@ namespace RzezniaMagow
 
             //wysy³anie do logiki klienta informacji o graczu
 
-            //if(client.getCzyGra && gameTime.ElapsedGameTime.Milliseconds/10==5)
-            //client.sendUpdate(client.clientProtocol.createPackage(zawodnik));
+            if (client.getCzyGra && gameTime.ElapsedGameTime.Milliseconds % 10 == 5)
+                client.sendUpdate(client.clientProtocol.createPackage(zawodnik));
 
             mysz.procesMyszy();
             klawiatura.procesKlawiatury();
+
+            
 
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
@@ -160,8 +157,8 @@ namespace RzezniaMagow
                 map.Draw(gameTime, spriteBatch);
                
 
-                
-                //spriteBatch.Draw(karta4, new Vector2(500, 0), Color.White);
+              
+
 
                 spriteBatch.Draw(zawodnik.getTekstura, zawodnik.getPozycja, Color.White);
                 spriteBatch.Draw(cel, zawodnik.getPozycjaKursora, Color.White);

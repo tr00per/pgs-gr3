@@ -32,32 +32,33 @@ namespace RzezniaMagow
             
 
                     MouseState currentMouseState = Mouse.GetState();
-
-           
-            if(currentMouseState.LeftButton != originalMouseState.LeftButton)
-                if (currentMouseState.LeftButton == ButtonState.Pressed)
+                    if (Game.client.getCzyGra)
                     {
-                        System.Console.WriteLine("strzal z myszki");
-                        Game.zawodnik.getPozycjaKursora = new Vector2(currentMouseState.X + Game.kamera.getPozycja.X - Game.graphics.PreferredBackBufferWidth / 2, currentMouseState.Y + Game.kamera.getPozycja.Y - Game.graphics.PreferredBackBufferHeight / 2);
-                       
-                        Game.zawodnik.getListaPociskow.Add(new Pocisk(Game.zawodnik.getPozycja.X, Game.zawodnik.getPozycja.Y,(byte)Game.zawodnik.getListaPociskow.Count,
-                                                                        Game.zawodnik.getAktualnaBron.getTypBroni,Game.zawodnik.getID));
-                    }
+
+                        if (currentMouseState.LeftButton != originalMouseState.LeftButton)
+                            if (currentMouseState.LeftButton == ButtonState.Pressed)
+                            {
+                                System.Console.WriteLine("strzal z myszki");
+                                Game.zawodnik.getPozycjaKursora = new Vector2(currentMouseState.X + Game.kamera.getPozycja.X - Game.graphics.PreferredBackBufferWidth / 2, currentMouseState.Y + Game.kamera.getPozycja.Y - Game.graphics.PreferredBackBufferHeight / 2);
+
+                                Game.zawodnik.getListaPociskow.Add(new Pocisk(Game.zawodnik.getPozycja.X, Game.zawodnik.getPozycja.Y, (byte)Game.zawodnik.getListaPociskow.Count,
+                                                                                Game.zawodnik.getAktualnaBron.getTypBroni, Game.zawodnik.getID));
+                            }
 
 
-                    if (currentMouseState.X != originalMouseState.X)
-                    {
-                        //if (currentMouseState.X > 0 && currentMouseState.X < 800 && currentMouseState.Y > 0 && currentMouseState.Y < 600)
+                        if (currentMouseState.X != originalMouseState.X)
+                        {
+                            //if (currentMouseState.X > 0 && currentMouseState.X < 800 && currentMouseState.Y > 0 && currentMouseState.Y < 600)
 
-                        // Game.zawodnik.getPozycjaKursora = new Vector2(currentMouseState.X + Game.kamera.getPozycja.X - Game.graphics.PreferredBackBufferWidth / 2, currentMouseState.Y + Game.kamera.getPozycja.Y - Game.graphics.PreferredBackBufferHeight / 2);
-                        //System.Console.WriteLine(currentMouseState.X+"    "+ currentMouseState.Y); 
-                        
-                    }
+                            // Game.zawodnik.getPozycjaKursora = new Vector2(currentMouseState.X + Game.kamera.getPozycja.X - Game.graphics.PreferredBackBufferWidth / 2, currentMouseState.Y + Game.kamera.getPozycja.Y - Game.graphics.PreferredBackBufferHeight / 2);
+                            //System.Console.WriteLine(currentMouseState.X+"    "+ currentMouseState.Y); 
 
-                
-                   
-                    this.originalMouseState = Mouse.GetState();
-                   
+                        }
+
+
+
+                        this.originalMouseState = Mouse.GetState();
+                    }  
                 
             
         }

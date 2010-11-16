@@ -9,6 +9,13 @@ namespace RzezniaMagow
 {
     public class Mapa : Obiekt
     {
+
+        List<Bonus> listaBonusow;
+        List<Obiekt> listaPrzeszkod;
+
+
+
+
         public Mapa(float x, float y): base(x, y)
         {      
             

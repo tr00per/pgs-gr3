@@ -101,6 +101,19 @@ namespace RzezniaMagow
 
             sl.server.startServer();
             Console.WriteLine("SERVER RUNNING: " + sl.server.isRunning().ToString());
+
+            Game.client = new ClientLogic();
+            if (Game.client.connect("127.0.0.1", 20000, "tr00per", 1))
+                Game.client.getCzyGra = true;
+            Console.WriteLine("CLIENT RUNNING: " + Game.client.isRunning().ToString());
+            Console.WriteLine("WAITING...");
+
+            Game.client.getCzyGra = true;
+            Game.screenManager.Visible = false;
+            Game.screenManager.RemoveScreen(this);
+
+            for (int i = 0; i < ScreenManager.GetScreens().Count; i++)
+                Game.screenManager.RemoveScreen(ScreenManager.GetScreens().ElementAt(i));
            // ScreenManager.AddScreen(new PauseMenuScreen(), e.PlayerIndex);
         }
 
