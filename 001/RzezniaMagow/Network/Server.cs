@@ -7,18 +7,18 @@ using System.IO;
 using System.Threading;
 using System.Net;
 
-namespace RzezniaMagow
+namespace Network
 {
     public class Server
     {
         private bool running = false;
         private int maxClients;
-		
+
         private TcpListener srv;
 
         private List<TcpClient> clients;
         private Semaphore clientsSem;
-        
+
         private ServerAbstract sl;
         private Semaphore slSem;
 
@@ -74,6 +74,7 @@ namespace RzezniaMagow
             srv.Start();
             incomingThread.Start();
             defaultThread.Start();
+            sl.serverStarted();
 
             Console.WriteLine("Started.");
         }
@@ -95,11 +96,12 @@ namespace RzezniaMagow
             }
 
             Console.WriteLine("Stopping server...");
+            sl.serverStopped();
 
             running = false;
 
             Console.WriteLine("Disconnecting clients...");
-            broadcast(Common.PACKET_END, new byte[] {0});
+            broadcast(Common.PACKET_END, new byte[] { 0 });
 
             //stop running threads and force connections to close
             clientsSem.WaitOne();
@@ -155,7 +157,7 @@ namespace RzezniaMagow
             NetworkStream io = cli.GetStream();
             if (clients.Count >= maxClients)
             {
-                byte[] buf = {Common.PACKET_FAIL, 0}; //refuse to connect client due to client limit
+                byte[] buf = { Common.PACKET_FAIL, 0 }; //refuse to connect client due to client limit
                 io.Write(buf, 0, Common.PACKET_HEADER_SIZE);
                 io.Close();
                 cli.Client.Close();
@@ -173,7 +175,7 @@ namespace RzezniaMagow
 
             //TODO do the proper conversion w/check
             Encoding enc = new UTF8Encoding();
-            String nick = enc.GetString(bufin, Common.PACKET_HEADER_SIZE, 16).Trim(new char[] {' ', '\0'});
+            String nick = enc.GetString(bufin, Common.PACKET_HEADER_SIZE, 16).Trim(new char[] { ' ', '\0' });
             byte avatar = bufin[18];
             Console.WriteLine(IP + " -> " + nick);
 
@@ -224,7 +226,7 @@ namespace RzezniaMagow
                         //client says goodbye
                         if (packet[0] == Common.PACKET_END)
                         {
-                            slSem.WaitOne();
+                            slSem.WaitOne(); //this has to be linear
                             if (packet.Length > Common.PACKET_HEADER_SIZE)
                             {
                                 sl.playerParted(packet[Common.PACKET_HEADER_SIZE]);
@@ -258,7 +260,7 @@ namespace RzezniaMagow
             data.CopyTo(packet, Common.PACKET_HEADER_SIZE);
             packet[0] = type;
             packet[1] = Common.checksum(packet);
-  
+
             clientsSem.WaitOne();
             foreach (TcpClient cli in clients)
             {
