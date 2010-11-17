@@ -190,7 +190,7 @@ namespace RzezniaMagow
                         {
                             //klient otrzymuję od serwera informację w czasie trwania rozgrywki
 
-                            offset = 0;
+                            offset = 2;
 
                             byte iloscGraczy = tresc[offset];
                             offset++;
@@ -237,24 +237,24 @@ namespace RzezniaMagow
                                 }
                             }
 
-                            if (iloscGraczy != Game.client.listaGraczy.Count)
-                            {
-                                for (int i = Game.client.listaGraczy.Count; i > 0; i--)
-                                {
-                                    bool flagaUsuniecia = true;
-                                    for (int j = 0; j < listaIDgraczy.Length; j++)
-                                    {
-                                        if(Game.client.listaGraczy.ElementAt(i).getID == listaIDgraczy[j])
-                                        flagaUsuniecia = false;
-                                    }
-                                    if (flagaUsuniecia)
-                                        Game.client.listaGraczy.RemoveAt(i);
-                                }
-                            }
+                            //if (iloscGraczy != Game.client.listaGraczy.Count)
+                            //{
+                            //    for (int i = Game.client.listaGraczy.Count; i > 0; i--)
+                            //    {
+                            //        bool flagaUsuniecia = true;
+                            //        for (int j = 0; j < listaIDgraczy.Length; j++)
+                            //        {
+                            //            if(Game.client.listaGraczy.ElementAt(i).getID == listaIDgraczy[j])
+                            //            flagaUsuniecia = false;
+                            //        }
+                            //        if (flagaUsuniecia)
+                            //            Game.client.listaGraczy.RemoveAt(i);
+                            //    }
+                            //}
 
 
                             //pobranie informacje o pociskach aktulanie znajdujących się na mapie
-                            short iloscPocisków = BitConverter.ToInt16(tresc, offset);
+                            byte iloscPocisków = tresc[offset];
                             offset++;
 
                             if (iloscPocisków > 0)

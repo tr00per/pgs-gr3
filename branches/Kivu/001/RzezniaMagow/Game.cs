@@ -23,12 +23,19 @@ namespace RzezniaMagow
         public static ContentManager content;
         public static Mapa map;
         public static ClientLogic client;
+        public static ServerLogic serwer;
         public static SpriteBatch spriteBatch;
         public static ScreenManager screenManager;
+        public static Kamera2d kamera;
+
+
         Klawiatura klawiatura;
         Myszka mysz;
 
-        public static Kamera2d kamera;
+        public static bool czySerwer;
+        public static bool czyNowaRunda;
+
+
        
 
         Texture2D karta4;
@@ -52,7 +59,8 @@ namespace RzezniaMagow
             map = new Mapa(0, 0);
             
             kamera = new Kamera2d();
-            
+            czySerwer = false;
+            czyNowaRunda = true;
 
         }
 
@@ -123,7 +131,15 @@ namespace RzezniaMagow
 
             //wysy³anie do logiki klienta informacji o graczu
 
-            if (client.getCzyGra && gameTime.ElapsedGameTime.Milliseconds % 10 == 5)
+            //if(czySerwer)
+            //    serwer.sendUpdate(16,serwer
+            //if (czyNowaRunda)
+            //{
+            //    czyNowaRunda = false;
+            //}
+
+
+            if (client.getCzyGra  && gameTime.ElapsedRealTime.Milliseconds%10 ==5 )
                 client.sendUpdate(client.clientProtocol.createPackage(zawodnik));
 
             mysz.procesMyszy();
@@ -155,12 +171,15 @@ namespace RzezniaMagow
            if (client.getCzyGra)
            {
                 map.Draw(gameTime, spriteBatch);
-               
-
-              
 
 
-                spriteBatch.Draw(zawodnik.getTekstura, zawodnik.getPozycja, Color.White);
+                for (int i = 0; i < client.listaGraczy.Count; i++)
+                {
+                    spriteBatch.Draw(client.listaGraczy.ElementAt(i).getTekstura, client.listaGraczy.ElementAt(i).getPozycja, Color.White);
+                    czyNowaRunda = false;
+                }
+
+               // spriteBatch.Draw(zawodnik.getTekstura, zawodnik.getPozycja, Color.White);
                 spriteBatch.Draw(cel, zawodnik.getPozycjaKursora, Color.White);
 
                 
@@ -172,5 +191,10 @@ namespace RzezniaMagow
 
             base.Draw(gameTime);
         }
+
+
+
+
+        
     }
 }

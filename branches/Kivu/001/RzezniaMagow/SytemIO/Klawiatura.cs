@@ -17,7 +17,7 @@ namespace RzezniaMagow
     {
 
 
-        ServerLogic sl = new ServerLogic();
+        
         
 
         private KeyboardState stanKlawiatury;
@@ -69,20 +69,20 @@ namespace RzezniaMagow
 
             if (KeyJustPressed(Keys.D1))
             {
-                sl.server.startServer();
-                Console.WriteLine("SERVER RUNNING: " + sl.server.isRunning().ToString());
-                Console.WriteLine("SENDING MSG...");
-                sl.spam();
-                Console.WriteLine("DONE.");
-                Console.WriteLine("SENDING MSG...");
-                sl.spam();
-                Console.WriteLine("DONE.");
-                Console.WriteLine("DOING RADNOM STUFF...");
-                for (int i = 0; i < 100; ++i)
-                {
-                    int c = i * 2 / 4;
-                    Thread.Sleep(Math.Max(c, 5));
-                }
+                //sl.server.startServer();
+                //Console.WriteLine("SERVER RUNNING: " + sl.server.isRunning().ToString());
+                //Console.WriteLine("SENDING MSG...");
+                //sl.spam();
+                //Console.WriteLine("DONE.");
+                //Console.WriteLine("SENDING MSG...");
+                //sl.spam();
+                //Console.WriteLine("DONE.");
+                //Console.WriteLine("DOING RADNOM STUFF...");
+                //for (int i = 0; i < 100; ++i)
+                //{
+                //    int c = i * 2 / 4;
+                //    Thread.Sleep(Math.Max(c, 5));
+                //}
                 
             }
 
@@ -107,11 +107,11 @@ namespace RzezniaMagow
 
             if (KeyJustPressed(Keys.D4))
             {
-                Console.WriteLine("DONE.");
-                sl.server.stopServer();
-                Console.WriteLine("SERVER RUNNING: " + sl.server.isRunning().ToString());
+                //Console.WriteLine("DONE.");
+                //sl.server.stopServer();
+                //Console.WriteLine("SERVER RUNNING: " + sl.server.isRunning().ToString());
 
-                Console.WriteLine("DONE!");
+                //Console.WriteLine("DONE!");
 
             }
             if (Game.client.getCzyGra)

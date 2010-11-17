@@ -86,7 +86,7 @@ namespace RzezniaMagow
             {
                 id = packet[Common.PACKET_HEADER_SIZE];
                 Game.zawodnik = new Gracz(id, nick, avatar);
-                Game.zawodnik.getPozycja = new Microsoft.Xna.Framework.Vector2(500, 500);
+                Game.zawodnik.getPozycja = new Microsoft.Xna.Framework.Vector2(128, 128);
                 Game.kamera.getPozycja = Game.zawodnik.getPozycja;
                
             }
@@ -170,7 +170,7 @@ namespace RzezniaMagow
                     else if (packet[0] == Common.PACKET_BEGIN)
                     {
                         listenerSem.WaitOne();
-                        beginRound(packet.Skip(Common.PACKET_HEADER_SIZE).ToArray());
+                        beginRound(packet.Skip(Common.PACKET_HEADER_SIZE+2).ToArray());
                         listenerSem.Release();
                     }
                     else if (packet[0] == Common.PACKET_END) //server shutdown or kicked out
