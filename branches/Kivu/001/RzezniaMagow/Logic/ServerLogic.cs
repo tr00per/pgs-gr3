@@ -29,7 +29,7 @@ namespace RzezniaMagow
             prot = new SerwerProtocol();
             server = new Server(this, 20000, 5);
             bindServer(server);
-            updateTimer = new System.Timers.Timer(30);
+            updateTimer = new System.Timers.Timer(20);
             updateTimer.Elapsed += new ElapsedEventHandler(updateTimerCB);
             players = new List<Gracz>();
             bullets = new List<Pocisk>();
@@ -77,7 +77,22 @@ namespace RzezniaMagow
         public override void playerHandle(object data)
         {
             byte[] d = (byte[])data;
-            prot.unpack(d, Common.PACKET_COMMON);
+            Gracz gracz = new Gracz();
+
+            
+            gracz = prot.unpack(d);
+
+            for (int i = 0; i < players.Count; i++)
+            {
+                if (players.ElementAt(i).getID == gracz.getID)
+                    players.ElementAt(i).getPozycja = gracz.getPozycja;
+            }
+            for (int i = 0; i < gracz.getListaPociskow.Count; i++)
+            {
+                bullets.Add(gracz.getListaPociskow.ElementAt(i));
+            }
+
+
             ///Console.WriteLine(id + " send something to server.");
         }
 
