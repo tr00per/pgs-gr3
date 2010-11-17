@@ -133,12 +133,7 @@ namespace RzezniaMagow
         {
                 switch (typ)
                 {
-                    //case 0:
-                    //    {
-                    //        //otrzymano potwierdzenie od serwera,
-
-                    //        break;
-                    //    }
+                   
                     
                     case 8:
                         {

@@ -32,7 +32,7 @@ namespace RzezniaMagow
 
         public Keys KONSOLA = Keys.Tab;
 
-        private int walkSpeed = 4;
+        private int walkSpeed = 2;
 
 
         public Klawiatura()
