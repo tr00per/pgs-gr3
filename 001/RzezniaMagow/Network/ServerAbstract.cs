@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Network
+namespace RzezniaMagow
 {
     abstract public class ServerAbstract
     {

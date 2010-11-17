@@ -7,7 +7,7 @@ using System.IO;
 using System.Threading;
 using System.Net;
 
-namespace Network
+namespace RzezniaMagow
 {
     public class Server
     {
@@ -49,6 +49,7 @@ namespace Network
 
             clients = new List<TcpClient>();
             srv = new TcpListener(IPAddress.Any, port);
+            
         }
 
         /// <summary>
@@ -246,6 +247,9 @@ namespace Network
                 }
                 clientsSem.Release();
                 //Thread.Sleep(5); -- works fine without it :]
+
+
+              
             }
         }
 

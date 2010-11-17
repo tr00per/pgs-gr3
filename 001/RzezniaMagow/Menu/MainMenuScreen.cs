@@ -29,7 +29,7 @@ namespace RzezniaMagow
         #region Initialization
 
         
-        ServerLogic sl = new ServerLogic();
+       
        
 
         /// <summary>
@@ -98,9 +98,10 @@ namespace RzezniaMagow
         /// </summary>
         void OptionsMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-
-            sl.server.startServer();
-            Console.WriteLine("SERVER RUNNING: " + sl.server.isRunning().ToString());
+            Game.serwer = new ServerLogic();
+            Game.serwer.serverStarted();
+            Game.czySerwer =  true;
+            //Console.WriteLine("SERVER RUNNING: " + Game.serwer..ToString());
 
             Game.client = new ClientLogic();
             if (Game.client.connect("127.0.0.1", 20000, "tr00per", 1))
@@ -108,7 +109,7 @@ namespace RzezniaMagow
             Console.WriteLine("CLIENT RUNNING: " + Game.client.isRunning().ToString());
             Console.WriteLine("WAITING...");
 
-            Game.client.getCzyGra = true;
+          
             Game.screenManager.Visible = false;
             Game.screenManager.RemoveScreen(this);
 

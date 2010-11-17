@@ -212,11 +212,11 @@ namespace RzezniaMagow
         }
 
 
-        public void unpack(byte[] tresc)
+        public void unpack(byte[] tresc, byte typ)
         {
-            calculateCheckSum(tresc);
+            //calculateCheckSum(tresc);
 
-            byte typ = tresc[0];
+           
 
             switch (typ)
             {
@@ -261,21 +261,21 @@ namespace RzezniaMagow
                         //serwer otrzymuję od klienta informację w czasie trwania rozgrywki
 
                         //pobranie ID gracza
-                        byte id_gracza = tresc[0];
+                        byte id_gracza = tresc[2];
 
                         //pobranie pozycji x i y gracza
-                        Vector2 pozycja_gracza = new Vector2(BitConverter.ToSingle(tresc, 1), BitConverter.ToSingle(tresc, 5));
+                        Vector2 pozycja_gracza = new Vector2(BitConverter.ToSingle(tresc, 3), BitConverter.ToSingle(tresc, 7));
 
                         //pobranie pozycji x i y kursora gracza
-                        Vector2 pozycja_kursora = new Vector2(BitConverter.ToSingle(tresc, 9), BitConverter.ToSingle(tresc, 13));
+                        Vector2 pozycja_kursora = new Vector2(BitConverter.ToSingle(tresc, 11), BitConverter.ToSingle(tresc, 15));
 
                         
 
                         //pobranie ilości pocisków
-                        byte ilośćPocisków = tresc[17];
+                        byte ilośćPocisków = tresc[19];
 
                         //pobranie typu pocisków
-                        byte typPocisku = tresc[18];
+                        byte typPocisku = tresc[21];
 
                         break;
                     }
@@ -359,7 +359,12 @@ namespace RzezniaMagow
                             addPlayerID(listGracz.ElementAt(i).getID);
                             addPlayerNick(listGracz.ElementAt(i).getNick);
                             addPlayerAvatar(listGracz.ElementAt(i).getTypAvatara);
-                            addPlayerPosition(listGracz.ElementAt(i).getPozycja.X, listGracz.ElementAt(i).getPozycja.Y);
+                            //addPlayerPosition(listGracz.ElementAt(i).getPozycja.X, listGracz.ElementAt(i).getPozycja.Y);
+                            Random los= new Random();
+                            float poz1 = (float)los.NextDouble()*200;
+                            float poz2 = (float)los.NextDouble()*200;
+                            addPlayerPosition(poz1, poz2);
+                            
                             addPlayerPoints(listGracz.ElementAt(i).getPunkty);
                             addPlayerDeadNumber(listGracz.ElementAt(i).getIloscZgonow);
                         }
@@ -368,7 +373,7 @@ namespace RzezniaMagow
 
                        // addCheckSum(calculateCheckSum(tablica));
                         return tablica;
-                        break;
+                        
                     }
                 case 16:
                     {
@@ -399,7 +404,7 @@ namespace RzezniaMagow
                         }
                        // addCheckSum(calculateCheckSum(tablica));
                         return tablica;
-                        break;
+                       
                     }
                 //case 5:
                 //    {
@@ -408,8 +413,8 @@ namespace RzezniaMagow
                 //        addCheckSum(5);
                 //        break;
                 //    }
-                
-                default: break;
+
+                default: return null;
             }
         }
         /// <summary>
@@ -419,10 +424,10 @@ namespace RzezniaMagow
         public void createPackage(String wiadomosc)
         {
             tablica = new byte[4 + wiadomosc.Length];
-            addProtocolType(6);
+           // addProtocolType(6);
             addSerwerInformation(wiadomosc);
 
-            addCheckSum(calculateCheckSum(tablica));
+            //addCheckSum(calculateCheckSum(tablica));
 
         }
 

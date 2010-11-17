@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace RzezniaMagow
 {
@@ -55,6 +56,28 @@ namespace RzezniaMagow
             iloscZgonow = 0;
             listaPociskow = new List<Pocisk>();
             aktualnaBron = new Bron();
+
+        }
+        public Gracz(byte id,String name, byte avat )
+        {
+            pozycjaKursora = new Vector2();
+            nick = name;
+            typAvatara = avat;
+            punkty = 0;
+            zycie = 100;
+            iloscZgonow = 0;
+            listaPociskow = new List<Pocisk>();
+            aktualnaBron = new Bron();
+            getID = id;
+            if (typAvatara == 1)
+                this.LoadContent(Game.content.Load<Texture2D>(@"Avatar\Angels"));
+            if (typAvatara == 2)
+                this.LoadContent(Game.content.Load<Texture2D>(@"Avatar\Angus"));
+            if (typAvatara == 3)
+                this.LoadContent(Game.content.Load<Texture2D>(@"Avatar\Anti"));
+            if (typAvatara == 4)
+                this.LoadContent(Game.content.Load<Texture2D>(@"Avatar\Arbor"));
+
 
         }
 
