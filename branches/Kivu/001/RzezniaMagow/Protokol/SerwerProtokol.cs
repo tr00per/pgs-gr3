@@ -232,66 +232,66 @@ namespace RzezniaMagow
 
                         break;
                     }
-                case 2:
-                    {
-                        //wiadomość od klienta, który własnie się dołączył
+                //case 2:
+                //    {
+                //        //wiadomość od klienta, który własnie się dołączył
 
-                        //pobranie nazwy nowego gracza
-                        String nick = Encoding.ASCII.GetString(tresc, 2, nickLenght);
+                //        //pobranie nazwy nowego gracza
+                //        String nick = Encoding.ASCII.GetString(tresc, 2, nickLenght);
 
-                        //pobranie numeru avatara jaki wybral gracz
-                        byte typAvatara = tresc[18];
+                //        //pobranie numeru avatara jaki wybral gracz
+                //        byte typAvatara = tresc[18];
 
-                        // w odpowiedz serwer powienien wysłać potwierdzenie odbioru pakietu
-                        // a nastepnie wysłać pakiet z przypisanym ID gracza
-                        // i otrzymać kolejne potwierdzenie od klienta
+                //        // w odpowiedz serwer powienien wysłać potwierdzenie odbioru pakietu
+                //        // a nastepnie wysłać pakiet z przypisanym ID gracza
+                //        // i otrzymać kolejne potwierdzenie od klienta
 
 
-                        break;
-                    }
-                case 3:
-                    {
-                        //serwer nie powinien otrzymywać  od klienta pakietów typu 3
-                        //w takim wypadku należy albo zignorować pakiet albo zignorować pakiet :D
+                //        break;
+                //    }
+                //case 3:
+                //    {
+                //        //serwer nie powinien otrzymywać  od klienta pakietów typu 3
+                //        //w takim wypadku należy albo zignorować pakiet albo zignorować pakiet :D
 
-                        break;
-                    }
-                case 4:
+                //        break;
+                //    }
+                case 16:
                     {
                         //serwer otrzymuję od klienta informację w czasie trwania rozgrywki
 
                         //pobranie ID gracza
-                        byte id_gracza = tresc[2];
+                        byte id_gracza = tresc[0];
 
                         //pobranie pozycji x i y gracza
-                        Vector2 pozycja_gracza = new Vector2(BitConverter.ToSingle(tresc, 3), BitConverter.ToSingle(tresc, 7));
+                        Vector2 pozycja_gracza = new Vector2(BitConverter.ToSingle(tresc, 1), BitConverter.ToSingle(tresc, 5));
 
                         //pobranie pozycji x i y kursora gracza
-                        Vector2 pozycja_kursora = new Vector2(BitConverter.ToSingle(tresc, 11), BitConverter.ToSingle(tresc, 15));
+                        Vector2 pozycja_kursora = new Vector2(BitConverter.ToSingle(tresc, 9), BitConverter.ToSingle(tresc, 13));
 
                         
 
                         //pobranie ilości pocisków
-                        byte ilośćPocisków = tresc[19];
+                        byte ilośćPocisków = tresc[17];
 
                         //pobranie typu pocisków
-                        byte typPocisku = tresc[20];
+                        byte typPocisku = tresc[18];
 
                         break;
                     }
-                case 5:
-                    {
-                        //serwer otrzymał od klienta informację o rezygnacji z gry więc powinien go usunąć
+                //case 5:
+                //    {
+                //        //serwer otrzymał od klienta informację o rezygnacji z gry więc powinien go usunąć
 
-                        break;
-                    }
-                case 6:
-                    {
-                        //serwer nie powinien otrzymywać  od klienta pakietów typu 6
-                        //w takim wypadku należy albo zignorować pakiet albo zignorować pakiet :D
+                //        break;
+                //    }
+                //case 6:
+                //    {
+                //        //serwer nie powinien otrzymywać  od klienta pakietów typu 6
+                //        //w takim wypadku należy albo zignorować pakiet albo zignorować pakiet :D
 
-                        break;
-                    }
+                //        break;
+                //    }
                 default: break;
             }
 
@@ -302,29 +302,29 @@ namespace RzezniaMagow
         /// Funkcja tworzaca pakiety typu 0-1, czyli potwierdzenia odbioru innych pakietow
         /// </summary>
         /// <param name="type">typ pakietu</param>
-        public void createPackage(byte typ)
-        {
-            switch (typ)
-            {
+        //public void createPackage(byte typ)
+        //{
+        //    switch (typ)
+        //    {
 
-                case 0:
-                    {
-                        tablica = new byte[2];
-                        addProtocolType(typ);
-                        addCheckSum(0);
-                        break;
-                    }
-                case 1:
-                    {
-                        tablica = new byte[2];
-                        addProtocolType(typ);
-                        addCheckSum(1);
-                        break;
-                    }
-                default: break;
-            }
+        //        case 0:
+        //            {
+        //                tablica = new byte[2];
+        //                addProtocolType(typ);
+        //                addCheckSum(0);
+        //                break;
+        //            }
+        //        case 1:
+        //            {
+        //                tablica = new byte[2];
+        //                addProtocolType(typ);
+        //                addCheckSum(1);
+        //                break;
+        //            }
+        //        default: break;
+        //    }
 
-        }
+        //}
         /// <summary>
         /// Funkcja tworzy pakiety typu 2-5 
         /// </summary>
@@ -332,25 +332,26 @@ namespace RzezniaMagow
         /// <param name="listPocisk">lista pociskow znajdujacych sie na mapie</param>
         /// <param name="typ">typ pakietu</param>
         /// <param name="nrRundy">aktulany numer rundy</param>
-        public void createPackage(List<Gracz> listGracz, List<Pocisk> listPocisk, byte typ, byte nrRundy)
+        public byte[] createPackage(List<Gracz> listGracz, List<Pocisk> listPocisk, byte typ, byte nrRundy)
         {
 
             switch (typ)
             {
                 
-                case 2:
-                    {
-                        tablica = new byte[4];
-                        addProtocolType(typ);
-                        addPlayerID(listGracz.Last().getID);
-                        addCheckSum(calculateCheckSum(tablica));
-                        break;
-                    }
-                case 3:
+                //case 2:
+                //    {
+                //        tablica = new byte[4];
+                //        addProtocolType(typ);
+                //        addPlayerID(listGracz.Last().getID);
+                //        addCheckSum(calculateCheckSum(tablica));
+                //        break;
+                //    }
+                case 8:
                     {
 
                         tablica = new byte[5+30*listGracz.Count];
-                        addProtocolType(typ);
+                        //addProtocolType(typ);
+                        offset = 2;
                         addNumberOfPlayers((byte)listGracz.Count);
 
                         for (int i = 0; i < listGracz.Count; i++)
@@ -365,14 +366,16 @@ namespace RzezniaMagow
 
                         addRoundNumber(nrRundy);
 
-                        addCheckSum(calculateCheckSum(tablica));
-
+                       // addCheckSum(calculateCheckSum(tablica));
+                        return tablica;
                         break;
                     }
-                case 4:
+                case 16:
                     {
                         tablica = new byte[6 + 21 * listGracz.Count + 11*listPocisk.Count];
-                        addProtocolType(typ);
+
+                        offset = 2;
+
                         addNumberOfPlayers((byte)listGracz.Count);
 
                         for (int i = 0; i < listGracz.Count; i++)
@@ -394,17 +397,17 @@ namespace RzezniaMagow
                             addShotPosition(listPocisk.ElementAt(i).getPozycja.X, listPocisk.ElementAt(i).getPozycja.Y);
 
                         }
-                        addCheckSum(calculateCheckSum(tablica));
-
+                       // addCheckSum(calculateCheckSum(tablica));
+                        return tablica;
                         break;
                     }
-                case 5:
-                    {
-                        tablica = new byte[2];
-                        addProtocolType(typ);
-                        addCheckSum(5);
-                        break;
-                    }
+                //case 5:
+                //    {
+                //        tablica = new byte[2];
+                //        addProtocolType(typ);
+                //        addCheckSum(5);
+                //        break;
+                //    }
                 
                 default: break;
             }
@@ -428,38 +431,38 @@ namespace RzezniaMagow
         /// </summary>
         /// <param name="tab"></param>
         /// <returns></returns>
-        public byte calculateCheckSum(byte[] tab)
-        {
-            byte suma = 0;
+        //public byte calculateCheckSum(byte[] tab)
+        //{
+        //    byte suma = 0;
 
-            for (int i = 0; i < tab.Length; i++)
-            {
-                suma += tab[i];
-            }
-            return suma;
-        }
+        //    for (int i = 0; i < tab.Length; i++)
+        //    {
+        //        suma += tab[i];
+        //    }
+        //    return suma;
+        //}
 
         /// <summary>
         /// Funkcja sprawdzajaca poprawnosc pakietu na podstawie jego check sumy
         /// </summary>
         /// <param name="tab"></param>
         /// <returns></returns>
-        public bool CheckValueOfSum(byte[] tab)
-        {
-            byte suma = 0;
+        //public bool CheckValueOfSum(byte[] tab)
+        //{
+        //    byte suma = 0;
 
-            for (int i = 0; i < tab.Length; i++)
-            {
-                suma += tab[i];
-            }
-            suma -= tab[1];
+        //    for (int i = 0; i < tab.Length; i++)
+        //    {
+        //        suma += tab[i];
+        //    }
+        //    suma -= tab[1];
 
-            if (tab[1] == suma)
-                return true;
-            else
-                return false;
+        //    if (tab[1] == suma)
+        //        return true;
+        //    else
+        //        return false;
 
-        }
+        //}
 
 
 
