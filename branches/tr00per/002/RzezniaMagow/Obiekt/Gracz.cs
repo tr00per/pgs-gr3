@@ -41,6 +41,8 @@ namespace RzezniaMagow
 
         }
 
+        public Gracz(byte id) : this(0, 0, id) { }
+
         public Gracz(String name, byte avat)
         {
             pozycjaKursora = new Vector2();

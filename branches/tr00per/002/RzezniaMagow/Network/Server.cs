@@ -74,6 +74,7 @@ namespace Network
             srv.Start();
             incomingThread.Start();
             defaultThread.Start();
+            sl.serverStarted();
 
             Console.WriteLine("Started.");
         }
@@ -95,6 +96,7 @@ namespace Network
             }
 
             Console.WriteLine("Stopping server...");
+            sl.serverStopped();
 
             running = false;
 
@@ -224,7 +226,7 @@ namespace Network
                         //client says goodbye
                         if (packet[0] == Common.PACKET_END)
                         {
-                            slSem.WaitOne();
+                            slSem.WaitOne(); //this has to be linear
                             if (packet.Length > Common.PACKET_HEADER_SIZE)
                             {
                                 sl.playerParted(packet[Common.PACKET_HEADER_SIZE]);
