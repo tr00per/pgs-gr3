@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace RzezniaMagow
 {
-    public  class Gracz : Obiekt
+    public class Gracz : Obiekt
     {
 
         private Vector2 pozycjaKursora;
@@ -23,17 +22,17 @@ namespace RzezniaMagow
 
 
 
-       
 
-
-        public Gracz() : base()
+        public Gracz()
+            : base()
         {
             pozycjaKursora = new Vector2();
             listaPociskow = new List<Pocisk>();
             aktualnaBron = new Bron();
         }
 
-        public Gracz(float x , float y, byte id): base(x , y, id)
+        public Gracz(float x, float y, byte id)
+            : base(x, y, id)
         {
             pozycjaKursora = new Vector2();
             listaPociskow = new List<Pocisk>();
@@ -44,9 +43,10 @@ namespace RzezniaMagow
 
         }
 
-        public Gracz(byte id, String name, byte avat): base()
+        public Gracz(byte id) : this(0, 0, id) { }
+
+        public Gracz(String name, byte avat)
         {
-            getID = id;
             pozycjaKursora = new Vector2();
             nick = name;
             typAvatara = avat;
@@ -55,20 +55,11 @@ namespace RzezniaMagow
             iloscZgonow = 0;
             listaPociskow = new List<Pocisk>();
             aktualnaBron = new Bron();
-            if (typAvatara == 1)
-                this.LoadContent(Game.content.Load<Texture2D>(@"Avatar\Angels"));
-            if (typAvatara == 2)
-                this.LoadContent(Game.content.Load<Texture2D>(@"Avatar\Angus"));
-            if (typAvatara == 3)
-                this.LoadContent(Game.content.Load<Texture2D>(@"Avatar\Anti"));
-            if (typAvatara == 4)
-                this.LoadContent(Game.content.Load<Texture2D>(@"Avatar\Arbor"));
 
         }
 
-
-
-        public Gracz(Gracz kopia) : base(kopia)
+        public Gracz(Gracz kopia)
+            : base(kopia)
         {
             pozycjaKursora = kopia.pozycjaKursora;
             nick = kopia.nick;
@@ -78,8 +69,8 @@ namespace RzezniaMagow
             iloscZgonow = kopia.iloscZgonow;
             listaPociskow = new List<Pocisk>();
             aktualnaBron = kopia.aktualnaBron;
-            
-            
+
+
 
         }
 
@@ -119,7 +110,7 @@ namespace RzezniaMagow
             get { return iloscZgonow; }
             set { iloscZgonow = value; }
         }
-       
+
 
         public short getZycie
         {
