@@ -212,89 +212,45 @@ namespace RzezniaMagow
         }
 
 
-        public void unpack(byte[] tresc, byte typ)
+        public Gracz unpack(byte[] tresc)
         {
-            //calculateCheckSum(tresc);
 
-           
-
-            switch (typ)
-            {
-                case 0:
-                    {
-                        //otrzymano potwierdzenie od klienta, serwer kontynuuję prace
-
-                        break;
-                    }
-                case 1:
-                    {
-                        // otrzymano negatywną odpowiedź od klienta, należy wysłac pakiet ponownie
-
-                        break;
-                    }
-                //case 2:
-                //    {
-                //        //wiadomość od klienta, który własnie się dołączył
-
-                //        //pobranie nazwy nowego gracza
-                //        String nick = Encoding.ASCII.GetString(tresc, 2, nickLenght);
-
-                //        //pobranie numeru avatara jaki wybral gracz
-                //        byte typAvatara = tresc[18];
-
-                //        // w odpowiedz serwer powienien wysłać potwierdzenie odbioru pakietu
-                //        // a nastepnie wysłać pakiet z przypisanym ID gracza
-                //        // i otrzymać kolejne potwierdzenie od klienta
-
-
-                //        break;
-                //    }
-                //case 3:
-                //    {
-                //        //serwer nie powinien otrzymywać  od klienta pakietów typu 3
-                //        //w takim wypadku należy albo zignorować pakiet albo zignorować pakiet :D
-
-                //        break;
-                //    }
-                case 16:
-                    {
                         //serwer otrzymuję od klienta informację w czasie trwania rozgrywki
-
+            Gracz gracz;
+           
                         //pobranie ID gracza
                         byte id_gracza = tresc[2];
 
-                        //pobranie pozycji x i y gracza
-                        Vector2 pozycja_gracza = new Vector2(BitConverter.ToSingle(tresc, 3), BitConverter.ToSingle(tresc, 7));
-
-                        //pobranie pozycji x i y kursora gracza
-                        Vector2 pozycja_kursora = new Vector2(BitConverter.ToSingle(tresc, 11), BitConverter.ToSingle(tresc, 15));
-
                         
+            
+                        //pobranie pozycji x i y gracza
 
-                        //pobranie ilości pocisków
+                        float x = BitConverter.ToSingle(tresc, 3);
+                        float y = BitConverter.ToSingle(tresc, 7);
+                       // Vector2 pozycja_gracza = new Vector2(BitConverter.ToSingle(tresc, 3), BitConverter.ToSingle(tresc, 7));
+                        gracz = new Gracz(x, y, id_gracza);
+
+
+                        float xK = BitConverter.ToSingle(tresc, 11);
+                        float yK = BitConverter.ToSingle(tresc, 15);
+                        //pobranie pozycji x i y kursora gracza
+                        //Vector2 pozycja_kursora = new Vector2(BitConverter.ToSingle(tresc, 11), BitConverter.ToSingle(tresc, 15));
+
+                        gracz.getPozycjaKursora = new Vector2(xK, yK);
+
+                       //pobranie ilości pocisków
                         byte ilośćPocisków = tresc[19];
-
-                        //pobranie typu pocisków
                         byte typPocisku = tresc[21];
 
-                        break;
-                    }
-                //case 5:
-                //    {
-                //        //serwer otrzymał od klienta informację o rezygnacji z gry więc powinien go usunąć
+                        for (int i = 0; i < ilośćPocisków; i++)
+                        {
+                            gracz.getListaPociskow.Add(new Pocisk(x,y,(byte)i,typPocisku,gracz.getID));
 
-                //        break;
-                //    }
-                //case 6:
-                //    {
-                //        //serwer nie powinien otrzymywać  od klienta pakietów typu 6
-                //        //w takim wypadku należy albo zignorować pakiet albo zignorować pakiet :D
+                        }
+                        //pobranie typu pocisków
+                        
 
-                //        break;
-                //    }
-                default: break;
-            }
-
+                       return gracz;
 
         }
         

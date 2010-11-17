@@ -139,7 +139,7 @@ namespace RzezniaMagow
             //}
 
 
-            if (client.getCzyGra  && gameTime.ElapsedRealTime.Milliseconds%10 ==5 )
+            if (client.getCzyGra )// && gameTime.ElapsedRealTime.Milliseconds%10 ==5 )
                 client.sendUpdate(client.clientProtocol.createPackage(zawodnik));
 
             mysz.procesMyszy();
