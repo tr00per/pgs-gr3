@@ -36,6 +36,14 @@ namespace RzezniaMagow
             server.startServer();
         }
 
+        public void fuckinStop()
+        {
+            if (server.isRunning())
+            {
+                server.stopServer();
+            }
+        }
+
         public override void serverStarted()
         {
             //updateTimer.Start();
