@@ -139,12 +139,14 @@ namespace RzezniaMagow
             //    czyNowaRunda = false;
             //}
 
-
-            if (client.getCzyGra)//  && gameTime.ElapsedRealTime.Milliseconds%5 ==2 )
-                client.sendUpdate(client.clientProtocol.createPackage(zawodnik));
-
             mysz.procesMyszy();
             klawiatura.procesKlawiatury();
+            if (client.getCzyGra && gameTime.ElapsedRealTime.Milliseconds % 3 == 1)
+            {
+               
+                client.sendUpdate(client.clientProtocol.createPackage(zawodnik));
+
+            }
 
             
 
@@ -180,7 +182,7 @@ namespace RzezniaMagow
                     czyNowaRunda = false;
                 }
 
-               // spriteBatch.Draw(zawodnik.getTekstura, zawodnik.getPozycja, Color.White);
+                spriteBatch.Draw(zawodnik.getTekstura, zawodnik.getPozycja, Color.White);
                 spriteBatch.Draw(cel, zawodnik.getPozycjaKursora, Color.White);
 
                 

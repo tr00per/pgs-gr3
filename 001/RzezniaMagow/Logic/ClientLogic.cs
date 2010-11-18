@@ -31,7 +31,7 @@ namespace RzezniaMagow
         override protected void updateArrived(byte[] data)
         {
             //tutaj cuda wianki o tym co sie dzieje po otrzymaniu pakietu
-            clientProtocol.unpack(data, 16);
+            clientProtocol.unpack(data, Common.PACKET_COMMON);
 
         }
 
@@ -39,7 +39,7 @@ namespace RzezniaMagow
         {
             //tutaj cuda wianki o tym co sie dzieje przed poczatkiem rundy
             listaGraczy = new List<Gracz>();
-            clientProtocol.unpack(data, 8);
+            clientProtocol.unpack(data, Common.PACKET_BEGIN);
 
         }
 
