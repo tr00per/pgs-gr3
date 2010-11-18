@@ -182,8 +182,8 @@ namespace RzezniaMagow
                             }
                             //pobranie numeru aktualnej rundy
                             Game.client.getNrRundy = BitConverter.ToInt16(tresc, offset);
-                            
 
+                            offset = 0;
                             break;
                         }
                     case 16:
@@ -195,7 +195,7 @@ namespace RzezniaMagow
                             byte iloscGraczy = tresc[offset];
                             offset++;
 
-                            byte[] listaIDgraczy = new byte[Game.client.listaGraczy.Count];
+                           // byte[] listaIDgraczy = new byte[Game.client.listaGraczy.Count];
 
                             for (int m = 0; m < iloscGraczy; m++)
                             {
@@ -203,7 +203,7 @@ namespace RzezniaMagow
                                 //pobranie ID gracza
                                 byte gracz_ID = tresc[offset];
                                 offset++;
-                                listaIDgraczy[m] = gracz_ID;
+                                //listaIDgraczy[m] = gracz_ID;
                                
 
                                 //pobranie pozycji startowej
@@ -254,50 +254,53 @@ namespace RzezniaMagow
 
 
                             //pobranie informacje o pociskach aktulanie znajdujących się na mapie
-                            byte iloscPocisków = tresc[offset];
-                            offset++;
+                            //byte iloscPocisków = tresc[offset];
+                            //offset++;
 
-                            if (iloscPocisków > 0)
-                            {
-                                byte[] listaIDPociskow = new byte[iloscPocisków];
+                            //if (iloscPocisków > 0)
+                            //{
+                            //    byte[] listaIDPociskow = new byte[iloscPocisków];
 
-                                for (int i = 0; i < iloscPocisków; i++)
-                                {
-                                    //pobranie ID pocisku
-                                    byte pocisk_ID = tresc[offset];
-                                    offset++;
-                                    //pobranie ID gracza, który wystrzelił pocisk
-                                    byte pociskOwner = tresc[offset];
-                                    offset++;
-                                    //pobranie typu pocisku
-                                    byte pociskType = tresc[offset];
-                                    offset++;
+                            //    for (int i = 0; i < iloscPocisków; i++)
+                            //    {
+                            //        //pobranie ID pocisku
+                            //        byte pocisk_ID = tresc[offset];
+                            //        offset++;
+                            //        //pobranie ID gracza, który wystrzelił pocisk
+                            //        byte pociskOwner = tresc[offset];
+                            //        offset++;
+                            //        //pobranie typu pocisku
+                            //        byte pociskType = tresc[offset];
+                            //        offset++;
 
-                                    //pobranie pozycji pocisku
-                                    float x = BitConverter.ToSingle(tresc, offset);
-                                    offset += 4;
-                                    float y = BitConverter.ToSingle(tresc, offset);
-                                    offset += 4;
+                            //        //pobranie pozycji pocisku
+                            //        float x = BitConverter.ToSingle(tresc, offset);
+                            //        offset += 4;
+                            //        float y = BitConverter.ToSingle(tresc, offset);
+                            //        offset += 4;
 
-                                    Game.client.listaPociskow.Add(new Pocisk(x,y,pocisk_ID,pociskType,pociskOwner));
+                            //        Game.client.listaPociskow.Add(new Pocisk(x,y,pocisk_ID,pociskType,pociskOwner));
 
-                                }
-                                if (iloscPocisków != Game.client.listaPociskow.Count)
-                                {
-                                    for (int i = Game.client.listaPociskow.Count; i > 0; i--)
-                                    {
-                                        bool flagaUsuniecia = true;
-                                        for (int j = 0; j < listaIDPociskow.Length; j++)
-                                        {
-                                            if (Game.client.listaPociskow.ElementAt(i).getID == listaIDPociskow[j])
-                                                flagaUsuniecia = false;
-                                        }
-                                        if (flagaUsuniecia)
-                                            Game.client.listaPociskow.RemoveAt(i);
-                                    }
-                                }
-                            }
+                            //    }
 
+
+
+                                //if (iloscPocisków != Game.client.listaPociskow.Count)
+                                //{
+                                //    for (int i = Game.client.listaPociskow.Count; i > 0; i--)
+                                //    {
+                                //        bool flagaUsuniecia = true;
+                                //        for (int j = 0; j < listaIDPociskow.Length; j++)
+                                //        {
+                                //            if (Game.client.listaPociskow.ElementAt(i).getID == listaIDPociskow[j])
+                                //                flagaUsuniecia = false;
+                                //        }
+                                //        if (flagaUsuniecia)
+                                //            Game.client.listaPociskow.RemoveAt(i);
+                                //    }
+                                //}
+                            
+                            offset = 2;
                             break;
                         }
                    
@@ -357,17 +360,17 @@ namespace RzezniaMagow
                             addPlayerID(gracz.getID);
                             addPlayerPosition(gracz.getPozycja.X, gracz.getPozycja.Y);
                             addCursorPosition(gracz.getPozycjaKursora.X, gracz.getPozycjaKursora.Y);
-                            if(gracz.getListaPociskow.Count>0)
-                            {
-                                addNumberOfShots((byte)gracz.getListaPociskow.Count);
-                                addShotType(gracz.getListaPociskow.First().getTypPocisku);
+                            //if(gracz.getListaPociskow.Count>0)
+                            //{
+                            //    addNumberOfShots((byte)gracz.getListaPociskow.Count);
+                            //    addShotType(gracz.getListaPociskow.First().getTypPocisku);
                                 
-                            }
-                            else
-                            {
-                                addNumberOfShots(0);
-                                addShotType(0);
-                            }
+                            //}
+                            //else
+                            //{
+                            //    addNumberOfShots(0);
+                            //    addShotType(0);
+                            //}
 
                             //addCheckSum(calculateCheckSum(tablica));
 

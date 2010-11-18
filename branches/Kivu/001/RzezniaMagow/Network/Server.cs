@@ -196,6 +196,7 @@ namespace RzezniaMagow
 
             Console.WriteLine(nick + " is ready.");
             sl.sendMessage(nick + " is ready.");
+            Game.czyNowaRunda = true;
         }
 
         /// <summary>

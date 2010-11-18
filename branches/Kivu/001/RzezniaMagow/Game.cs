@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
+using System.Threading;
 
 namespace RzezniaMagow
 {
@@ -61,7 +62,7 @@ namespace RzezniaMagow
             kamera = new Kamera2d();
             czySerwer = false;
             czyNowaRunda = true;
-
+            IsFixedTimeStep = false;
         }
 
         /// <summary>
@@ -128,7 +129,7 @@ namespace RzezniaMagow
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-
+            
             //wysy³anie do logiki klienta informacji o graczu
 
             //if(czySerwer)
@@ -139,7 +140,7 @@ namespace RzezniaMagow
             //}
 
 
-            if (client.getCzyGra )// && gameTime.ElapsedRealTime.Milliseconds%10 ==5 )
+            if (client.getCzyGra)//  && gameTime.ElapsedRealTime.Milliseconds%5 ==2 )
                 client.sendUpdate(client.clientProtocol.createPackage(zawodnik));
 
             mysz.procesMyszy();
@@ -186,13 +187,13 @@ namespace RzezniaMagow
             }
 
             spriteBatch.End();
-
+            
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
         }
 
-
+       
 
 
         

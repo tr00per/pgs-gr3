@@ -180,7 +180,8 @@ namespace RzezniaMagow
 
         public void addShotType(byte x)
         {
-            byte[] tab = BitConverter.GetBytes(x);
+            byte[] tab = new byte[1];
+            tab[0] = x;
             tab.CopyTo(tablica, offset);
             offset++;
         }
@@ -305,7 +306,7 @@ namespace RzezniaMagow
                 case 8:
                     {
 
-                        tablica = new byte[5+30*listGracz.Count];
+                        tablica = new byte[7+30*listGracz.Count];
                         //addProtocolType(typ);
                         offset = 2;
                         addNumberOfPlayers((byte)listGracz.Count);
@@ -328,12 +329,13 @@ namespace RzezniaMagow
                         addRoundNumber(nrRundy);
 
                        // addCheckSum(calculateCheckSum(tablica));
+                        offset = 2;
                         return tablica;
                         
                     }
                 case 16:
                     {
-                        tablica = new byte[6 + 21 * listGracz.Count + 11*listPocisk.Count];
+                        tablica = new byte[8 + 21 * listGracz.Count];// + 11*listPocisk.Count];
 
                         offset = 2;
 
@@ -348,17 +350,20 @@ namespace RzezniaMagow
                             addWeaponType(listGracz.ElementAt(i).getAktualnaBron.getTypBroni);
                         }
 
-                        addNumberOfShots((byte)listPocisk.Count);
+                        //addNumberOfShots((byte)listPocisk.Count);
 
-                        for (int i = 0; i < listPocisk.Count; i++)
-                        {
-                            addShotID(listPocisk.ElementAt(i).getID);
-                            addShotOwnerID(listPocisk.ElementAt(i).getIDOwnera);
-                            addShotType(listPocisk.First().getTypPocisku);
-                            addShotPosition(listPocisk.ElementAt(i).getPozycja.X, listPocisk.ElementAt(i).getPozycja.Y);
+                        //for (int i = 0; i < listPocisk.Count; i++)
+                        //{
+                        //    addShotID(listPocisk.ElementAt(i).getID);
+                        //    addShotOwnerID(listPocisk.ElementAt(i).getIDOwnera);
+                        //    addShotType(listPocisk.First().getTypPocisku);
+                        //    addShotPosition(listPocisk.ElementAt(i).getPozycja.X, listPocisk.ElementAt(i).getPozycja.Y);
 
-                        }
+                        //}
+                        if (tablica.Length > 100)
+                            System.Console.WriteLine("svsvdsdv");
                        // addCheckSum(calculateCheckSum(tablica));
+                        offset = 2;
                         return tablica;
                        
                     }
