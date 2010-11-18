@@ -29,7 +29,7 @@ namespace RzezniaMagow
             prot = new SerwerProtocol();
             server = new Server(this, 20000, 5);
             bindServer(server);
-            updateTimer = new System.Timers.Timer(20);
+            updateTimer = new System.Timers.Timer(30);
             updateTimer.Elapsed += new ElapsedEventHandler(updateTimerCB);
             players = new List<Gracz>();
             bullets = new List<Pocisk>();
