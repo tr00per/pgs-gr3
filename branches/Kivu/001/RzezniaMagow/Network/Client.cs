@@ -88,6 +88,7 @@ namespace RzezniaMagow
                 Game.zawodnik = new Gracz(id, nick, avatar);
                 Game.zawodnik.getPozycja = new Microsoft.Xna.Framework.Vector2(128, 128);
                 Game.kamera.getPozycja = Game.zawodnik.getPozycja;
+                Game.czyNowaRunda = true;
                
             }
             else
@@ -172,6 +173,7 @@ namespace RzezniaMagow
                         }
                         else if (packet[0] == Common.PACKET_BEGIN)
                         {
+                            Game.client.listaGraczy = new List<Gracz>();
                             listenerSem.WaitOne();
                             beginRound(packet.Skip(Common.PACKET_HEADER_SIZE).ToArray());
                             listenerSem.Release();

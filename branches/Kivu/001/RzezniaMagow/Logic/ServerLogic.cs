@@ -29,8 +29,8 @@ namespace RzezniaMagow
             prot = new SerwerProtocol();
             server = new Server(this, 20000, 5);
             bindServer(server);
-            updateTimer = new System.Timers.Timer(30);
-            updateTimer.Elapsed += new ElapsedEventHandler(updateTimerCB);
+            //updateTimer = new System.Timers.Timer(30);
+            //updateTimer.Elapsed += new ElapsedEventHandler(updateTimerCB);
             players = new List<Gracz>();
             bullets = new List<Pocisk>();
             server.startServer();
@@ -38,7 +38,7 @@ namespace RzezniaMagow
 
         public override void serverStarted()
         {
-            updateTimer.Start();
+            //updateTimer.Start();
         }
 
         public override void serverStopped()
@@ -58,7 +58,8 @@ namespace RzezniaMagow
             return nextPlayerID++;
         }
 
-        private void updateTimerCB(object o, ElapsedEventArgs args)
+        //private void updateTimerCB(object o, ElapsedEventArgs args)
+        private void updateTimerCB()
         {
             if (Game.czyNowaRunda)
             {
@@ -90,6 +91,7 @@ namespace RzezniaMagow
                     players.ElementAt(i).getPozycjaKursora = gracz.getPozycjaKursora;
                 }
             }
+            updateTimerCB();
             //for (int i = 0; i < gracz.getListaPociskow.Count; i++)
             //{
             //    bullets.Add(gracz.getListaPociskow.ElementAt(i));

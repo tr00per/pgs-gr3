@@ -140,7 +140,7 @@ namespace RzezniaMagow
                             // klient otrzymuje od serwera informację o wszystkich graczach biorących udział w grze
                             // na początku każdej rundy
                             // po otrzymaniu pakietu klient odsyła potwierdzenie
-
+                            Gracz gracz;
                             offset = 0;
 
                             byte iloscGraczy = tresc[offset];
@@ -149,7 +149,7 @@ namespace RzezniaMagow
                             for (int i = 0; i < iloscGraczy; i++)
                             {
 
-                                Gracz gracz;
+                                
 
                                 //pobranie ID gracza
                                 byte gracz_ID = tresc[offset];
@@ -220,7 +220,7 @@ namespace RzezniaMagow
 
                                 //pobranie ilości życia gracza
                                 byte zycie = tresc[offset];
-                                offset+=2;
+                                offset++;
 
                                 byte typBroni = tresc[offset];
                                 offset++;

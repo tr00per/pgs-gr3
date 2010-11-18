@@ -24,10 +24,10 @@ namespace RzezniaMagow
         private KeyboardState poprzedniStanKlawiatury;
 
 
-        public Keys GORA = Keys.Up;
-        public Keys DOL = Keys.Down;
-        public Keys PRAWO = Keys.Right;
-        public Keys LEWO = Keys.Left;
+        public Keys GORA = Keys.W;
+        public Keys DOL = Keys.S;
+        public Keys PRAWO = Keys.D;
+        public Keys LEWO = Keys.A;
         public Keys STRZAL = Keys.Space;
 
         public Keys KONSOLA = Keys.Tab;
@@ -69,20 +69,7 @@ namespace RzezniaMagow
 
             if (KeyJustPressed(Keys.D1))
             {
-                //sl.server.startServer();
-                //Console.WriteLine("SERVER RUNNING: " + sl.server.isRunning().ToString());
-                //Console.WriteLine("SENDING MSG...");
-                //sl.spam();
-                //Console.WriteLine("DONE.");
-                //Console.WriteLine("SENDING MSG...");
-                //sl.spam();
-                //Console.WriteLine("DONE.");
-                //Console.WriteLine("DOING RADNOM STUFF...");
-                //for (int i = 0; i < 100; ++i)
-                //{
-                //    int c = i * 2 / 4;
-                //    Thread.Sleep(Math.Max(c, 5));
-                //}
+                Game.czyNowaRunda = true;
                 
             }
 
