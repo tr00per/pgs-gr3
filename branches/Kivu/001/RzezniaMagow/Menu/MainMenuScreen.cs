@@ -75,6 +75,7 @@ namespace RzezniaMagow
 
 
                 Game.client.getCzyGra = true;
+                Game.client.startClient();
                 Game.screenManager.Visible = false;
                 Game.screenManager.RemoveScreen(this);
 
@@ -109,7 +110,7 @@ namespace RzezniaMagow
             Console.WriteLine("CLIENT RUNNING: " + Game.client.isRunning().ToString());
             Console.WriteLine("WAITING...");
 
-          
+            Game.client.startClient();
             Game.screenManager.Visible = false;
             Game.screenManager.RemoveScreen(this);
 

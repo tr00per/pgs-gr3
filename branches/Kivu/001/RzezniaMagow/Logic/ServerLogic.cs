@@ -29,8 +29,8 @@ namespace RzezniaMagow
             prot = new SerwerProtocol();
             server = new Server(this, 20000, 5);
             bindServer(server);
-            //updateTimer = new System.Timers.Timer(30);
-            //updateTimer.Elapsed += new ElapsedEventHandler(updateTimerCB);
+           // updateTimer = new System.Timers.Timer(10);
+          // updateTimer.Elapsed += new ElapsedEventHandler(updateTimerCB);
             players = new List<Gracz>();
             bullets = new List<Pocisk>();
             server.startServer();
@@ -46,12 +46,12 @@ namespace RzezniaMagow
 
         public override void serverStarted()
         {
-            //updateTimer.Start();
+          //  updateTimer.Start();
         }
 
         public override void serverStopped()
         {
-            //updateTimer.Stop();
+           // updateTimer.Stop();
         }
 
         /// <summary>

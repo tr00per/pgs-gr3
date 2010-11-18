@@ -214,6 +214,7 @@ namespace RzezniaMagow
             packet[1] = Common.checksum(packet);
             //System.Console.WriteLine(packet[14].ToString());
             NetworkStream io = cli.GetStream();
+            
             io.BeginWrite(packet, 0, packet.Length, new AsyncCallback(Common.asyncWrite), io);
         }
 
