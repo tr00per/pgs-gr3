@@ -51,7 +51,7 @@ namespace RzezniaMagow
 
         public override void serverStopped()
         {
-            updateTimer.Stop();
+            //updateTimer.Stop();
         }
 
         /// <summary>
