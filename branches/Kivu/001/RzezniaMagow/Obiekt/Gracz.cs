@@ -23,7 +23,6 @@ namespace RzezniaMagow
 
 
 
-
         public Gracz()
             : base()
         {
