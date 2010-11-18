@@ -220,34 +220,34 @@ namespace RzezniaMagow
             Gracz gracz;
            
                         //pobranie ID gracza
-                        byte id_gracza = tresc[2];
+                        byte id_gracza = tresc[0];
 
                         
             
                         //pobranie pozycji x i y gracza
 
-                        float x = BitConverter.ToSingle(tresc, 3);
-                        float y = BitConverter.ToSingle(tresc, 7);
+                        float x = BitConverter.ToSingle(tresc, 1);
+                        float y = BitConverter.ToSingle(tresc, 5);
                        // Vector2 pozycja_gracza = new Vector2(BitConverter.ToSingle(tresc, 3), BitConverter.ToSingle(tresc, 7));
                         gracz = new Gracz(x, y, id_gracza);
 
 
-                        float xK = BitConverter.ToSingle(tresc, 11);
-                        float yK = BitConverter.ToSingle(tresc, 15);
+                        float xK = BitConverter.ToSingle(tresc, 9);
+                        float yK = BitConverter.ToSingle(tresc, 13);
                         //pobranie pozycji x i y kursora gracza
                         //Vector2 pozycja_kursora = new Vector2(BitConverter.ToSingle(tresc, 11), BitConverter.ToSingle(tresc, 15));
 
                         gracz.getPozycjaKursora = new Vector2(xK, yK);
 
                        //pobranie ilości pocisków
-                        byte ilośćPocisków = tresc[19];
-                        byte typPocisku = tresc[21];
+                        byte ilośćPocisków = tresc[17];
+                        byte typPocisku = tresc[19];
 
-                        for (int i = 0; i < ilośćPocisków; i++)
-                        {
-                            gracz.getListaPociskow.Add(new Pocisk(x,y,(byte)i,typPocisku,gracz.getID));
+                        //for (int i = 0; i < ilośćPocisków; i++)
+                        //{
+                        //    gracz.getListaPociskow.Add(new Pocisk(x,y,(byte)i,typPocisku,gracz.getID));
 
-                        }
+                        //}
                         //pobranie typu pocisków
                         
 
@@ -308,7 +308,7 @@ namespace RzezniaMagow
 
                         tablica = new byte[7+30*listGracz.Count];
                         //addProtocolType(typ);
-                        offset = 2;
+                        offset = 0;
                         addNumberOfPlayers((byte)listGracz.Count);
 
                         for (int i = 0; i < listGracz.Count; i++)
@@ -329,7 +329,7 @@ namespace RzezniaMagow
                         addRoundNumber(nrRundy);
 
                        // addCheckSum(calculateCheckSum(tablica));
-                        offset = 2;
+                        offset = 0;
                         return tablica;
                         
                     }
@@ -337,7 +337,7 @@ namespace RzezniaMagow
                     {
                         tablica = new byte[8 + 21 * listGracz.Count];// + 11*listPocisk.Count];
 
-                        offset = 2;
+                        offset = 0;
 
                         addNumberOfPlayers((byte)listGracz.Count);
 
@@ -363,7 +363,7 @@ namespace RzezniaMagow
                         if (tablica.Length > 100)
                             System.Console.WriteLine("svsvdsdv");
                        // addCheckSum(calculateCheckSum(tablica));
-                        offset = 2;
+                        offset = 0;
                         return tablica;
                        
                     }

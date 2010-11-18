@@ -96,6 +96,7 @@ namespace RzezniaMagow
                 return false;
             }
 
+            cli.NoDelay = true;
             statusCallback("Done. Starting broadcast listener...");
             running = true;
             listener = new Thread(new ThreadStart(listen));
@@ -148,37 +149,46 @@ namespace RzezniaMagow
                     NetworkStream io = cli.GetStream();
                     io.Read(packet, 0, pending);
 
-                    if (!Common.correctPacket(packet, Common.PACKET_COMMON | Common.PACKET_SRVMSG | Common.PACKET_END | Common.PACKET_BEGIN))
+                    if (Common.checkChecksum(packet))
                     {
-                        statusCallback("Incorrect packet: " + packet[0] + ", " + packet[1] + ".");
+                        if (!Common.correctPacket(packet, Common.PACKET_COMMON | Common.PACKET_SRVMSG | Common.PACKET_END | Common.PACKET_BEGIN))
+                        {
+                            statusCallback("Incorrect packet: " + packet[0] + ", " + packet[1] + ".");
+                            continue;
+                        }
+
+                        if (packet[0] == Common.PACKET_COMMON)
+                        {
+                            listenerSem.WaitOne();
+                            updateArrived(packet.Skip(Common.PACKET_HEADER_SIZE).ToArray());
+                            listenerSem.Release();
+                        }
+                        else if (packet[0] == Common.PACKET_SRVMSG)
+                        {
+                            //TODO do the proper conversion w/check
+                            Encoding enc = new UTF8Encoding();
+                            string msg = enc.GetString(packet, Common.PACKET_HEADER_SIZE, pending - Common.PACKET_HEADER_SIZE);
+                            statusCallback(msg.Trim());
+                        }
+                        else if (packet[0] == Common.PACKET_BEGIN)
+                        {
+                            listenerSem.WaitOne();
+                            beginRound(packet.Skip(Common.PACKET_HEADER_SIZE).ToArray());
+                            listenerSem.Release();
+                        }
+                        else if (packet[0] == Common.PACKET_END) //server shutdown or kicked out
+                        {
+                            statusCallback("Server disconnected.");
+                            running = false;
+                            cli.Client.Disconnect(true);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Incorrect packet from serwer, wrong CheckSum: " + packet[0] + ", " + packet[1] + ".");
                         continue;
                     }
 
-                    if (packet[0] == Common.PACKET_COMMON)
-                    {
-                        listenerSem.WaitOne();
-                        updateArrived(packet.Skip(Common.PACKET_HEADER_SIZE).ToArray());
-                        listenerSem.Release();
-                    }
-                    else if (packet[0] == Common.PACKET_SRVMSG)
-                    {
-                        //TODO do the proper conversion w/check
-                        Encoding enc = new UTF8Encoding();
-                        string msg = enc.GetString(packet, Common.PACKET_HEADER_SIZE, pending - Common.PACKET_HEADER_SIZE);
-                        statusCallback(msg.Trim());
-                    }
-                    else if (packet[0] == Common.PACKET_BEGIN)
-                    {
-                        listenerSem.WaitOne();
-                        beginRound(packet.Skip(Common.PACKET_HEADER_SIZE+2).ToArray());
-                        listenerSem.Release();
-                    }
-                    else if (packet[0] == Common.PACKET_END) //server shutdown or kicked out
-                    {
-                        statusCallback("Server disconnected.");
-                        running = false;
-                        cli.Client.Disconnect(true);
-                    }
                 }
                 //Thread.Sleep(5); -- works fine without it :]
             }
