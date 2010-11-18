@@ -150,8 +150,7 @@ namespace RzezniaMagow
                     NetworkStream io = cli.GetStream();
                     io.Read(packet, 0, pending);
 
-                    if (Common.checkChecksum(packet))
-                    {
+                    
                         if (!Common.correctPacket(packet, Common.PACKET_COMMON | Common.PACKET_SRVMSG | Common.PACKET_END | Common.PACKET_BEGIN))
                         {
                             statusCallback("Incorrect packet: " + packet[0] + ", " + packet[1] + ".");
@@ -184,12 +183,7 @@ namespace RzezniaMagow
                             running = false;
                             cli.Client.Disconnect(true);
                         }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Incorrect packet from serwer, wrong CheckSum: " + packet[0] + ", " + packet[1] + ".");
-                        continue;
-                    }
+                   
 
                 }
                 //Thread.Sleep(5); -- works fine without it :]

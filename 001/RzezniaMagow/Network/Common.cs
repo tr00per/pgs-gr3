@@ -45,22 +45,22 @@ namespace RzezniaMagow
             }
             return suma;
         }
-        internal static bool checkChecksum(byte[] data)
-        {
-            byte suma = 0;
+        //internal static bool checkChecksum(byte[] data)
+        //{
+        //    byte suma = 0;
 
-            for (int i = 0; i < data.Length; i++)
-            {
-                suma += data[i];
-            }
-            suma -= data[1];
+        //    for (int i = 0; i < data.Length; i++)
+        //    {
+        //        suma += data[i];
+        //    }
+        //    suma -= data[1];
 
-            if (data[1] == suma)
-                return true;
-            else
-                return false;
+        //    if (data[1] == suma)
+        //        return true;
+        //    else
+        //        return false;
 
-        }
+        //}
 
         internal static void asyncWrite(IAsyncResult arg)
         {
