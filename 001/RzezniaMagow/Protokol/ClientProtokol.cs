@@ -183,7 +183,7 @@ namespace RzezniaMagow
                             //pobranie numeru aktualnej rundy
                             Game.client.getNrRundy = tresc[offset];
 
-                            offset = 0;
+                           
                             break;
                         }
                     case 16:
@@ -300,7 +300,7 @@ namespace RzezniaMagow
                                 //    }
                                 //}
                             
-                            offset = 0;
+                           
                             break;
                         }
                    
@@ -354,7 +354,7 @@ namespace RzezniaMagow
                     //    }
                     //case 4:
                     //    {
-                            tablica = new byte[22];
+                            tablica = new byte[17];
                             offset = 0;
                             
                             addPlayerID(gracz.getID);
