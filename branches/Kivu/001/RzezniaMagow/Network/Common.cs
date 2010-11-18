@@ -32,22 +32,34 @@ namespace RzezniaMagow
         public static byte checksum(byte[] data)
         {
             //skip header (packet type and checksum field)
-            return rawChecksum(data, Common.PACKET_HEADER_SIZE);
+            return rawChecksum(data);
         }
 
-        internal static byte rawChecksum(byte[] data, int offset)
+        internal static byte rawChecksum(byte[] data)
         {
-            /*
-            uint cs = 0;
-            IEnumerable<byte> bytes = data.Skip(offset);
-            foreach (byte b in bytes)
-            {
-                cs += b;
-            }
+            byte suma = 0;
 
-            return (byte)(cs & 255);
-            */
-            return 0;
+            for (int i = 0; i < data.Length; i++)
+            {
+                suma += data[i];
+            }
+            return suma;
+        }
+        internal static bool checkChecksum(byte[] data)
+        {
+            byte suma = 0;
+
+            for (int i = 0; i < data.Length; i++)
+            {
+                suma += data[i];
+            }
+            suma -= data[1];
+
+            if (data[1] == suma)
+                return true;
+            else
+                return false;
+
         }
 
         internal static void asyncWrite(IAsyncResult arg)

@@ -85,12 +85,15 @@ namespace RzezniaMagow
             for (int i = 0; i < players.Count; i++)
             {
                 if (players.ElementAt(i).getID == gracz.getID)
+                {
                     players.ElementAt(i).getPozycja = gracz.getPozycja;
+                    players.ElementAt(i).getPozycjaKursora = gracz.getPozycjaKursora;
+                }
             }
-            for (int i = 0; i < gracz.getListaPociskow.Count; i++)
-            {
-                bullets.Add(gracz.getListaPociskow.ElementAt(i));
-            }
+            //for (int i = 0; i < gracz.getListaPociskow.Count; i++)
+            //{
+            //    bullets.Add(gracz.getListaPociskow.ElementAt(i));
+            //}
 
 
             ///Console.WriteLine(id + " send something to server.");

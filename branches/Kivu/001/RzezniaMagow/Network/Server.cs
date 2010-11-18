@@ -191,6 +191,7 @@ namespace RzezniaMagow
             io.Write(packet, 0, 3);
 
             clientsSem.WaitOne();
+            cli.NoDelay = true;
             clients.Add(cli);
             clientsSem.Release();
 
@@ -219,31 +220,42 @@ namespace RzezniaMagow
                         NetworkStream io = cli.GetStream();
                         io.Read(packet, 0, pending);
 
-                        if (!Common.correctPacket(packet, Common.PACKET_COMMON | Common.PACKET_END))
+                        if (Common.checkChecksum(packet))
                         {
-                            Console.WriteLine("Incorrect packet: " + packet[0] + ", " + packet[1] + ".");
+
+                            if (!Common.correctPacket(packet, Common.PACKET_COMMON | Common.PACKET_END))
+                            {
+                                Console.WriteLine("Incorrect packet: " + packet[0] + ", " + packet[1] + ".");
+                                continue;
+                            }
+
+                            //client says goodbye
+                            if (packet[0] == Common.PACKET_END)
+                            {
+                                slSem.WaitOne(); //this has to be linear
+                                if (packet.Length > Common.PACKET_HEADER_SIZE)
+                                {
+                                    sl.playerParted(packet[Common.PACKET_HEADER_SIZE]);
+                                }
+                                else
+                                {
+                                    sl.playerParted(0);
+                                }
+                                slSem.Release();
+                            }
+                            else if (packet[0] == Common.PACKET_COMMON)
+                            {
+                                ParameterizedThreadStart ts = new ParameterizedThreadStart(sl.playerHandle);
+                                new Thread(ts).Start(packet.Skip(Common.PACKET_HEADER_SIZE).ToArray());
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Incorrect packet from client, wrong CheckSum: " + packet[0] + ", " + packet[1] + ".");
                             continue;
                         }
 
-                        //client says goodbye
-                        if (packet[0] == Common.PACKET_END)
-                        {
-                            slSem.WaitOne(); //this has to be linear
-                            if (packet.Length > Common.PACKET_HEADER_SIZE)
-                            {
-                                sl.playerParted(packet[Common.PACKET_HEADER_SIZE]);
-                            }
-                            else
-                            {
-                                sl.playerParted(0);
-                            }
-                            slSem.Release();
-                        }
-                        else if (packet[0] == Common.PACKET_COMMON)
-                        {
-                            ParameterizedThreadStart ts = new ParameterizedThreadStart(sl.playerHandle);
-                            new Thread(ts).Start(packet.Skip(Common.PACKET_HEADER_SIZE).ToArray());
-                        }
+
                     }
                 }
                 clientsSem.Release();

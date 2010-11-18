@@ -11,11 +11,11 @@ namespace RzezniaMagow
     {
 
         private Vector2 pozycjaKursora;
-        private short zycie;
+        private byte zycie;
         private byte typAvatara;
         private String nick;
-        private short punkty;
-        private short iloscZgonow;
+        private byte punkty;
+        private byte iloscZgonow;
 
         private List<Pocisk> listaPociskow;
 
@@ -70,13 +70,13 @@ namespace RzezniaMagow
             aktualnaBron = new Bron();
             getID = id;
             if (typAvatara == 1)
-                this.LoadContent(Game.content.Load<Texture2D>(@"Avatar\Angels"));
+                this.LoadContent(Game.content.Load<Texture2D>(@"Avatar\Diablo"));
             if (typAvatara == 2)
-                this.LoadContent(Game.content.Load<Texture2D>(@"Avatar\Angus"));
+                this.LoadContent(Game.content.Load<Texture2D>(@"Avatar\Naga"));
             if (typAvatara == 3)
-                this.LoadContent(Game.content.Load<Texture2D>(@"Avatar\Anti"));
+                this.LoadContent(Game.content.Load<Texture2D>(@"Avatar\Frog"));
             if (typAvatara == 4)
-                this.LoadContent(Game.content.Load<Texture2D>(@"Avatar\Arbor"));
+                this.LoadContent(Game.content.Load<Texture2D>(@"Avatar\Reaper"));
 
 
         }
@@ -121,21 +121,21 @@ namespace RzezniaMagow
         }
 
 
-        public short getPunkty
+        public byte getPunkty
         {
             get { return punkty; }
             set { punkty = value; }
         }
 
 
-        public short getIloscZgonow
+        public byte getIloscZgonow
         {
             get { return iloscZgonow; }
             set { iloscZgonow = value; }
         }
 
 
-        public short getZycie
+        public byte getZycie
         {
             get { return zycie; }
             set { zycie = value; }

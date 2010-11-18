@@ -169,11 +169,11 @@ namespace RzezniaMagow
                                 gracz = new Gracz(gracz_ID,nick,typAvatara);
                                 gracz.getPozycja = new Vector2(x,y);
 
-                                gracz.getPunkty = BitConverter.ToInt16(tresc, offset);
-                                offset += 2;
+                                gracz.getPunkty = tresc[offset];
+                                offset ++;
 
-                                gracz.getIloscZgonow = BitConverter.ToInt16(tresc, offset);
-                                offset += 2;
+                                gracz.getIloscZgonow = tresc[offset];
+                                offset ++;
 
 
                                 Game.client.listaGraczy.Add(gracz);
@@ -181,7 +181,7 @@ namespace RzezniaMagow
 
                             }
                             //pobranie numeru aktualnej rundy
-                            Game.client.getNrRundy = BitConverter.ToInt16(tresc, offset);
+                            Game.client.getNrRundy = tresc[offset];
 
                             offset = 0;
                             break;
@@ -190,7 +190,7 @@ namespace RzezniaMagow
                         {
                             //klient otrzymuję od serwera informację w czasie trwania rozgrywki
 
-                            offset = 2;
+                            offset = 0;
 
                             byte iloscGraczy = tresc[offset];
                             offset++;
@@ -219,7 +219,7 @@ namespace RzezniaMagow
                                 offset += 4;
 
                                 //pobranie ilości życia gracza
-                                short zycie = tresc[offset];
+                                byte zycie = tresc[offset];
                                 offset+=2;
 
                                 byte typBroni = tresc[offset];
@@ -300,7 +300,7 @@ namespace RzezniaMagow
                                 //    }
                                 //}
                             
-                            offset = 2;
+                            offset = 0;
                             break;
                         }
                    
@@ -355,7 +355,7 @@ namespace RzezniaMagow
                     //case 4:
                     //    {
                             tablica = new byte[22];
-                            offset = 2;
+                            offset = 0;
                             
                             addPlayerID(gracz.getID);
                             addPlayerPosition(gracz.getPozycja.X, gracz.getPozycja.Y);
