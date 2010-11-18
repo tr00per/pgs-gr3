@@ -102,11 +102,11 @@ namespace RzezniaMagow
 
         }
 
-        public void addPlayerHealth(short x)
+        public void addPlayerHealth(byte x)
         {
             byte[] tab = BitConverter.GetBytes(x);
             tab.CopyTo(tablica, offset);
-            offset+=2;
+            offset++;
         }
 
         public void addPlayerNick(String s)
@@ -132,25 +132,25 @@ namespace RzezniaMagow
             offset++;
         }
 
-        public void addPlayerPoints(short x)
+        public void addPlayerPoints(byte x)
         {
             byte[] tab = BitConverter.GetBytes(x);
             tab.CopyTo(tablica, offset);
-            offset += 2;
+            offset ++;
         }
 
-        public void addRoundNumber(short x)
+        public void addRoundNumber(byte x)
         {
             byte[] tab = BitConverter.GetBytes(x);
             tab.CopyTo(tablica, offset);
-            offset += 2;
+            offset ++;
         }
 
-        public void addPlayerDeadNumber(short x)
+        public void addPlayerDeadNumber(byte x)
         {
             byte[] tab = BitConverter.GetBytes(x);
             tab.CopyTo(tablica, offset);
-            offset += 2;
+            offset ++;
         }
 
         public void addSerwerInformation(String s)
