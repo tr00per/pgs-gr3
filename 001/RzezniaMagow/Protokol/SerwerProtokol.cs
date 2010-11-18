@@ -254,34 +254,7 @@ namespace RzezniaMagow
                        return gracz;
 
         }
-        
-        /// <summary>
-        /// Funkcja tworzaca pakiety typu 0-1, czyli potwierdzenia odbioru innych pakietow
-        /// </summary>
-        /// <param name="type">typ pakietu</param>
-        //public void createPackage(byte typ)
-        //{
-        //    switch (typ)
-        //    {
 
-        //        case 0:
-        //            {
-        //                tablica = new byte[2];
-        //                addProtocolType(typ);
-        //                addCheckSum(0);
-        //                break;
-        //            }
-        //        case 1:
-        //            {
-        //                tablica = new byte[2];
-        //                addProtocolType(typ);
-        //                addCheckSum(1);
-        //                break;
-        //            }
-        //        default: break;
-        //    }
-
-        //}
         /// <summary>
         /// Funkcja tworzy pakiety typu 2-5 
         /// </summary>
@@ -295,15 +268,7 @@ namespace RzezniaMagow
             int offset = 0;
             switch (typ)
             {
-                
-                //case 2:
-                //    {
-                //        tablica = new byte[4];
-                //        addProtocolType(typ);
-                //        addPlayerID(listGracz.Last().getID);
-                //        addCheckSum(calculateCheckSum(tablica));
-                //        break;
-                //    }
+
                 case 8:
                     {
 
@@ -367,13 +332,7 @@ namespace RzezniaMagow
                         return tablica;
                        
                     }
-                //case 5:
-                //    {
-                //        tablica = new byte[2];
-                //        addProtocolType(typ);
-                //        addCheckSum(5);
-                //        break;
-                //    }
+
 
                 default: return null;
             }
@@ -393,58 +352,6 @@ namespace RzezniaMagow
 
         }
 
-        /// <summary>
-        /// Funkcja obliczajaca Check sume z pakietu jako sume jego wszystkich bitow
-        /// </summary>
-        /// <param name="tab"></param>
-        /// <returns></returns>
-        //public byte calculateCheckSum(byte[] tab)
-        //{
-        //    byte suma = 0;
-
-        //    for (int i = 0; i < tab.Length; i++)
-        //    {
-        //        suma += tab[i];
-        //    }
-        //    return suma;
-        //}
-
-        /// <summary>
-        /// Funkcja sprawdzajaca poprawnosc pakietu na podstawie jego check sumy
-        /// </summary>
-        /// <param name="tab"></param>
-        /// <returns></returns>
-        //public bool CheckValueOfSum(byte[] tab)
-        //{
-        //    byte suma = 0;
-
-        //    for (int i = 0; i < tab.Length; i++)
-        //    {
-        //        suma += tab[i];
-        //    }
-        //    suma -= tab[1];
-
-        //    if (tab[1] == suma)
-        //        return true;
-        //    else
-        //        return false;
-
-        //}
-
-
-
-
-
-
-
-        #region GET - SET
-
-        //public byte[] getTablica
-        //{
-        //    get { return tablica; }
-        //}
-
-        #endregion 
 
     }
 }

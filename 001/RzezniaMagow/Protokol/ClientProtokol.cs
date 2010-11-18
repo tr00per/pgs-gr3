@@ -17,8 +17,7 @@ namespace RzezniaMagow
 
         public ClientProtokol()
         {
-            //tablica = new byte[255];
-
+           
         }
 
         /// <summary>
@@ -324,38 +323,7 @@ namespace RzezniaMagow
             int offset = 0;
             byte[] tablica;
              
-                    //case 0:
-                    //    {
-                    //        tablica = new byte[2];
-                    //        addProtocolType(typ);
-                    //        addCheckSum(0);
-
-                    //        break;
-                    //    }
-                    //case 1:
-                    //    {
-                    //        tablica = new byte[2];
-                    //        addProtocolType(typ);
-                    //        addCheckSum(1);
-
-                    //        break;
-                    //    }
-                    //case 2:
-                    //    {
-                    //        tablica = new byte[20];
-                    //        addProtocolType(typ);
-                    //        addPlayerNick(gracz.getNick);
-                    //        addPlayerAvatar(gracz.getTypAvatara);
-                    //        addCheckSum(calculateCheckSum(tablica));
-                    //        break;
-                    //    }
-                    //case 3:
-                    //    {
-                           
-                    //        break;
-                    //    }
-                    //case 4:
-                    //    {
+                   
                             tablica = new byte[18];
                             offset = 0;
                             
@@ -374,79 +342,14 @@ namespace RzezniaMagow
                             //    addShotType(0);
                             //}
 
-                            //addCheckSum(calculateCheckSum(tablica));
+                            
 
                             return tablica; 
-                        //}
-                    //case 5:
-                    //    {
-                    //        tablica = new byte[2];
-                    //        addProtocolType(typ);
-                    //        addCheckSum(5);
-                    //        break;
-                    //    }
-                    //case 6:
-                    //    {
-                    //        break;
-                    //    }
+                       
                    
         }
 
-        //public byte calculateCheckSum(byte[] tab)
-        //{
-        //    byte suma = 0;
-
-        //    for (int i = 0; i < tab.Length; i++)
-        //    {
-        //        suma += tab[i];
-        //    }
-        //    return suma;
-        //}
-
-
-        //public bool CheckValueOfSum(byte[] tab)
-        //{
-        //    byte suma = 0;
-
-        //    for (int i = 0; i < tab.Length; i++)
-        //    {
-        //        suma += tab[i];
-        //    }
-        //    suma -= tab[1];
-
-
-        //    if (tab[1] == suma)
-        //        return true;
-        //    else
-        //        return false;
-
-        //}
-
-
-
-
-
-        #region GET - SET
-
-        //public byte[] getTablica
-        //{
-        //    get { return tablica; }
-        //}
-
-        #endregion 
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
 
     }
 }

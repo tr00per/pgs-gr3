@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.Threading;
+using System.Timers;
 
 namespace RzezniaMagow
 {
@@ -15,7 +16,7 @@ namespace RzezniaMagow
 
 
         public ClientProtokol clientProtocol;
-       
+        private System.Timers.Timer updateTimer;
         
 
         public ClientLogic()
@@ -25,7 +26,22 @@ namespace RzezniaMagow
             clientProtocol = new ClientProtokol();
             listaGraczy = new List<Gracz>();
             listaPociskow = new List<Pocisk>();
+            updateTimer = new System.Timers.Timer(10);
+            updateTimer.Elapsed += new ElapsedEventHandler(updateTimerCB);
             
+            
+        }
+        public void startClient()
+        {
+            updateTimer.Start();
+        }
+
+
+        private void updateTimerCB(object o, ElapsedEventArgs args)
+        //private void updateTimerCB()
+        {
+            sendUpdate(clientProtocol.createPackage(Game.zawodnik));
+               
         }
 
         override protected void updateArrived(byte[] data)
@@ -52,6 +68,7 @@ namespace RzezniaMagow
         {
             if (this.isRunning())
             {
+                updateTimer.Stop();
                 this.disconnect();
             }
         }

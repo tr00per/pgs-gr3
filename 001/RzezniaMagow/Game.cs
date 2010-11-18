@@ -141,12 +141,12 @@ namespace RzezniaMagow
 
             mysz.procesMyszy();
             klawiatura.procesKlawiatury();
-            if (client.getCzyGra && gameTime.ElapsedRealTime.Milliseconds % 3 == 1)
-            {
+            //if (client.getCzyGra )//&& gameTime.ElapsedRealTime.Milliseconds % 3 == 1)
+            //{
                
-                client.sendUpdate(client.clientProtocol.createPackage(zawodnik));
+            //    client.sendUpdate(client.clientProtocol.createPackage(zawodnik));
 
-            }
+            //}
 
             
 
