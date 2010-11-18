@@ -220,8 +220,6 @@ namespace RzezniaMagow
                         NetworkStream io = cli.GetStream();
                         io.Read(packet, 0, pending);
 
-                        if (Common.checkChecksum(packet))
-                        {
 
                             if (!Common.correctPacket(packet, Common.PACKET_COMMON | Common.PACKET_END))
                             {
@@ -248,12 +246,7 @@ namespace RzezniaMagow
                                 ParameterizedThreadStart ts = new ParameterizedThreadStart(sl.playerHandle);
                                 new Thread(ts).Start(packet.Skip(Common.PACKET_HEADER_SIZE).ToArray());
                             }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Incorrect packet from client, wrong CheckSum: " + packet[0] + ", " + packet[1] + ".");
-                            continue;
-                        }
+                        
 
 
                     }
