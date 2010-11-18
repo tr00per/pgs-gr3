@@ -47,8 +47,14 @@ namespace RzezniaMagow
         {
             Console.WriteLine("Client: " + msg);
         }
-        
 
+        public void fuckinStop()
+        {
+            if (this.isRunning())
+            {
+                this.disconnect();
+            }
+        }
 
 
         public short getNrRundy

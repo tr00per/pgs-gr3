@@ -9,18 +9,18 @@ namespace RzezniaMagow
     public class SerwerProtocol
     {
 
-        static int offset = 0;
+        //int offset = 0;
 
         int nickLenght = 16;
-        private byte[] tablica;
+        //private byte[] tablica;
 
 
 
         public SerwerProtocol()
         {
-            offset = 0;
+            //offset = 0;
 
-            tablica = new byte[255];
+            //tablica = new byte[255];
         }
         /// <summary>
         /// Funkcja dodająca w pierwszym bicie protokołu wartość określającą jego typ, od którego zależy format pozostałych danych w protokole
@@ -44,42 +44,42 @@ namespace RzezniaMagow
         ///         - zawiera kolejno pola typ_protokolu, check_suma, tresc,
         /// </summary>
         /// <param name="type"></param>
-        public void addProtocolType(byte type)
-        {
-            offset = 0;
-            byte[] tab = BitConverter.GetBytes(type);
-            tab.CopyTo(tablica, offset);
-            offset+=2;
-        }
+        //public void addProtocolType(byte type)
+        //{
+        //    offset = 0;
+        //    byte[] tab = BitConverter.GetBytes(type);
+        //    tab.CopyTo(tablica, offset);
+        //    offset+=2;
+        //}
 
         /// <summary>
         /// funckja dodająca w drugim bicie protokołu wartość check sumy z całego protokołu
         /// </summary>
         /// <param name="sum">wartość sumy</param>
-        public void addCheckSum(byte sum)
-        {
-            offset = 1;
-            byte[] tab = BitConverter.GetBytes(sum);
-            byte[] helpTab = new byte[1];
-            helpTab[0] = tab[0];
-            helpTab.CopyTo(tablica, offset);
-            offset++;
-        }
+        //public void addCheckSum(byte sum)
+        //{
+        //    offset = 1;
+        //    byte[] tab = BitConverter.GetBytes(sum);
+        //    byte[] helpTab = new byte[1];
+        //    helpTab[0] = tab[0];
+        //    helpTab.CopyTo(tablica, offset);
+        //    offset++;
+        //}
 
         /// <summary>
         /// funkcja dodająca do protokołu ilość graczy biorących udział w rozgrywce
         /// </summary>
         /// <param name="number">ilość graczy</param>
-        public void addNumberOfPlayers(byte number)
+        public void addNumberOfPlayers(ref byte[] tablica, ref int offset, byte number)
         {
             byte[] tab = BitConverter.GetBytes(number);
-            tab.CopyTo(tablica, offset);
+            tablica[offset] = tab[0];
             offset++;
         }
 
 
 
-        public void addPlayerPosition(float x, float y)
+        public void addPlayerPosition(ref byte[] tablica, ref int offset, float x, float y)
         {
             byte[] tab = BitConverter.GetBytes(x);
             tab.CopyTo(tablica, offset);
@@ -90,7 +90,7 @@ namespace RzezniaMagow
             offset += 4;
         }
 
-        public void addCursorPosition(float x, float y)
+        public void addCursorPosition(ref byte[] tablica, ref int offset, float x, float y)
         {
             byte[] tab = BitConverter.GetBytes(x);
             tab.CopyTo(tablica, offset);
@@ -102,14 +102,14 @@ namespace RzezniaMagow
 
         }
 
-        public void addPlayerHealth(byte x)
+        public void addPlayerHealth(ref byte[] tablica, ref int offset, byte x)
         {
             byte[] tab = BitConverter.GetBytes(x);
-            tab.CopyTo(tablica, offset);
+            tablica[offset] = tab[0];
             offset++;
         }
 
-        public void addPlayerNick(String s)
+        public void addPlayerNick(ref byte[] tablica, ref int offset, String s)
         {
             byte[] tab = Encoding.ASCII.GetBytes(s);
             tab.CopyTo(tablica, offset);
@@ -118,42 +118,42 @@ namespace RzezniaMagow
 
         }
 
-        public void addPlayerID(byte x)
+        public void addPlayerID(ref byte[] tablica, ref int offset, byte x)
         {
             byte[] tab = BitConverter.GetBytes(x);
-            tab.CopyTo(tablica, offset);
+            tablica[offset] = tab[0];
             offset++;
         }
 
-        public void addPlayerAvatar(byte x)
+        public void addPlayerAvatar(ref byte[] tablica, ref int offset, byte x)
         {
             byte[] tab = BitConverter.GetBytes(x);
-            tab.CopyTo(tablica, offset);
+            tablica[offset] = tab[0];
             offset++;
         }
 
-        public void addPlayerPoints(byte x)
+        public void addPlayerPoints(ref byte[] tablica, ref int offset, byte x)
         {
             byte[] tab = BitConverter.GetBytes(x);
-            tab.CopyTo(tablica, offset);
+            tablica[offset] = tab[0];
             offset ++;
         }
 
-        public void addRoundNumber(byte x)
+        public void addRoundNumber(ref byte[] tablica, ref int offset, byte x)
         {
             byte[] tab = BitConverter.GetBytes(x);
-            tab.CopyTo(tablica, offset);
+            tablica[offset] = tab[0];
             offset ++;
         }
 
-        public void addPlayerDeadNumber(byte x)
+        public void addPlayerDeadNumber(ref byte[] tablica, ref int offset, byte x)
         {
             byte[] tab = BitConverter.GetBytes(x);
-            tab.CopyTo(tablica, offset);
+            tablica[offset] = tab[0];
             offset ++;
         }
 
-        public void addSerwerInformation(String s)
+        public void addSerwerInformation(ref byte[] tablica, ref int offset, String s)
         {
             byte[] tab = Encoding.ASCII.GetBytes(s);
             tab.CopyTo(tablica, offset);
@@ -164,43 +164,43 @@ namespace RzezniaMagow
         /// funkcja dodająca do protokołu ilość pocisków aktualnie znajdujących się na mapie
         /// </summary>
         /// <param name="number">ilość pocisków</param>
-        public void addNumberOfShots(byte number)
+        public void addNumberOfShots(ref byte[] tablica, ref int offset, byte number)
         {
             byte[] tab = BitConverter.GetBytes(number);
-            tab.CopyTo(tablica, offset);
+            tablica[offset] = tab[0];
             offset++;
         }
 
-        public void addWeaponType(byte x)
+        public void addWeaponType(ref byte[] tablica, ref int offset, byte x)
         {
             byte[] tab = BitConverter.GetBytes(x);
-            tab.CopyTo(tablica, offset);
+            tablica[offset] = tab[0];
             offset++;
         }
 
-        public void addShotType(byte x)
+        public void addShotType(ref byte[] tablica, ref int offset, byte x)
         {
             byte[] tab = new byte[1];
             tab[0] = x;
-            tab.CopyTo(tablica, offset);
+            tablica[offset] = tab[0];
             offset++;
         }
 
-        public void addShotID(byte x)
+        public void addShotID(ref byte[] tablica, ref int offset, byte x)
         {
             byte[] tab = BitConverter.GetBytes(x);
-            tab.CopyTo(tablica, offset);
+            tablica[offset] = tab[0];
             offset++;
         }
 
-        public void addShotOwnerID(byte x)
+        public void addShotOwnerID(ref byte[] tablica, ref int offset, byte x)
         {
             byte[] tab = BitConverter.GetBytes(x);
-            tab.CopyTo(tablica, offset);
+            tablica[offset] = tab[0];
             offset++;
         }
 
-        public void addShotPosition(float x, float y)
+        public void addShotPosition(ref byte[] tablica, ref int offset, float x, float y)
         {
             byte[] tab = BitConverter.GetBytes(x);
             tab.CopyTo(tablica, offset);
@@ -291,7 +291,8 @@ namespace RzezniaMagow
         /// <param name="nrRundy">aktulany numer rundy</param>
         public byte[] createPackage(List<Gracz> listGracz, List<Pocisk> listPocisk, byte typ, byte nrRundy)
         {
-
+            byte[] tablica;
+            int offset = 0;
             switch (typ)
             {
                 
@@ -306,27 +307,27 @@ namespace RzezniaMagow
                 case 8:
                     {
 
-                        tablica = new byte[4+28*listGracz.Count];
+                        tablica = new byte[5+28*listGracz.Count];
                         //addProtocolType(typ);
                         offset = 0;
-                        addNumberOfPlayers((byte)listGracz.Count);
+                        addNumberOfPlayers(ref tablica, ref offset, (byte)listGracz.Count);
 
                         for (int i = 0; i < listGracz.Count; i++)
                         {
-                            addPlayerID(listGracz.ElementAt(i).getID);
-                            addPlayerNick(listGracz.ElementAt(i).getNick);
-                            addPlayerAvatar(listGracz.ElementAt(i).getTypAvatara);
+                            addPlayerID(ref tablica, ref offset, listGracz.ElementAt(i).getID);
+                            addPlayerNick(ref tablica, ref offset, listGracz.ElementAt(i).getNick);
+                            addPlayerAvatar(ref tablica, ref offset, listGracz.ElementAt(i).getTypAvatara);
                             //addPlayerPosition(listGracz.ElementAt(i).getPozycja.X, listGracz.ElementAt(i).getPozycja.Y);
                             Random los= new Random();
                             float poz1 = (float)los.NextDouble()*200;
                             float poz2 = (float)los.NextDouble()*200;
-                            addPlayerPosition(poz1, poz2);
-                            
-                            addPlayerPoints(listGracz.ElementAt(i).getPunkty);
-                            addPlayerDeadNumber(listGracz.ElementAt(i).getIloscZgonow);
+                            addPlayerPosition(ref tablica, ref offset, poz1, poz2);
+
+                            addPlayerPoints(ref tablica, ref offset, listGracz.ElementAt(i).getPunkty);
+                            addPlayerDeadNumber(ref tablica, ref offset, listGracz.ElementAt(i).getIloscZgonow);
                         }
 
-                        addRoundNumber(nrRundy);
+                        addRoundNumber(ref tablica, ref offset, nrRundy);
 
                        // addCheckSum(calculateCheckSum(tablica));
                        
@@ -335,19 +336,19 @@ namespace RzezniaMagow
                     }
                 case 16:
                     {
-                        tablica = new byte[2 + 19 * listGracz.Count];// + 11*listPocisk.Count];
+                        tablica = new byte[3 + 20 * listGracz.Count];// + 11*listPocisk.Count];
 
                         offset = 0;
 
-                        addNumberOfPlayers((byte)listGracz.Count);
+                        addNumberOfPlayers(ref tablica, ref offset, (byte)listGracz.Count);
 
                         for (int i = 0; i < listGracz.Count; i++)
                         {
-                            addPlayerID(listGracz.ElementAt(i).getID);
-                            addPlayerPosition(listGracz.ElementAt(i).getPozycja.X, listGracz.ElementAt(i).getPozycja.Y);
-                            addCursorPosition(listGracz.ElementAt(i).getPozycjaKursora.X, listGracz.ElementAt(i).getPozycjaKursora.Y);
-                            addPlayerHealth(listGracz.ElementAt(i).getZycie);
-                            addWeaponType(listGracz.ElementAt(i).getAktualnaBron.getTypBroni);
+                            addPlayerID(ref tablica, ref offset, listGracz.ElementAt(i).getID);
+                            addPlayerPosition(ref tablica, ref offset, listGracz.ElementAt(i).getPozycja.X, listGracz.ElementAt(i).getPozycja.Y);
+                            addCursorPosition(ref tablica, ref offset, listGracz.ElementAt(i).getPozycjaKursora.X, listGracz.ElementAt(i).getPozycjaKursora.Y);
+                            addPlayerHealth(ref tablica, ref offset, listGracz.ElementAt(i).getZycie);
+                            addWeaponType(ref tablica, ref offset, listGracz.ElementAt(i).getAktualnaBron.getTypBroni);
                         }
 
                         //addNumberOfShots((byte)listPocisk.Count);
@@ -383,9 +384,10 @@ namespace RzezniaMagow
         /// <param name="wiadomosc">tresc wiadomosci</param>
         public void createPackage(String wiadomosc)
         {
-            tablica = new byte[4 + wiadomosc.Length];
+            byte[] tablica = new byte[4 + wiadomosc.Length];
+            int offset = 0;
            // addProtocolType(6);
-            addSerwerInformation(wiadomosc);
+            addSerwerInformation(ref tablica, ref offset, wiadomosc);
 
             //addCheckSum(calculateCheckSum(tablica));
 
@@ -437,10 +439,10 @@ namespace RzezniaMagow
 
         #region GET - SET
 
-        public byte[] getTablica
-        {
-            get { return tablica; }
-        }
+        //public byte[] getTablica
+        //{
+        //    get { return tablica; }
+        //}
 
         #endregion 
 

@@ -10,14 +10,14 @@ namespace RzezniaMagow
     {
 
 
-        static int offset = 2;
+        //int offset = 0;
 
         int nickLenght = 16;
-        private byte[] tablica;
+        //private byte[] tablica;
 
         public ClientProtokol()
         {
-            tablica = new byte[255];
+            //tablica = new byte[255];
 
         }
 
@@ -43,40 +43,29 @@ namespace RzezniaMagow
         ///         - zawiera kolejno pola typ_protokolu, check_suma, tresc,
         /// </summary>
         /// <param name="type"></param>
-        public void addProtocolType(byte type)
-        {
-            offset = 0;
-            byte[] tab = BitConverter.GetBytes(type);
-            tab.CopyTo(tablica, offset);
-            offset+=2;
-        }
+        //public void addProtocolType(byte type)
+        //{
+        //    offset = 0;
+        //    byte[] tab = BitConverter.GetBytes(type);
+        //    tab.CopyTo(tablica, offset);
+        //    offset+=2;
+        //}
 
         /// <summary>
         /// funckja dodająca w drugim bicie protokołu wartość check sumy z całego protokołu
         /// </summary>
         /// <param name="sum">wartość sumy</param>
-        public void addCheckSum(byte sum)
-        {
-            offset = 1;
-            byte[] tab = BitConverter.GetBytes(sum);
-            byte[] helpTab = new byte[1];
-            helpTab[0] = tab[0];
-            helpTab.CopyTo(tablica, offset);
-            offset++;
-        }
+        //public void addCheckSum(byte sum)
+        //{
+        //    offset = 1;
+        //    byte[] tab = BitConverter.GetBytes(sum);
+        //    byte[] helpTab = new byte[1];
+        //    helpTab[0] = tab[0];
+        //    helpTab.CopyTo(tablica, offset);
+        //    offset++;
+        //}
 
-        public void addPlayerPosition(float x, float y)
-        {
-            byte[] tab = BitConverter.GetBytes(x);
-            tab.CopyTo(tablica, offset);
-            offset += 4;
-
-            byte[] tab2 = BitConverter.GetBytes(y);
-            tab2.CopyTo(tablica, offset);
-            offset += 4;
-        }
-
-        public void addCursorPosition(float x, float y)
+        public void addPlayerPosition(ref byte[] tablica, ref int offset, float x, float y)
         {
             byte[] tab = BitConverter.GetBytes(x);
             tab.CopyTo(tablica, offset);
@@ -85,10 +74,21 @@ namespace RzezniaMagow
             byte[] tab2 = BitConverter.GetBytes(y);
             tab2.CopyTo(tablica, offset);
             offset += 4;
+        }
+
+        public void addCursorPosition(ref byte[] tablica, ref int offset, float x, float y)
+        {
+            byte[] tab = BitConverter.GetBytes(x);
+            tab.CopyTo(tablica, offset);
+            offset += 4;
+
+            byte[] tab2 = BitConverter.GetBytes(y);
+            tab2.CopyTo(tablica, offset);
+            offset += 4;
 
         }
 
-        public void addPlayerNick(String s)
+        public void addPlayerNick(ref byte[] tablica, ref int offset, String s)
         {
             byte[] tab = Encoding.ASCII.GetBytes(s);
             tab.CopyTo(tablica, offset);
@@ -97,17 +97,17 @@ namespace RzezniaMagow
 
         }
 
-        public void addPlayerID(byte x)
+        public void addPlayerID(ref byte[] tablica, ref int offset, byte x)
         {
             byte[] tab = BitConverter.GetBytes(x);
-            tab.CopyTo(tablica, offset);
+            tablica[offset] = tab[0];
             offset++;
         }
 
-        public void addPlayerAvatar(byte x)
+        public void addPlayerAvatar(ref byte[] tablica, ref int offset, byte x)
         {
             byte[] tab = BitConverter.GetBytes(x);
-            tab.CopyTo(tablica, offset);
+            tablica[offset] = tab[0];
             offset++;
         }
 
@@ -115,14 +115,14 @@ namespace RzezniaMagow
         /// funkcja dodająca do protokołu ilość pocisków aktualnie znajdujących się na mapie
         /// </summary>
         /// <param name="number">ilość pocisków</param>
-        public void addNumberOfShots(byte number)
+        public void addNumberOfShots(ref byte[] tablica, ref int offset, byte number)
         {
             byte[] tab = BitConverter.GetBytes(number);
             tab.CopyTo(tablica, offset);
             offset++;
         }
 
-        public void addShotType(byte x)
+        public void addShotType(ref byte[] tablica, ref int offset, byte x)
         {
             byte[] tab = BitConverter.GetBytes(x);
             tab.CopyTo(tablica, offset);
@@ -131,6 +131,7 @@ namespace RzezniaMagow
 
         public void unpack(byte[] tresc, int typ)
         {
+            int offset = 0;
                 switch (typ)
                 {
                    
@@ -320,7 +321,8 @@ namespace RzezniaMagow
 
         public byte[] createPackage(Gracz gracz)
         {
-
+            int offset = 0;
+            byte[] tablica;
              
                     //case 0:
                     //    {
@@ -354,12 +356,12 @@ namespace RzezniaMagow
                     //    }
                     //case 4:
                     //    {
-                            tablica = new byte[17];
+                            tablica = new byte[18];
                             offset = 0;
                             
-                            addPlayerID(gracz.getID);
-                            addPlayerPosition(gracz.getPozycja.X, gracz.getPozycja.Y);
-                            addCursorPosition(gracz.getPozycjaKursora.X, gracz.getPozycjaKursora.Y);
+                            addPlayerID(ref tablica, ref offset, gracz.getID);
+                            addPlayerPosition(ref tablica, ref offset, gracz.getPozycja.X, gracz.getPozycja.Y);
+                            addCursorPosition(ref tablica, ref offset, gracz.getPozycjaKursora.X, gracz.getPozycjaKursora.Y);
                             //if(gracz.getListaPociskow.Count>0)
                             //{
                             //    addNumberOfShots((byte)gracz.getListaPociskow.Count);
@@ -426,10 +428,10 @@ namespace RzezniaMagow
 
         #region GET - SET
 
-        public byte[] getTablica
-        {
-            get { return tablica; }
-        }
+        //public byte[] getTablica
+        //{
+        //    get { return tablica; }
+        //}
 
         #endregion 
 

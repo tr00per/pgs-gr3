@@ -58,10 +58,10 @@ namespace RzezniaMagow
             poprzedniStanKlawiatury = stanKlawiatury;
             stanKlawiatury = Keyboard.GetState();
 
-
             if (KeyJustPressed(Keys.Escape))
             {
-                
+                Game.client.fuckinStop();
+                Game.serwer.fuckinStop();
                // Game.screenManager.Visible = true;
                 //Game.client.getCzyGra = false;
 
