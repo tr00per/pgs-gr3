@@ -240,8 +240,8 @@ namespace RzezniaMagow
                         gracz.getPozycjaKursora = new Vector2(xK, yK);
 
                        //pobranie ilości pocisków
-                        byte ilośćPocisków = tresc[17];
-                        byte typPocisku = tresc[19];
+                        //byte ilośćPocisków = tresc[17];
+                       // byte typPocisku = tresc[18];
 
                         //for (int i = 0; i < ilośćPocisków; i++)
                         //{
@@ -306,7 +306,7 @@ namespace RzezniaMagow
                 case 8:
                     {
 
-                        tablica = new byte[7+32*listGracz.Count];
+                        tablica = new byte[4+28*listGracz.Count];
                         //addProtocolType(typ);
                         offset = 0;
                         addNumberOfPlayers((byte)listGracz.Count);
@@ -329,13 +329,13 @@ namespace RzezniaMagow
                         addRoundNumber(nrRundy);
 
                        // addCheckSum(calculateCheckSum(tablica));
-                        offset = 0;
+                       
                         return tablica;
                         
                     }
                 case 16:
                     {
-                        tablica = new byte[8 + 21 * listGracz.Count];// + 11*listPocisk.Count];
+                        tablica = new byte[2 + 19 * listGracz.Count];// + 11*listPocisk.Count];
 
                         offset = 0;
 
@@ -360,10 +360,9 @@ namespace RzezniaMagow
                         //    addShotPosition(listPocisk.ElementAt(i).getPozycja.X, listPocisk.ElementAt(i).getPozycja.Y);
 
                         //}
-                        if (tablica.Length > 100)
-                            System.Console.WriteLine("svsvdsdv");
+                       
                        // addCheckSum(calculateCheckSum(tablica));
-                        offset = 0;
+                       
                         return tablica;
                        
                     }
