@@ -62,14 +62,15 @@ namespace RzezniaMagow
         {
             if (Game.czyNowaRunda)
             {
-                byte[] data = prot.createPackage(players, bullets, Common.PACKET_BEGIN, roundNumber); //FIXME change arguments
-                // byte[] data = prot.getTablica;
+                Console.WriteLine("### Beginning new round!");
+                ++roundNumber;
+                byte[] data = prot.createPackage(players, bullets, Common.PACKET_BEGIN, roundNumber);
                 sendUpdate(Common.PACKET_BEGIN, data);
+                Game.czyNowaRunda = false;
             }
             else
             {
-                byte[] data = prot.createPackage(players, bullets, Common.PACKET_COMMON, roundNumber); //FIXME change arguments
-                // byte[] data = prot.getTablica;
+                byte[] data = prot.createPackage(players, bullets, Common.PACKET_COMMON, roundNumber);
                 sendUpdate(Common.PACKET_COMMON, data);
             }
         }

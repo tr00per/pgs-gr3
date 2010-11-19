@@ -14,10 +14,8 @@ namespace RzezniaMagow
         private short nrRundy;
         private bool czyGra = false;
 
-
         public ClientProtokol clientProtocol;
         private System.Timers.Timer updateTimer;
-        
 
         public ClientLogic()
             : base(status)
@@ -26,16 +24,19 @@ namespace RzezniaMagow
             clientProtocol = new ClientProtokol();
             listaGraczy = new List<Gracz>();
             listaPociskow = new List<Pocisk>();
-            updateTimer = new System.Timers.Timer(10);
+            updateTimer = new System.Timers.Timer(20);
             updateTimer.Elapsed += new ElapsedEventHandler(updateTimerCB);
-            
-            
-        }
-        public void startClient()
-        {
-            updateTimer.Start();
         }
 
+        protected override void clientReady(byte id, string nick, byte avatar)
+        {
+            Game.zawodnik = new Gracz(id, nick, avatar);
+            Game.zawodnik.getPozycja = new Microsoft.Xna.Framework.Vector2(128, 128);
+            listaGraczy.Add(Game.zawodnik);
+            Game.kamera.getPozycja = Game.zawodnik.getPozycja;
+            Game.client.getCzyGra = true;
+            updateTimer.Start();
+        }
 
         private void updateTimerCB(object o, ElapsedEventArgs args)
         //private void updateTimerCB()
