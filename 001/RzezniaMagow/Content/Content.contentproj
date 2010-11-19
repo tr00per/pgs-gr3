@@ -81,13 +81,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Maps\mapa.jpg">
-      <Name>mapa</Name>
+    <Compile Include="Avatar\Diablo.png">
+      <Name>Diablo</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Avatar\Frog.png">
       <Name>Frog</Name>
       <Importer>TextureImporter</Importer>
@@ -103,10 +101,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Avatar\Diablo.png">
-      <Name>Diablo</Name>
+    <Compile Include="Maps\mapa.jpg">
+      <Name>mapa</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
