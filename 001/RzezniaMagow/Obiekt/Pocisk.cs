@@ -31,7 +31,7 @@ namespace RzezniaMagow
             IDOwnera = owner;
         }
 
-        public Pocisk(Pocisk kopia) : base(kopia)
+        public Pocisk(Pocisk kopia, byte Id) : base(kopia, Id)
         {
             typPocisku = kopia.typPocisku;
             IDOwnera = kopia.IDOwnera;

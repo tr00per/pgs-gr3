@@ -182,7 +182,7 @@ namespace RzezniaMagow
                     czyNowaRunda = false;
                 }
 
-                spriteBatch.Draw(zawodnik.getTekstura, zawodnik.getPozycja, Color.White);
+                //spriteBatch.Draw(zawodnik.getTekstura, zawodnik.getPozycja, Color.White);
                 spriteBatch.Draw(cel, zawodnik.getPozycjaKursora, Color.White);
 
                 

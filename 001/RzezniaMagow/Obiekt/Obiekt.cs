@@ -59,6 +59,14 @@ namespace RzezniaMagow
 
         }
 
+        public Obiekt(Obiekt kopia, byte idd)
+        {
+            pozycja = kopia.pozycja;
+            ID = idd;
+
+
+        }
+
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
 
