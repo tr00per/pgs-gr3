@@ -37,6 +37,7 @@ namespace RzezniaMagow
         private Semaphore slSem;
 
         private Thread defaultThread;
+        private List<Thread> threadPool;
 
         /// <summary>
         /// Creates network server. Server has to be started by startServer().
@@ -64,6 +65,8 @@ namespace RzezniaMagow
 
             pools = new Dictionary<byte, DataPool>();
             poolSem = new Semaphore(1, 1);
+
+            threadPool = new List<Thread>();
         }
 
         /// <summary>
@@ -114,27 +117,52 @@ namespace RzezniaMagow
 
             running = false;
 
-            Console.WriteLine("Killing thread...");
+            Console.WriteLine("Killing threads...");
             Thread.Sleep(100);
             if (defaultThread.IsAlive)
             {
                 defaultThread.Interrupt();
+            }
+            foreach (Thread t in threadPool)
+            {
+                if (t.IsAlive)
+                {
+                    t.Interrupt();
+                }
             }
             srv.Stop();
 
             Console.WriteLine("Stopped.");
         }
 
+
+        private void defaultWait()
+        {
+            Console.WriteLine("Listening to clients...");
+
+            while (running)
+            {
+                if (srv.Pending())
+                {
+                    Console.WriteLine("New connection!");
+                    TcpClient cli = srv.AcceptTcpClient();
+                    cli.NoDelay = true;
+
+                    ThreadStart starter = delegate { clientHandle(cli); };
+                    Thread t = new Thread(starter);
+                    t.Start();
+                    threadPool.Add(t);
+                }
+                Thread.Sleep(5);
+            }
+        }
+
         /// <summary>
         /// Child thread of defaultWait.
         /// Accepts connection, does handshaking and the rest of processing.
         /// </summary>
-        private void clientHandle(IAsyncResult arg)
+        private void clientHandle(TcpClient cli)
         {
-            TcpListener server = (TcpListener)arg.AsyncState;
-            TcpClient cli = server.EndAcceptTcpClient(arg);
-            cli.NoDelay = true;
-
             String IP = IPAddress.Parse(((IPEndPoint)cli.Client.RemoteEndPoint).Address.ToString()).ToString();
             Console.WriteLine("Client connected: " + IP);
             NetworkStream io = cli.GetStream();
@@ -222,19 +250,6 @@ namespace RzezniaMagow
             cli.Client.Close();
             cli.Close();
             Console.WriteLine(nick + " (" + ID +  ") disconnected.");
-        }
-
-        private void defaultWait()
-        {
-            Console.WriteLine("Listening to clients...");
-
-            while (running)
-            {
-                if (srv.Pending())
-                {
-                    srv.BeginAcceptTcpClient(new AsyncCallback(clientHandle), srv);
-                }
-            }
         }
 
         /// <summary>
