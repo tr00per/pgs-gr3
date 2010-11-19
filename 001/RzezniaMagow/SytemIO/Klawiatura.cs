@@ -33,11 +33,14 @@ namespace RzezniaMagow
         public Keys KONSOLA = Keys.Tab;
 
         private int walkSpeed = 2;
+        private bool wycisniety;
 
 
         public Klawiatura()
         {
             this.stanKlawiatury = Keyboard.GetState();
+
+            wycisniety = true;
         }
 
         /// <summary>
@@ -94,50 +97,53 @@ namespace RzezniaMagow
 
             if (KeyJustPressed(Keys.D4))
             {
-                //Console.WriteLine("DONE.");
-                //sl.server.stopServer();
-                //Console.WriteLine("SERVER RUNNING: " + sl.server.isRunning().ToString());
-
-                //Console.WriteLine("DONE!");
+                
 
             }
             if (Game.client.getCzyGra)
             {
-                if (this.stanKlawiatury.IsKeyDown(DOL))
-                {
-                    if (Game.zawodnik.getPozycja.Y + Game.zawodnik.getTekstura.Height < Game.map.getTekstura.Height)
-                        Game.zawodnik.getPozycja = new Vector2(Game.zawodnik.getPozycja.X, Game.zawodnik.getPozycja.Y + walkSpeed);
+                
+                    if (this.stanKlawiatury.IsKeyDown(DOL))
+                    {
+                        if (Game.zawodnik.getPozycja.Y + Game.zawodnik.getTekstura.Height < Game.map.getTekstura.Height)
+                            Game.zawodnik.getPozycja = new Vector2(Game.zawodnik.getPozycja.X, Game.zawodnik.getPozycja.Y + walkSpeed);
 
-                    Game.kamera.getPozycja = Game.zawodnik.getPozycja;
+                        Game.kamera.getPozycja = Game.zawodnik.getPozycja;
+                        wycisniety = false;
 
-                }
-                if (this.stanKlawiatury.IsKeyDown(GORA))
-                {
-                    if (Game.zawodnik.getPozycja.Y > 0)
-                        Game.zawodnik.getPozycja = new Vector2(Game.zawodnik.getPozycja.X, Game.zawodnik.getPozycja.Y - walkSpeed);
+                    }
+                    else if (this.stanKlawiatury.IsKeyDown(GORA))
+                    {
+                        if (Game.zawodnik.getPozycja.Y > 0)
+                            Game.zawodnik.getPozycja = new Vector2(Game.zawodnik.getPozycja.X, Game.zawodnik.getPozycja.Y - walkSpeed);
 
-                    Game.kamera.getPozycja = Game.zawodnik.getPozycja;
+                        Game.kamera.getPozycja = Game.zawodnik.getPozycja;
+                        wycisniety = false;
 
+                    }
+                    else if (this.stanKlawiatury.IsKeyDown(LEWO))
+                    {
+                        if (Game.zawodnik.getPozycja.X > 0)
+                            Game.zawodnik.getPozycja = new Vector2(Game.zawodnik.getPozycja.X - walkSpeed, Game.zawodnik.getPozycja.Y);
 
-                }
+                        Game.kamera.getPozycja = Game.zawodnik.getPozycja;
+                        wycisniety = false;
+                    }
 
+                    else if (this.stanKlawiatury.IsKeyDown(PRAWO))
+                    {
+                        if (Game.zawodnik.getPozycja.X + Game.zawodnik.getTekstura.Width < Game.map.getTekstura.Width)
+                            Game.zawodnik.getPozycja = new Vector2(Game.zawodnik.getPozycja.X + walkSpeed, Game.zawodnik.getPozycja.Y);
 
-                if (this.stanKlawiatury.IsKeyDown(LEWO))
-                {
-                    if (Game.zawodnik.getPozycja.X > 0)
-                        Game.zawodnik.getPozycja = new Vector2(Game.zawodnik.getPozycja.X - walkSpeed, Game.zawodnik.getPozycja.Y);
-
-                    Game.kamera.getPozycja = Game.zawodnik.getPozycja;
-                }
-
-                if (this.stanKlawiatury.IsKeyDown(PRAWO))
-                {
-                    if (Game.zawodnik.getPozycja.X + Game.zawodnik.getTekstura.Width < Game.map.getTekstura.Width)
-                        Game.zawodnik.getPozycja = new Vector2(Game.zawodnik.getPozycja.X + walkSpeed, Game.zawodnik.getPozycja.Y);
-
-                    Game.kamera.getPozycja = Game.zawodnik.getPozycja;
-
-                }
+                        Game.kamera.getPozycja = Game.zawodnik.getPozycja;
+                        wycisniety = false;
+                    }
+                
+                //    if (this.stanKlawiatury.IsKeyUp(LEWO) || this.stanKlawiatury.IsKeyUp(GORA) || this.stanKlawiatury.IsKeyUp(DOL) || this.stanKlawiatury.IsKeyUp(PRAWO))
+                //{
+                //    wycisniety = true;
+                //}
+               
 
                 if (KeyJustPressed(STRZAL))
                 {

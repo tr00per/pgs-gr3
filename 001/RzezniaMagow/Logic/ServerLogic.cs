@@ -94,7 +94,8 @@ namespace RzezniaMagow
           
             for (int i = 0; i < gracz.getListaPociskow.Count; i++)
             {
-                    bullets.Add(new Pocisk(gracz.getPozycja.X,gracz.getPozycja.Y,nextBulletID,gracz.getAktualnaBron.getTypBroni,gracz.getID));
+                    bullets.Add(new Pocisk(gracz.getPozycja.X,gracz.getPozycja.Y,gracz.getPozycjaKursora.X,gracz.getPozycjaKursora.Y,
+                                            nextBulletID,gracz.getAktualnaBron.getTypBroni,gracz.getID));
                    
                     nextBulletID++;
                 
