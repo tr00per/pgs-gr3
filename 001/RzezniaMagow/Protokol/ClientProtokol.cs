@@ -285,20 +285,7 @@ namespace RzezniaMagow
                             }
 
 
-                                //if (iloscPocisków != Game.client.listaPociskow.Count)
-                                //{
-                                //    for (int i = Game.client.listaPociskow.Count; i > 0; i--)
-                                //    {
-                                //        bool flagaUsuniecia = true;
-                                //        for (int j = 0; j < listaIDPociskow.Length; j++)
-                                //        {
-                                //            if (Game.client.listaPociskow.ElementAt(i).getID == listaIDPociskow[j])
-                                //                flagaUsuniecia = false;
-                                //        }
-                                //        if (flagaUsuniecia)
-                                //            Game.client.listaPociskow.RemoveAt(i);
-                                //    }
-                                //}
+                                
                             
                            
                             break;
