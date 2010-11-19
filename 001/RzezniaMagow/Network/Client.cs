@@ -16,7 +16,7 @@ namespace RzezniaMagow
         private TcpClient cli;
         private Thread listener;
         protected Semaphore listenerSem;
-        private bool running;
+        volatile private bool running;
         private byte id;
 
         /// <summary>
@@ -45,9 +45,10 @@ namespace RzezniaMagow
         /// <param name="nick">Screen name of a player. Max 16 chars.</param>
         /// <param name="avatar">ID of chosen avatar.</param>
         /// <returns>If client si successfuly connected.</returns>
-        public bool connect(string address, int port, string nick, byte avatar)
+        public void connect(string address, int port, string nick, byte avatar)
         {
             cli = new TcpClient();
+            cli.NoDelay = true;
 
             IPAddress ip = IPAddress.Parse(address);
             statusCallback("Connecting to " + address + ":" + port.ToString());
@@ -68,44 +69,13 @@ namespace RzezniaMagow
                 {
                     statusCallback("Failed! Something went terribly wrong...");
                 }
-                return false;
-            }
-            
-            //TODO do the proper conversion w/check
-            Encoding enc = new UTF8Encoding();
-            byte[] packet = new byte[19];
-            enc.GetBytes(nick, 0, nick.Length, packet, Common.PACKET_HEADER_SIZE);
-            packet[18] = avatar;
-            packet[0] = Common.PACKET_HANDSHAKE;
-            packet[1] = Common.checksum(packet);
-            io.Write(packet, 0, 19);
-
-            packet = new byte[3];
-            io.Read(packet, 0, 3);
-            if (Common.correctPacket(packet, Common.PACKET_HANDSHAKE))
-            {
-                id = packet[Common.PACKET_HEADER_SIZE];
-                Game.zawodnik = new Gracz(id, nick, avatar);
-                Game.zawodnik.getPozycja = new Microsoft.Xna.Framework.Vector2(128, 128);
-                Game.kamera.getPozycja = Game.zawodnik.getPozycja;
-                Game.czyNowaRunda = true;
-               
-            }
-            else
-            {
-                statusCallback("Holy cow...");
-                return false;
+                return;
             }
 
-            cli.NoDelay = true;
-            statusCallback("Done. Starting broadcast listener...");
-            running = true;
-            listener = new Thread(new ThreadStart(listen));
+            statusCallback("Starting client network thread...");
+            ThreadStart starter = delegate { clientThread(cli, nick, avatar); };
+            listener = new Thread(starter);
             listener.Start();
-
-            statusCallback("Ready!");
-
-            return true;
         }
 
         public bool isRunning()
@@ -122,7 +92,7 @@ namespace RzezniaMagow
 
             sayGoodbye();
 
-            Thread.Sleep(10);
+            Thread.Sleep(1500);
             if (listener.IsAlive)
             {
                 listener.Interrupt();
@@ -137,27 +107,53 @@ namespace RzezniaMagow
         /// Listen for incoming packets from server and run appropriate callback.
         /// Incorrect packets are silently ignored.
         /// </summary>
-        private void listen()
+        private void clientThread(TcpClient cli, string nick, byte avatar)
         {
+            statusCallback("Signing in...");
+            NetworkStream io = cli.GetStream();
+            //TODO do the proper conversion w/check
+            Encoding enc = new UTF8Encoding();
+            byte[] packet = new byte[19];
+            enc.GetBytes(nick, 0, nick.Length, packet, Common.PACKET_HEADER_SIZE);
+            packet[18] = avatar;
+            packet[0] = Common.PACKET_HANDSHAKE;
+            packet[1] = Common.checksum(packet);
+            io.Write(packet, 0, 19);
+
+            packet = new byte[3];
+            io.Read(packet, 0, 3);
+            if (Common.correctPacket(packet, Common.PACKET_HANDSHAKE))
+            {
+                clientReady(id, nick, avatar);
+                id = packet[Common.PACKET_HEADER_SIZE];
+                running = true;
+                statusCallback("Ready!");
+            }
+            else
+            {
+                statusCallback("Holy cow...");
+                //running is false
+            }
+
             int pending = 0;
+
+            bool enteredGame = false;
 
             while (running)
             {
                 
                 if (cli.Connected && (pending = cli.Available) > 0)
                 {
-                    byte[] packet = new byte[pending];
-                    NetworkStream io = cli.GetStream();
+                    packet = new byte[pending];
                     io.Read(packet, 0, pending);
 
-                    
                         if (!Common.correctPacket(packet, Common.PACKET_COMMON | Common.PACKET_SRVMSG | Common.PACKET_END | Common.PACKET_BEGIN))
                         {
                             statusCallback("Incorrect packet: " + packet[0] + ", " + packet[1] + ".");
                             continue;
                         }
 
-                        if (packet[0] == Common.PACKET_COMMON)
+                        if (enteredGame && packet[0] == Common.PACKET_COMMON)
                         {
                             listenerSem.WaitOne();
                             updateArrived(packet.Skip(Common.PACKET_HEADER_SIZE).ToArray());
@@ -165,16 +161,15 @@ namespace RzezniaMagow
                         }
                         else if (packet[0] == Common.PACKET_SRVMSG)
                         {
-                            //TODO do the proper conversion w/check
-                            Encoding enc = new UTF8Encoding();
                             string msg = enc.GetString(packet, Common.PACKET_HEADER_SIZE, pending - Common.PACKET_HEADER_SIZE);
-                            statusCallback(msg.Trim());
+                            statusCallback("from Server: " + msg.Trim());
                         }
                         else if (packet[0] == Common.PACKET_BEGIN)
                         {
                             Game.client.listaGraczy = new List<Gracz>();
                             listenerSem.WaitOne();
                             beginRound(packet.Skip(Common.PACKET_HEADER_SIZE).ToArray());
+                            enteredGame = true;
                             listenerSem.Release();
                         }
                         else if (packet[0] == Common.PACKET_END) //server shutdown or kicked out
@@ -218,10 +213,13 @@ namespace RzezniaMagow
             data.CopyTo(packet, Common.PACKET_HEADER_SIZE);
             packet[0] = Common.PACKET_COMMON;
             packet[1] = Common.checksum(packet);
-            //System.Console.WriteLine(packet[14].ToString());
-            NetworkStream io = cli.GetStream();
-            
-            io.BeginWrite(packet, 0, packet.Length, new AsyncCallback(asyncWrite), io);
+
+            if (running)
+            {
+                NetworkStream io = cli.GetStream();
+
+                io.BeginWrite(packet, 0, packet.Length, new AsyncCallback(asyncWrite), io);
+            }
         }
 
         /// <summary>
@@ -233,5 +231,7 @@ namespace RzezniaMagow
         /// Callback. When new round begins.
         /// </summary>
         abstract protected void beginRound(byte[] data);
+
+        abstract protected void clientReady(byte id, string nick, byte avatar);
     }
 }

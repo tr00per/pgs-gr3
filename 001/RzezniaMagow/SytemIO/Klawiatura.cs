@@ -63,8 +63,19 @@ namespace RzezniaMagow
 
             if (KeyJustPressed(Keys.Escape))
             {
-                Game.client.fuckinStop();
-                Game.serwer.fuckinStop();
+                Console.WriteLine("GAME: Exiting...");
+                if (Game.czySerwer)
+                {
+                    Game.serwer.fuckinStop();
+                }
+                else
+                {
+                    Game.client.fuckinStop();
+                }
+
+                Console.WriteLine("GAME: Almost done.");
+                Program.game.Exit();
+
                // Game.screenManager.Visible = true;
                 //Game.client.getCzyGra = false;
 
@@ -80,11 +91,8 @@ namespace RzezniaMagow
             {
 
                 Game.client = new ClientLogic();
-                if (Game.client.connect("127.0.0.1", 20000, "tr00per", 2))
-                    Game.client.getCzyGra = true;
-                Console.WriteLine("CLIENT RUNNING: " + Game.client.isRunning().ToString());
+                Game.client.connect("127.0.0.1", 20000, "Tester", 3);
                 Console.WriteLine("WAITING...");
-
             }
 
             if (KeyJustPressed(Keys.D3))

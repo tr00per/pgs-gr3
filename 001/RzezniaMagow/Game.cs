@@ -34,7 +34,7 @@ namespace RzezniaMagow
         Myszka mysz;
 
         public static bool czySerwer;
-        public static bool czyNowaRunda;
+        volatile public static bool czyNowaRunda;
 
 
        
@@ -167,14 +167,10 @@ namespace RzezniaMagow
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-
             spriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.SaveState, kamera.getTransformation(graphics));
-
-
-           if (client.getCzyGra)
-           {
+            if (client.getCzyGra)
+            {
                 map.Draw(gameTime, spriteBatch);
-
 
                 for (int i = 0; i < client.listaGraczy.Count; i++)
                 {
@@ -184,20 +180,10 @@ namespace RzezniaMagow
 
                 //spriteBatch.Draw(zawodnik.getTekstura, zawodnik.getPozycja, Color.White);
                 spriteBatch.Draw(cel, zawodnik.getPozycjaKursora, Color.White);
-
-                
             }
-
             spriteBatch.End();
-            
-            // TODO: Add your drawing code here
 
             base.Draw(gameTime);
         }
-
-       
-
-
-        
     }
 }

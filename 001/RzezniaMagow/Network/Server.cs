@@ -11,15 +11,15 @@ namespace RzezniaMagow
 {
     internal class DataPool
     {
-        public bool dataInPending;
-        public byte[] dataIn;
+        volatile public bool dataInPending;
+        volatile public byte[] dataIn;
 
         public DataPool() { dataInPending = false; }
         public DataPool(byte[] data)
         {
-            dataInPending = true;
             dataIn = new byte[data.Length];
             data.CopyTo(dataIn, 0);
+            dataInPending = true;
         }
     };
 
@@ -60,12 +60,10 @@ namespace RzezniaMagow
             this.maxClients = maxClients;
 
             slSem = new Semaphore(1, 1);
-
             srv = new TcpListener(IPAddress.Any, port);
 
             pools = new Dictionary<byte, DataPool>();
             poolSem = new Semaphore(1, 1);
-
             threadPool = new List<Thread>();
         }
 
@@ -79,7 +77,7 @@ namespace RzezniaMagow
                 return;
             }
 
-            Console.WriteLine("Starting server...");
+            Console.WriteLine("Server: Starting server...");
 
             running = true;
 
@@ -90,7 +88,7 @@ namespace RzezniaMagow
             defaultThread.Start();
             sl.serverStarted();
 
-            Console.WriteLine("Started.");
+            Console.WriteLine("Server: Started.");
         }
 
         public bool isRunning()
@@ -109,20 +107,17 @@ namespace RzezniaMagow
                 return;
             }
 
-            Console.WriteLine("Stopping server...");
+            Console.WriteLine("Server: Stopping server...");
             sl.serverStopped();
 
-            Console.WriteLine("Disconnecting clients...");
+            Console.WriteLine("Server: Disconnecting clients...");
             broadcast(Common.PACKET_END, new byte[] { 0 });
 
             running = false;
 
-            Console.WriteLine("Killing threads...");
-            Thread.Sleep(100);
-            if (defaultThread.IsAlive)
-            {
-                defaultThread.Interrupt();
-            }
+            Thread.Sleep(1500);
+
+            Console.WriteLine("Server: Killing threads...");
             foreach (Thread t in threadPool)
             {
                 if (t.IsAlive)
@@ -130,30 +125,35 @@ namespace RzezniaMagow
                     t.Interrupt();
                 }
             }
+            if (defaultThread.IsAlive)
+            {
+                defaultThread.Interrupt();
+            }
             srv.Stop();
 
-            Console.WriteLine("Stopped.");
+            Console.WriteLine("Server: Stopped.");
         }
 
 
         private void defaultWait()
         {
-            Console.WriteLine("Listening to clients...");
+            Console.WriteLine("Server: Listening to clients...");
+
+            int nextTreadId = 100;
 
             while (running)
             {
                 if (srv.Pending())
                 {
-                    Console.WriteLine("New connection!");
+                    Console.WriteLine("Server: New connection!");
                     TcpClient cli = srv.AcceptTcpClient();
                     cli.NoDelay = true;
 
-                    ThreadStart starter = delegate { clientHandle(cli); };
+                    ThreadStart starter = delegate { clientHandle(nextTreadId++, cli); };
                     Thread t = new Thread(starter);
                     t.Start();
                     threadPool.Add(t);
                 }
-                Thread.Sleep(5);
             }
         }
 
@@ -161,10 +161,10 @@ namespace RzezniaMagow
         /// Child thread of defaultWait.
         /// Accepts connection, does handshaking and the rest of processing.
         /// </summary>
-        private void clientHandle(TcpClient cli)
+        private void clientHandle(int threadID, TcpClient cli)
         {
             String IP = IPAddress.Parse(((IPEndPoint)cli.Client.RemoteEndPoint).Address.ToString()).ToString();
-            Console.WriteLine("Client connected: " + IP);
+            Console.WriteLine("Server (" + threadID + "): Client connected: " + IP);
             NetworkStream io = cli.GetStream();
             if (pools.Count >= maxClients)
             {
@@ -173,11 +173,11 @@ namespace RzezniaMagow
                 io.Close();
                 cli.Client.Close();
                 cli.Close();
-                Console.WriteLine("Client limit reached! " + IP + " disconnected.");
+                Console.WriteLine("Server (" + threadID + "): Client limit reached! " + IP + " disconnected.");
                 return;
             }
 
-            Console.WriteLine("Handshaking...");
+            Console.WriteLine("Server (" + threadID + "): Handshaking...");
             byte[] bufin = new byte[19];
             do
             {
@@ -188,7 +188,7 @@ namespace RzezniaMagow
             Encoding enc = new UTF8Encoding();
             String nick = enc.GetString(bufin, Common.PACKET_HEADER_SIZE, 16).Trim(new char[] { ' ', '\0' });
             byte avatar = bufin[18];
-            Console.WriteLine(IP + " -> " + nick);
+            Console.WriteLine("Server (" + threadID + "): " + IP + " -> " + nick);
 
             byte[] packet = new byte[3];
             slSem.WaitOne(); //this has to be linear
@@ -205,9 +205,8 @@ namespace RzezniaMagow
             pools.Add(ID, new DataPool());
             poolSem.Release();
 
-            Console.WriteLine(nick + " (" + ID + ") is ready.");
+            Console.WriteLine("Server (" + threadID + "): " + nick + " (" + ID + ") is ready.");
             sl.sendMessage(nick + " (" + ID + ") is ready.");
-            Game.czyNowaRunda = true;
 
             int pending = 0;
 
@@ -228,7 +227,7 @@ namespace RzezniaMagow
 
                     if (!Common.correctPacket(packet, Common.PACKET_COMMON | Common.PACKET_END))
                     {
-                        Console.WriteLine("Incorrect packet: " + packet[0] + ", " + packet[1] + ".");
+                        Console.WriteLine("Server (" + threadID + "): Incorrect packet: " + packet[0] + ", " + packet[1] + ".");
                         continue;
                     }
 
@@ -249,7 +248,7 @@ namespace RzezniaMagow
 
             cli.Client.Close();
             cli.Close();
-            Console.WriteLine(nick + " (" + ID +  ") disconnected.");
+            Console.WriteLine("Server (" + threadID + "): " + nick + " (" + ID + ") disconnected.");
         }
 
         /// <summary>

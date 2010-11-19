@@ -68,6 +68,10 @@ namespace RzezniaMagow
             {
                 msg = msg.Substring(0, 200);
             }
+            else
+            {
+                msg.PadRight(200);
+            }
 
             //TODO do the proper conversion w/check
             Encoding enc = new UTF8Encoding();

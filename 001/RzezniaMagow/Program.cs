@@ -13,9 +13,7 @@ namespace RzezniaMagow
         static void Main(string[] args)
         {
             game = new Game();
-                game.Run();
-
-
+            game.Run();
         }
     }
 }

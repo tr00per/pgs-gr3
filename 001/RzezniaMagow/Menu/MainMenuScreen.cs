@@ -68,22 +68,14 @@ namespace RzezniaMagow
             //do odkomentowania po podlaczeniu serwera
 
             Game.client = new ClientLogic();
-            if (Game.client.connect("127.0.0.1", 20000, "tr00per", 4))
-                Game.client.getCzyGra = true;
-            Console.WriteLine("CLIENT RUNNING: " + Game.client.isRunning().ToString());
+            Game.client.connect("127.0.0.1", 20000, "tr00per", 1);
             Console.WriteLine("WAITING...");
 
+            Game.screenManager.Visible = false;
+            Game.screenManager.RemoveScreen(this);
 
-                Game.client.getCzyGra = true;
-                Game.client.startClient();
-                Game.screenManager.Visible = false;
-                Game.screenManager.RemoveScreen(this);
-
-                for (int i = 0; i < ScreenManager.GetScreens().Count; i++ )
-                    Game.screenManager.RemoveScreen(ScreenManager.GetScreens().ElementAt(i));
-               
-                
-                
+            for (int i = 0; i < ScreenManager.GetScreens().Count; i++ )
+                Game.screenManager.RemoveScreen(ScreenManager.GetScreens().ElementAt(i));
         }
 
 
@@ -98,12 +90,9 @@ namespace RzezniaMagow
             //Console.WriteLine("SERVER RUNNING: " + Game.serwer..ToString());
 
             Game.client = new ClientLogic();
-            if (Game.client.connect("127.0.0.1", 20000, "Kivu", 2))
-                Game.client.getCzyGra = true;
-            Console.WriteLine("CLIENT RUNNING: " + Game.client.isRunning().ToString());
+            Game.client.connect("127.0.0.1", 20000, "Kivu", 2);
             Console.WriteLine("WAITING...");
 
-            Game.client.startClient();
             Game.screenManager.Visible = false;
             Game.screenManager.RemoveScreen(this);
 

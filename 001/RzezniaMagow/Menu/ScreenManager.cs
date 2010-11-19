@@ -106,7 +106,7 @@ namespace RzezniaMagow
         /// <summary>
         /// Load your graphics content.
         /// </summary>
-        public  void LoadContent()
+        public new void LoadContent()
         {
             // Load content belonging to the screen manager.
            // ContentManager content = Game.Content;
