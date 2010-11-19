@@ -9,6 +9,20 @@ using System.Net;
 
 namespace RzezniaMagow
 {
+    internal class DataPool
+    {
+        public bool dataInPending;
+        public byte[] dataIn;
+
+        public DataPool() { dataInPending = false; }
+        public DataPool(byte[] data)
+        {
+            dataInPending = true;
+            dataIn = new byte[data.Length];
+            data.CopyTo(dataIn, 0);
+        }
+    };
+
     public class Server
     {
         private bool running = false;
@@ -16,13 +30,13 @@ namespace RzezniaMagow
 
         private TcpListener srv;
 
-        private List<TcpClient> clients;
-        private Semaphore clientsSem;
+        private Dictionary<byte, DataPool> pools;
+        private Semaphore poolSem;
 
         private ServerAbstract sl;
         private Semaphore slSem;
 
-        private Thread incomingThread, defaultThread;
+        private Thread defaultThread;
 
         /// <summary>
         /// Creates network server. Server has to be started by startServer().
@@ -44,17 +58,16 @@ namespace RzezniaMagow
             this.sl = listener;
             this.maxClients = maxClients;
 
-            clientsSem = new Semaphore(1, 1);
             slSem = new Semaphore(1, 1);
 
-            clients = new List<TcpClient>();
             srv = new TcpListener(IPAddress.Any, port);
-            
+
+            pools = new Dictionary<byte, DataPool>();
+            poolSem = new Semaphore(1, 1);
         }
 
         /// <summary>
         /// Start server.
-        /// Run threads for accepting connections (incomingWait) and common communication (defaultWait).
         /// </summary>
         public void startServer()
         {
@@ -68,12 +81,9 @@ namespace RzezniaMagow
             running = true;
 
             //run incomingWait and regular handle in seperate threads
-            incomingThread = new Thread(new ThreadStart(this.incomingWait));
             defaultThread = new Thread(new ThreadStart(this.defaultWait));
-            incomingThread.IsBackground = true;
 
             srv.Start();
-            incomingThread.Start();
             defaultThread.Start();
             sl.serverStarted();
 
@@ -87,7 +97,7 @@ namespace RzezniaMagow
 
         /// <summary>
         /// Stop server.
-        /// Disconnect all remaining clients, then kill threads.
+        /// Disconnect all remaining clients, then kill thread.
         /// </summary>
         public void stopServer()
         {
@@ -99,25 +109,13 @@ namespace RzezniaMagow
             Console.WriteLine("Stopping server...");
             sl.serverStopped();
 
-            running = false;
-
             Console.WriteLine("Disconnecting clients...");
             broadcast(Common.PACKET_END, new byte[] { 0 });
 
-            //stop running threads and force connections to close
-            clientsSem.WaitOne();
-            foreach (TcpClient cli in clients)
-            {
-                cli.Client.Close();
-            }
-            clientsSem.Release();
+            running = false;
 
-            Console.WriteLine("Killing threads...");
+            Console.WriteLine("Killing thread...");
             Thread.Sleep(100);
-            if (incomingThread.IsAlive)
-            {
-                incomingThread.Interrupt();
-            }
             if (defaultThread.IsAlive)
             {
                 defaultThread.Interrupt();
@@ -128,35 +126,19 @@ namespace RzezniaMagow
         }
 
         /// <summary>
-        /// This runs in a seperate thread, accepts connections (in child threads - incomingAccept).
+        /// Child thread of defaultWait.
+        /// Accepts connection, does handshaking and the rest of processing.
         /// </summary>
-        private void incomingWait()
-        {
-            Console.WriteLine("Awaiting connections...");
-
-            while (running)
-            {
-                if (srv.Pending())
-                {
-                    srv.BeginAcceptTcpClient(new AsyncCallback(incomingAccept), srv);
-                }
-                Thread.Sleep(50);
-            }
-        }
-
-        /// <summary>
-        /// Child thread of incomingWait.
-        /// Accepts connection and does handshaking.
-        /// </summary>
-        private void incomingAccept(IAsyncResult arg)
+        private void clientHandle(IAsyncResult arg)
         {
             TcpListener server = (TcpListener)arg.AsyncState;
             TcpClient cli = server.EndAcceptTcpClient(arg);
+            cli.NoDelay = true;
 
             String IP = IPAddress.Parse(((IPEndPoint)cli.Client.RemoteEndPoint).Address.ToString()).ToString();
             Console.WriteLine("Client connected: " + IP);
             NetworkStream io = cli.GetStream();
-            if (clients.Count >= maxClients)
+            if (pools.Count >= maxClients)
             {
                 byte[] buf = { Common.PACKET_FAIL, 0 }; //refuse to connect client due to client limit
                 io.Write(buf, 0, Common.PACKET_HEADER_SIZE);
@@ -182,80 +164,76 @@ namespace RzezniaMagow
 
             byte[] packet = new byte[3];
             slSem.WaitOne(); //this has to be linear
-            packet[Common.PACKET_HEADER_SIZE] = sl.newPlayerConnected(nick, avatar);
+            byte ID = sl.newPlayerConnected(nick, avatar);
             slSem.Release();
 
+            packet[Common.PACKET_HEADER_SIZE] = ID;
             packet[1] = Common.checksum(packet);
             packet[0] = Common.PACKET_HANDSHAKE;
 
             io.Write(packet, 0, 3);
 
-            clientsSem.WaitOne();
-            cli.NoDelay = true;
-            clients.Add(cli);
-            clientsSem.Release();
+            poolSem.WaitOne();
+            pools.Add(ID, new DataPool());
+            poolSem.Release();
 
-            Console.WriteLine(nick + " is ready.");
-            sl.sendMessage(nick + " is ready.");
+            Console.WriteLine(nick + " (" + ID + ") is ready.");
+            sl.sendMessage(nick + " (" + ID + ") is ready.");
             Game.czyNowaRunda = true;
+
+            int pending = 0;
+
+            bool connected = true;
+
+            while (running && connected)
+            {
+                if (pools[ID].dataInPending)
+                {
+                    io.Write(pools[ID].dataIn, 0, pools[ID].dataIn.Length);
+                    pools[ID] = new DataPool();
+                }
+
+                if (cli.Connected && (pending = cli.Available) > 0)
+                {
+                    packet = new byte[pending];
+                    io.Read(packet, 0, pending);
+
+                    if (!Common.correctPacket(packet, Common.PACKET_COMMON | Common.PACKET_END))
+                    {
+                        Console.WriteLine("Incorrect packet: " + packet[0] + ", " + packet[1] + ".");
+                        continue;
+                    }
+
+                    //client says goodbye
+                    if (packet[0] == Common.PACKET_END)
+                    {
+                        slSem.WaitOne(); //this has to be linear
+                        sl.playerParted(ID);
+                        slSem.Release();
+                        connected = false;
+                    }
+                    else if (packet[0] == Common.PACKET_COMMON)
+                    {
+                        sl.playerHandle(packet.Skip(Common.PACKET_HEADER_SIZE).ToArray());
+                    }
+                }
+            }
+
+            cli.Client.Close();
+            cli.Close();
+            Console.WriteLine(nick + " (" + ID +  ") disconnected.");
         }
 
-        /// <summary>
-        /// Default communication in the incoming direction.
-        /// This runs in a seperate thread.
-        /// </summary>
         private void defaultWait()
         {
             Console.WriteLine("Listening to clients...");
-            int pending = 0;
 
             while (running)
             {
-                clientsSem.WaitOne();
-                foreach (TcpClient cli in clients)
+                if (srv.Pending())
                 {
-                    if (cli.Connected && (pending = cli.Available) > 0)
-                    {
-                        byte[] packet = new byte[pending];
-                        NetworkStream io = cli.GetStream();
-                        io.Read(packet, 0, pending);
-
-
-                            if (!Common.correctPacket(packet, Common.PACKET_COMMON | Common.PACKET_END))
-                            {
-                                Console.WriteLine("Incorrect packet: " + packet[0] + ", " + packet[1] + ".");
-                                continue;
-                            }
-
-                            //client says goodbye
-                            if (packet[0] == Common.PACKET_END)
-                            {
-                                slSem.WaitOne(); //this has to be linear
-                                if (packet.Length > Common.PACKET_HEADER_SIZE)
-                                {
-                                    sl.playerParted(packet[Common.PACKET_HEADER_SIZE]);
-                                }
-                                else
-                                {
-                                    sl.playerParted(0);
-                                }
-                                slSem.Release();
-                            }
-                            else if (packet[0] == Common.PACKET_COMMON)
-                            {
-                                ParameterizedThreadStart ts = new ParameterizedThreadStart(sl.playerHandle);
-                                new Thread(ts).Start(packet.Skip(Common.PACKET_HEADER_SIZE).ToArray());
-                            }
-                        
-
-
-                    }
+                    srv.BeginAcceptTcpClient(new AsyncCallback(clientHandle), srv);
                 }
-                clientsSem.Release();
-                //Thread.Sleep(5); -- works fine without it :]
-
-
-              
             }
         }
 
@@ -264,20 +242,20 @@ namespace RzezniaMagow
         /// </summary>
         /// <param name="type">Packet type</param>
         /// <param name="data">Content of the packet (without header)</param>
-        internal void broadcast(byte type, byte[] data)
+        public void broadcast(byte type, byte[] data)
         {
             byte[] packet = new byte[data.Length + Common.PACKET_HEADER_SIZE];
             data.CopyTo(packet, Common.PACKET_HEADER_SIZE);
             packet[0] = type;
             packet[1] = Common.checksum(packet);
 
-            clientsSem.WaitOne();
-            foreach (TcpClient cli in clients)
+            poolSem.WaitOne();
+            List<byte> Keys = new List<byte>(pools.Keys);
+            foreach (byte id in Keys)
             {
-                NetworkStream io = cli.GetStream();
-                io.BeginWrite(packet, 0, packet.Length, new AsyncCallback(Common.asyncWrite), io);
+                pools[id] = new DataPool(packet);
             }
-            clientsSem.Release();
+            poolSem.Release();
         }
     }
 }

@@ -19,8 +19,6 @@ namespace RzezniaMagow
 
         private byte roundNumber;
 
-        private System.Timers.Timer updateTimer;
-
         private SerwerProtocol prot;
 
         public ServerLogic()
@@ -31,8 +29,6 @@ namespace RzezniaMagow
             prot = new SerwerProtocol();
             server = new Server(this, 20000, 5);
             bindServer(server);
-           // updateTimer = new System.Timers.Timer(10);
-          // updateTimer.Elapsed += new ElapsedEventHandler(updateTimerCB);
             players = new List<Gracz>();
             bullets = new List<Pocisk>();
             server.startServer();
@@ -46,15 +42,8 @@ namespace RzezniaMagow
             }
         }
 
-        public override void serverStarted()
-        {
-          //  updateTimer.Start();
-        }
-
-        public override void serverStopped()
-        {
-           // updateTimer.Stop();
-        }
+        public override void serverStarted() {}
+        public override void serverStopped() {}
 
         /// <summary>
         /// New player connected. Give him his ID.
