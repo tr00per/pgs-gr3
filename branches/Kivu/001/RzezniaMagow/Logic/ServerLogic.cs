@@ -15,6 +15,7 @@ namespace RzezniaMagow
         private List<Gracz> players;
         private List<Pocisk> bullets;
         private byte nextPlayerID;
+        private byte nextBulletID;
 
         private byte roundNumber;
 
@@ -26,6 +27,7 @@ namespace RzezniaMagow
         {
             roundNumber = 0;
             nextPlayerID = 13;
+            nextBulletID = 0;
             prot = new SerwerProtocol();
             server = new Server(this, 20000, 5);
             bindServer(server);
@@ -87,7 +89,7 @@ namespace RzezniaMagow
         {
             byte[] d = (byte[])data;
             Gracz gracz = new Gracz();
-
+            
             
             gracz = prot.unpack(d);
 
@@ -99,12 +101,19 @@ namespace RzezniaMagow
                     players.ElementAt(i).getPozycjaKursora = gracz.getPozycjaKursora;
                 }
             }
-            updateTimerCB();
-            //for (int i = 0; i < gracz.getListaPociskow.Count; i++)
-            //{
-            //    bullets.Add(gracz.getListaPociskow.ElementAt(i));
-            //}
 
+            if (gracz.getListaPociskow.Count > 1)
+                System.Console.WriteLine("sfvsvs");
+
+            for (int i = 0; i < gracz.getListaPociskow.Count; i++)
+            {
+                    bullets.Add(new Pocisk(gracz.getPozycja.X,gracz.getPozycja.Y,nextBulletID,gracz.getAktualnaBron.getTypBroni,gracz.getID));
+                   
+                    nextBulletID++;
+                
+            }
+
+            updateTimerCB();
 
             ///Console.WriteLine(id + " send something to server.");
         }

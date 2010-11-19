@@ -117,14 +117,14 @@ namespace RzezniaMagow
         public void addNumberOfShots(ref byte[] tablica, ref int offset, byte number)
         {
             byte[] tab = BitConverter.GetBytes(number);
-            tab.CopyTo(tablica, offset);
+            tablica[offset] = tab[0];
             offset++;
         }
 
         public void addShotType(ref byte[] tablica, ref int offset, byte x)
         {
             byte[] tab = BitConverter.GetBytes(x);
-            tab.CopyTo(tablica, offset);
+            tablica[offset] = tab[0];
             offset++;
         }
 
@@ -254,35 +254,35 @@ namespace RzezniaMagow
 
 
                             //pobranie informacje o pociskach aktulanie znajdujących się na mapie
-                            //byte iloscPocisków = tresc[offset];
-                            //offset++;
+                            byte iloscPocisków = tresc[offset];
+                            offset++;
+                            Game.client.listaPociskow = new List<Pocisk>();
+                            if (iloscPocisków > 0)
+                            {
+                                //byte[] listaIDPociskow = new byte[iloscPocisków];
 
-                            //if (iloscPocisków > 0)
-                            //{
-                            //    byte[] listaIDPociskow = new byte[iloscPocisków];
+                                for (int i = 0; i < iloscPocisków; i++)
+                                {
+                                    //pobranie ID pocisku
+                                    byte pocisk_ID = tresc[offset];
+                                    offset++;
+                                    //pobranie ID gracza, który wystrzelił pocisk
+                                    byte pociskOwner = tresc[offset];
+                                    offset++;
+                                    //pobranie typu pocisku
+                                    byte pociskType = tresc[offset];
+                                    offset++;
 
-                            //    for (int i = 0; i < iloscPocisków; i++)
-                            //    {
-                            //        //pobranie ID pocisku
-                            //        byte pocisk_ID = tresc[offset];
-                            //        offset++;
-                            //        //pobranie ID gracza, który wystrzelił pocisk
-                            //        byte pociskOwner = tresc[offset];
-                            //        offset++;
-                            //        //pobranie typu pocisku
-                            //        byte pociskType = tresc[offset];
-                            //        offset++;
+                                    //pobranie pozycji pocisku
+                                    float x = BitConverter.ToSingle(tresc, offset);
+                                    offset += 4;
+                                    float y = BitConverter.ToSingle(tresc, offset);
+                                    offset += 4;
 
-                            //        //pobranie pozycji pocisku
-                            //        float x = BitConverter.ToSingle(tresc, offset);
-                            //        offset += 4;
-                            //        float y = BitConverter.ToSingle(tresc, offset);
-                            //        offset += 4;
+                                    Game.client.listaPociskow.Add(new Pocisk(x,y,pocisk_ID,pociskType,pociskOwner));
 
-                            //        Game.client.listaPociskow.Add(new Pocisk(x,y,pocisk_ID,pociskType,pociskOwner));
-
-                            //    }
-
+                                }
+                            }
 
 
                                 //if (iloscPocisków != Game.client.listaPociskow.Count)
@@ -324,24 +324,24 @@ namespace RzezniaMagow
             byte[] tablica;
              
                    
-                            tablica = new byte[18];
+                            tablica = new byte[20];
                             offset = 0;
                             
                             addPlayerID(ref tablica, ref offset, gracz.getID);
                             addPlayerPosition(ref tablica, ref offset, gracz.getPozycja.X, gracz.getPozycja.Y);
                             addCursorPosition(ref tablica, ref offset, gracz.getPozycjaKursora.X, gracz.getPozycjaKursora.Y);
-                            //if(gracz.getListaPociskow.Count>0)
-                            //{
-                            //    addNumberOfShots((byte)gracz.getListaPociskow.Count);
-                            //    addShotType(gracz.getListaPociskow.First().getTypPocisku);
-                                
-                            //}
-                            //else
-                            //{
-                            //    addNumberOfShots(0);
-                            //    addShotType(0);
-                            //}
+                            if (gracz.getListaPociskow.Count > 0)
+                            {
+                                addNumberOfShots(ref tablica, ref offset,(byte)gracz.getListaPociskow.Count);
+                                addShotType(ref tablica, ref offset, gracz.getListaPociskow.First().getTypPocisku);
 
+                            }
+                            else
+                            {
+                                addNumberOfShots(ref tablica, ref offset, 0);
+                                addShotType(ref tablica, ref offset, 0);
+                            }
+                            gracz.getListaPociskow = new List<Pocisk>();
                             
 
                             return tablica; 

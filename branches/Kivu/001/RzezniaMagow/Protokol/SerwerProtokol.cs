@@ -240,14 +240,14 @@ namespace RzezniaMagow
                         gracz.getPozycjaKursora = new Vector2(xK, yK);
 
                        //pobranie ilości pocisków
-                        //byte ilośćPocisków = tresc[17];
-                       // byte typPocisku = tresc[18];
+                        byte ilośćPocisków = tresc[17];
+                        byte typPocisku = tresc[18];
 
-                        //for (int i = 0; i < ilośćPocisków; i++)
-                        //{
-                        //    gracz.getListaPociskow.Add(new Pocisk(x,y,(byte)i,typPocisku,gracz.getID));
+                        for (int i = 0; i < ilośćPocisków; i++)
+                        {
+                            gracz.getListaPociskow.Add(new Pocisk(x, y, (byte)i, typPocisku, gracz.getID));
 
-                        //}
+                        }
                         //pobranie typu pocisków
                         
 
@@ -301,7 +301,7 @@ namespace RzezniaMagow
                     }
                 case 16:
                     {
-                        tablica = new byte[3 + 20 * listGracz.Count];// + 11*listPocisk.Count];
+                        tablica = new byte[3 + 20 * listGracz.Count + 11*listPocisk.Count];
 
                         offset = 0;
 
@@ -316,16 +316,16 @@ namespace RzezniaMagow
                             addWeaponType(ref tablica, ref offset, listGracz.ElementAt(i).getAktualnaBron.getTypBroni);
                         }
 
-                        //addNumberOfShots((byte)listPocisk.Count);
+                        addNumberOfShots(ref tablica, ref offset, (byte)listPocisk.Count);
 
-                        //for (int i = 0; i < listPocisk.Count; i++)
-                        //{
-                        //    addShotID(listPocisk.ElementAt(i).getID);
-                        //    addShotOwnerID(listPocisk.ElementAt(i).getIDOwnera);
-                        //    addShotType(listPocisk.First().getTypPocisku);
-                        //    addShotPosition(listPocisk.ElementAt(i).getPozycja.X, listPocisk.ElementAt(i).getPozycja.Y);
+                        for (int i = 0; i < listPocisk.Count; i++)
+                        {
+                            addShotID(ref tablica, ref offset, listPocisk.ElementAt(i).getID);
+                            addShotOwnerID(ref tablica, ref offset, listPocisk.ElementAt(i).getIDOwnera);
+                            addShotType(ref tablica, ref offset, listPocisk.First().getTypPocisku);
+                            addShotPosition(ref tablica, ref offset, listPocisk.ElementAt(i).getPozycja.X, listPocisk.ElementAt(i).getPozycja.Y);
 
-                        //}
+                        }
                        
                        // addCheckSum(calculateCheckSum(tablica));
                        

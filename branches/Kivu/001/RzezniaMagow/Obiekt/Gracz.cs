@@ -143,6 +143,7 @@ namespace RzezniaMagow
         public List<Pocisk> getListaPociskow
         {
             get { return listaPociskow; }
+            set { listaPociskow = value; }
         }
 
         public Bron getAktualnaBron
