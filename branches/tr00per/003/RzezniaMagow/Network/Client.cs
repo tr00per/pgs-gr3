@@ -202,6 +202,12 @@ namespace RzezniaMagow
             cli.GetStream().Write(goodbye, 0, Common.PACKET_HEADER_SIZE);
         }
 
+        private void asyncWrite(IAsyncResult arg)
+        {
+            NetworkStream io = (NetworkStream)arg.AsyncState;
+            io.EndWrite(arg);
+        }
+
         /// <summary>
         /// Sends given data to the server asynchronously.
         /// </summary>
@@ -215,7 +221,7 @@ namespace RzezniaMagow
             //System.Console.WriteLine(packet[14].ToString());
             NetworkStream io = cli.GetStream();
             
-            io.BeginWrite(packet, 0, packet.Length, new AsyncCallback(Common.asyncWrite), io);
+            io.BeginWrite(packet, 0, packet.Length, new AsyncCallback(asyncWrite), io);
         }
 
         /// <summary>
