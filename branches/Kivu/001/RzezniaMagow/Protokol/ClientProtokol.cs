@@ -279,7 +279,12 @@ namespace RzezniaMagow
                                     float y = BitConverter.ToSingle(tresc, offset);
                                     offset += 4;
 
-                                    Game.client.listaPociskow.Add(new Pocisk(x,y,pocisk_ID,pociskType,pociskOwner));
+                                    float xk = BitConverter.ToSingle(tresc, offset);
+                                    offset += 4;
+                                    float yk = BitConverter.ToSingle(tresc, offset);
+                                    offset += 4;
+
+                                    Game.client.listaPociskow.Add(new Pocisk(x,y,xk,yk,pocisk_ID,pociskType,pociskOwner));
 
                                 }
                             }

@@ -10,31 +10,41 @@ namespace RzezniaMagow
     {
         private byte typPocisku;
         private byte IDOwnera;
+        private Vector2 pozycjaKursora;
+
+        public Vector2 getPozycjaKursora
+        {
+            get { return pozycjaKursora; }
+            set { pozycjaKursora = value; }
+        }
 
        
        
 
         public Pocisk() : base()
         {
-
+            pozycjaKursora = new Vector2();
         }
         public Pocisk(float x, float y, byte typ) : base(x,y)
         {
             typPocisku = typ;
+            pozycjaKursora = new Vector2();
         }
 
 
 
-        public Pocisk(float x, float y,byte id, byte typ, byte owner) : base(x,y,id )
+        public Pocisk(float x, float y, float xk, float yk,byte id, byte typ, byte owner) : base(x,y,id )
         {
             typPocisku = typ;
             IDOwnera = owner;
+            pozycjaKursora = new Vector2(xk, yk);
         }
 
         public Pocisk(Pocisk kopia, byte Id) : base(kopia, Id)
         {
             typPocisku = kopia.typPocisku;
             IDOwnera = kopia.IDOwnera;
+            pozycjaKursora = kopia.pozycjaKursora;
 
         }
 

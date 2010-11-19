@@ -245,7 +245,7 @@ namespace RzezniaMagow
 
                         for (int i = 0; i < ilośćPocisków; i++)
                         {
-                            gracz.getListaPociskow.Add(new Pocisk(x, y, (byte)i, typPocisku, gracz.getID));
+                            gracz.getListaPociskow.Add(new Pocisk(x, y,xK,yK, (byte)i, typPocisku, gracz.getID));
 
                         }
                         //pobranie typu pocisków
@@ -301,7 +301,7 @@ namespace RzezniaMagow
                     }
                 case 16:
                     {
-                        tablica = new byte[3 + 20 * listGracz.Count + 11*listPocisk.Count];
+                        tablica = new byte[3 + 20 * listGracz.Count + 19*listPocisk.Count];
 
                         offset = 0;
 
@@ -324,7 +324,8 @@ namespace RzezniaMagow
                             addShotOwnerID(ref tablica, ref offset, listPocisk.ElementAt(i).getIDOwnera);
                             addShotType(ref tablica, ref offset, listPocisk.First().getTypPocisku);
                             addShotPosition(ref tablica, ref offset, listPocisk.ElementAt(i).getPozycja.X, listPocisk.ElementAt(i).getPozycja.Y);
-
+                            addCursorPosition(ref tablica, ref offset, listPocisk.ElementAt(i).getPozycjaKursora.X, listPocisk.ElementAt(i).getPozycjaKursora.Y);
+                            
                         }
                        
                        // addCheckSum(calculateCheckSum(tablica));

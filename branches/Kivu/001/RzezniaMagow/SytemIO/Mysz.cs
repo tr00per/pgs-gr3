@@ -42,8 +42,8 @@ namespace RzezniaMagow
                                 System.Console.WriteLine("strzal z myszki");
                                 Game.zawodnik.getPozycjaKursora = new Vector2(currentMouseState.X + Game.kamera.getPozycja.X - Game.graphics.PreferredBackBufferWidth / 2, currentMouseState.Y + Game.kamera.getPozycja.Y - Game.graphics.PreferredBackBufferHeight / 2);
 
-                                Game.zawodnik.getListaPociskow.Add(new Pocisk(Game.zawodnik.getPozycja.X, Game.zawodnik.getPozycja.Y, (byte)Game.zawodnik.getListaPociskow.Count,
-                                                                                Game.zawodnik.getAktualnaBron.getTypBroni, Game.zawodnik.getID));
+                                Game.zawodnik.getListaPociskow.Add(new Pocisk(Game.zawodnik.getPozycja.X, Game.zawodnik.getPozycja.Y,Game.zawodnik.getPozycjaKursora.X, Game.zawodnik.getPozycjaKursora.Y,
+                                                                                (byte)Game.zawodnik.getListaPociskow.Count,Game.zawodnik.getAktualnaBron.getTypBroni, Game.zawodnik.getID));
                             }
 
 

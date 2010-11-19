@@ -178,7 +178,7 @@ namespace RzezniaMagow
 
                 for (int i = 0; i < client.listaGraczy.Count; i++)
                 {
-                    spriteBatch.Draw(client.listaGraczy.ElementAt(i).getTekstura, client.listaGraczy.ElementAt(i).getPozycja, Color.CornflowerBlue);
+                    spriteBatch.Draw(client.listaGraczy.ElementAt(i).getTekstura, client.listaGraczy.ElementAt(i).getPozycja, Color.White);
                     czyNowaRunda = false;
                 }
 

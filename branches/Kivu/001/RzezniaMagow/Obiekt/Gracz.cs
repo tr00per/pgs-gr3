@@ -69,9 +69,9 @@ namespace RzezniaMagow
             aktualnaBron = new Bron();
             getID = id;
             if (typAvatara == 1)
-                this.LoadContent(Game.content.Load<Texture2D>(@"Avatar\Diablo"));
+                this.LoadContent(Game.content.Load<Texture2D>(@"Avatar\czerwony"));
             if (typAvatara == 2)
-                this.LoadContent(Game.content.Load<Texture2D>(@"Avatar\Naga"));
+                this.LoadContent(Game.content.Load<Texture2D>(@"Avatar\niebieski"));
             if (typAvatara == 3)
                 this.LoadContent(Game.content.Load<Texture2D>(@"Avatar\Frog"));
             if (typAvatara == 4)
