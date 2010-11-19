@@ -91,9 +91,7 @@ namespace RzezniaMagow
                 }
             }
 
-            if (gracz.getListaPociskow.Count > 1)
-                System.Console.WriteLine("sfvsvs");
-
+          
             for (int i = 0; i < gracz.getListaPociskow.Count; i++)
             {
                     bullets.Add(new Pocisk(gracz.getPozycja.X,gracz.getPozycja.Y,nextBulletID,gracz.getAktualnaBron.getTypBroni,gracz.getID));

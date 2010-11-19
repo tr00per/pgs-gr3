@@ -83,14 +83,7 @@ namespace RzezniaMagow
                     Game.screenManager.RemoveScreen(ScreenManager.GetScreens().ElementAt(i));
                
                 
-                //IsPopup = false;
-                //Game.screenManager.AddScreen(new PauseMenuScreen(), e.PlayerIndex);
-
-               // ScreenManager.AddScreen(new PauseMenuScreen(), e.PlayerIndex);
-               // ScreenManager.AddScreen(new PauseMenuScreen(), e.PlayerIndex);
-
-            //LoadingScreen.Load(ScreenManager, true, e.PlayerIndex,
-            //                   new GameplayScreen());
+                
         }
 
 
