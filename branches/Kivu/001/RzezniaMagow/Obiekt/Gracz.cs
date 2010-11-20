@@ -75,7 +75,7 @@ namespace RzezniaMagow
             if (typAvatara == 3)
                 this.LoadContent(Game.content.Load<Texture2D>(@"Avatar\Frog"));
             if (typAvatara == 4)
-                this.LoadContent(Game.content.Load<Texture2D>(@"Avatar\Reaper"));
+                this.LoadContent(Game.content.Load<Texture2D>(@"Avatar\rozowy"));
 
 
         }

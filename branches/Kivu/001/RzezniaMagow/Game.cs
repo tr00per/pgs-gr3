@@ -37,9 +37,6 @@ namespace RzezniaMagow
         volatile public static bool czyNowaRunda;
 
 
-       
-
-        Texture2D karta4;
 
         Texture2D cel;
        
@@ -102,7 +99,7 @@ namespace RzezniaMagow
             screenManager.LoadContent();
 
 
-            karta4 = content.Load<Texture2D>("Arena");
+          
 
             
             cel = content.Load<Texture2D>("cel");
@@ -175,7 +172,7 @@ namespace RzezniaMagow
                 for (int i = 0; i < client.listaGraczy.Count; i++)
                 {
                     spriteBatch.Draw(client.listaGraczy.ElementAt(i).getTekstura, client.listaGraczy.ElementAt(i).getPozycja, Color.White);
-                    czyNowaRunda = false;
+                    //czyNowaRunda = false;
                 }
 
                 //spriteBatch.Draw(zawodnik.getTekstura, zawodnik.getPozycja, Color.White);

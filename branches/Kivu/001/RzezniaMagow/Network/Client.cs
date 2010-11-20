@@ -124,8 +124,9 @@ namespace RzezniaMagow
             io.Read(packet, 0, 3);
             if (Common.correctPacket(packet, Common.PACKET_HANDSHAKE))
             {
-                clientReady(id, nick, avatar);
+                
                 id = packet[Common.PACKET_HEADER_SIZE];
+                clientReady(id, nick, avatar);
                 running = true;
                 statusCallback("Ready!");
             }

@@ -68,7 +68,7 @@ namespace RzezniaMagow
             //do odkomentowania po podlaczeniu serwera
 
             Game.client = new ClientLogic();
-            Game.client.connect("127.0.0.1", 20000, "tr00per", 1);
+            Game.client.connect("127.0.0.1", 20000, "tr00per", 4);
             Console.WriteLine("WAITING...");
 
             Game.screenManager.Visible = false;
@@ -90,7 +90,7 @@ namespace RzezniaMagow
             //Console.WriteLine("SERVER RUNNING: " + Game.serwer..ToString());
 
             Game.client = new ClientLogic();
-            Game.client.connect("127.0.0.1", 20000, "Kivu", 2);
+            Game.client.connect("127.0.0.1", 20000, "Kivu", 4);
             Console.WriteLine("WAITING...");
 
             Game.screenManager.Visible = false;
