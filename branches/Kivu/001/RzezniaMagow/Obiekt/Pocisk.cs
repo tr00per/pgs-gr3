@@ -19,6 +19,7 @@ namespace RzezniaMagow
         private Vector2 pozycjaKursora;
 
         private Vector2 predkosc;
+        public float obrotPocisku;
         
         public Pocisk() : base()
         {

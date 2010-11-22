@@ -156,19 +156,22 @@ namespace RzezniaMagow
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            if (czySerwer)
-            {
-                serwer.removeBullets();
+            //if (czySerwer)
+            //{
+            //    serwer.removeBullets();
 
-                for (int i = 0; i < serwer.getBullets.Count; i++)
-                {
-                    serwer.getBullets.ElementAt(i).updatePosition(gameTime);
+            //    for (int i = 0; i < serwer.getBullets.Count; i++)
+            //    {
+            //        serwer.getBullets.ElementAt(i).updatePosition(gameTime);
 
-                   // spriteBatch.Draw(client.listaPociskow.ElementAt(i).getTekstura, client.listaPociskow.ElementAt(i).getPozycja, Color.White);
-                }
+            //       // spriteBatch.Draw(client.listaPociskow.ElementAt(i).getTekstura, client.listaPociskow.ElementAt(i).getPozycja, Color.White);
+            //    }
 
 
-            }
+            //}
+
+
+
             base.Update(gameTime);
         }
 
@@ -192,13 +195,16 @@ namespace RzezniaMagow
                     //spriteBatch.Draw(client.listaGraczy.ElementAt(i).getTekstura, client.listaGraczy.ElementAt(i).getPozycja, Color.White);
                     //czyNowaRunda = false;
                 }
-                if(client.listaPociskow.Count>0)
-                for(int i=0; i<client.listaPociskow.Count;i++)
-                {
-                    //client.listaPociskow.ElementAt(i).updatePosition(gameTime);
+                //if (client.listaPociskow.Count > 0)
+                //    for (int i = 0; i < client.listaPociskow.Count; i++)
+                //    {
+                //        pociski.ElementAt(i).updatePosition(gameTime);
+                //        client.listaPociskow.ElementAt(i).updatePosition(gameTime);
 
-                    spriteBatch.Draw(client.listaPociskow.ElementAt(i).getTekstura, client.listaPociskow.ElementAt(i).getPozycja, Color.White);
-                }
+                //        spriteBatch.Draw(pociski.ElementAt(i).getTekstura, pociski.ElementAt(i).getPozycja, null, Color.White, pociski.ElementAt(i).obrotPocisku, new Vector2(25f, 12f), 1.0f, SpriteEffects.None, 0);
+
+                //        //spriteBatch.Draw(client.listaPociskow.ElementAt(i).getTekstura, client.listaPociskow.ElementAt(i).getPozycja, Color.White);
+                //    }
 
                 
 

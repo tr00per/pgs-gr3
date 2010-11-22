@@ -120,8 +120,8 @@ namespace RzezniaMagow
                     Pocisk poc = new Pocisk(gracz.getPozycja.X,gracz.getPozycja.Y,gracz.getPozycjaKursora.X,gracz.getPozycjaKursora.Y,
                                             nextBulletID,gracz.getAktualnaBron.getTypBroni,gracz.getID);
 
-                    poc.calculateSpeed();
-                    bullets.Add(poc);
+                    //poc.calculateSpeed();
+                    //bullets.Add(poc);
                    
                     nextBulletID++;
                 
