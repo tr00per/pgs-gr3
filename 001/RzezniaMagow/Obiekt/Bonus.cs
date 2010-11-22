@@ -44,17 +44,17 @@ namespace RzezniaMagow
                         {
                             case 0:
                                 {
-                                    gracz.getAktualnaBron = new Bron("Fireball", 30, 0, 20);
+                                    gracz.getAktualnaBron = new Bron("Fireball", 0, 20);
                                     break;
                                 }
                             case 1:
                                 {
-                                    gracz.getAktualnaBron = new Bron("Ice Arrow", 10, 1, 2);
+                                    gracz.getAktualnaBron = new Bron("Ice Arrow", 1, 2);
                                     break;
                                 }
                             case 2:
                                 {
-                                    gracz.getAktualnaBron = new Bron("Thunder", 60, 2, 50);
+                                    gracz.getAktualnaBron = new Bron("Thunder", 2, 50);
                                     break;
                                 }
                             default: break;

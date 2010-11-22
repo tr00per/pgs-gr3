@@ -24,7 +24,7 @@ namespace RzezniaMagow
             clientProtocol = new ClientProtokol();
             listaGraczy = new List<Gracz>();
             listaPociskow = new List<Pocisk>();
-            updateTimer = new System.Timers.Timer(20);
+            updateTimer = new System.Timers.Timer(10);
             updateTimer.Elapsed += new ElapsedEventHandler(updateTimerCB);
         }
 

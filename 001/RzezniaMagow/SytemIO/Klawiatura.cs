@@ -33,14 +33,14 @@ namespace RzezniaMagow
         public Keys KONSOLA = Keys.Tab;
 
         private int walkSpeed = 2;
-        private bool wycisniety;
+       // private bool wycisniety;
 
 
         public Klawiatura()
         {
             this.stanKlawiatury = Keyboard.GetState();
 
-            wycisniety = true;
+            //wycisniety = true;
         }
 
         /// <summary>
@@ -90,16 +90,14 @@ namespace RzezniaMagow
             if (KeyJustPressed(Keys.D2))
             {
 
-                Game.client = new ClientLogic();
-                Game.client.connect("127.0.0.1", 20000, "Tester", 3);
-                Console.WriteLine("WAITING...");
+                Game.serwer.getPredkoscWysylania++;
+                Console.WriteLine(Game.serwer.getPredkoscWysylania);
             }
 
             if (KeyJustPressed(Keys.D3))
             {
-                Game.client.disconnect();
-                Console.WriteLine("CLIENT RUNNING: " + Game.client.isRunning().ToString());
-
+                Game.serwer.getPredkoscWysylania--;
+                Console.WriteLine(Game.serwer.getPredkoscWysylania);
 
             }
 
@@ -117,7 +115,10 @@ namespace RzezniaMagow
                             Game.zawodnik.getPozycja = new Vector2(Game.zawodnik.getPozycja.X, Game.zawodnik.getPozycja.Y + walkSpeed);
 
                         Game.kamera.getPozycja = Game.zawodnik.getPozycja;
-                        wycisniety = false;
+                        //wycisniety = false;
+
+                       // System.Console.WriteLine("pozycja myszki X: " + Game.zawodnik.getPozycja.X + " pozycja myszki Y: " + Game.zawodnik.getPozycja.Y);
+
 
                     }
                     else if (this.stanKlawiatury.IsKeyDown(GORA))
@@ -126,7 +127,7 @@ namespace RzezniaMagow
                             Game.zawodnik.getPozycja = new Vector2(Game.zawodnik.getPozycja.X, Game.zawodnik.getPozycja.Y - walkSpeed);
 
                         Game.kamera.getPozycja = Game.zawodnik.getPozycja;
-                        wycisniety = false;
+                        //wycisniety = false;
 
                     }
                     else if (this.stanKlawiatury.IsKeyDown(LEWO))
@@ -135,7 +136,7 @@ namespace RzezniaMagow
                             Game.zawodnik.getPozycja = new Vector2(Game.zawodnik.getPozycja.X - walkSpeed, Game.zawodnik.getPozycja.Y);
 
                         Game.kamera.getPozycja = Game.zawodnik.getPozycja;
-                        wycisniety = false;
+                        //wycisniety = false;
                     }
 
                     else if (this.stanKlawiatury.IsKeyDown(PRAWO))
@@ -144,7 +145,7 @@ namespace RzezniaMagow
                             Game.zawodnik.getPozycja = new Vector2(Game.zawodnik.getPozycja.X + walkSpeed, Game.zawodnik.getPozycja.Y);
 
                         Game.kamera.getPozycja = Game.zawodnik.getPozycja;
-                        wycisniety = false;
+                       // wycisniety = false;
                     }
                 
                 //    if (this.stanKlawiatury.IsKeyUp(LEWO) || this.stanKlawiatury.IsKeyUp(GORA) || this.stanKlawiatury.IsKeyUp(DOL) || this.stanKlawiatury.IsKeyUp(PRAWO))

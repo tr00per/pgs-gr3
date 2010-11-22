@@ -29,7 +29,7 @@ namespace RzezniaMagow
         public static ScreenManager screenManager;
         public static Kamera2d kamera;
 
-
+        private SpriteFont spriteFont;
         Klawiatura klawiatura;
         Myszka mysz;
 
@@ -37,8 +37,11 @@ namespace RzezniaMagow
         volatile public static bool czyNowaRunda;
 
 
-
+        //zmienne testowe w razie problemow do usuniecia
+        public static List<Pocisk> pociski;
         Texture2D cel;
+
+
        
 
         public Game()
@@ -60,6 +63,8 @@ namespace RzezniaMagow
             czySerwer = false;
             czyNowaRunda = true;
             IsFixedTimeStep = false;
+
+            pociski = new List<Pocisk>();
         }
 
         /// <summary>
@@ -73,9 +78,9 @@ namespace RzezniaMagow
             base.Initialize();
             graphics.PreferredBackBufferWidth = 800;
             graphics.PreferredBackBufferHeight = 600;
+            graphics.SynchronizeWithVerticalRetrace = true;
 
-
-            IsMouseVisible = true;
+            IsMouseVisible = false;
  
             graphics.IsFullScreen = true;
             
@@ -99,8 +104,8 @@ namespace RzezniaMagow
             screenManager.LoadContent();
 
 
-          
 
+            spriteFont = content.Load<SpriteFont>("menufont");
             
             cel = content.Load<Texture2D>("cel");
             map.LoadContent(content.Load<Texture2D>("Maps/mapa"));
@@ -171,16 +176,57 @@ namespace RzezniaMagow
 
                 for (int i = 0; i < client.listaGraczy.Count; i++)
                 {
-                    spriteBatch.Draw(client.listaGraczy.ElementAt(i).getTekstura, client.listaGraczy.ElementAt(i).getPozycja, Color.White);
+
+                    spriteBatch.Draw(client.listaGraczy.ElementAt(i).getTekstura, client.listaGraczy.ElementAt(i).getPozycja, null, Color.White, (float)Math.Atan2((client.listaGraczy.ElementAt(i).getPozycjaKursora.X - client.listaGraczy.ElementAt(i).getPozycja.X), -(client.listaGraczy.ElementAt(i).getPozycjaKursora.Y - client.listaGraczy.ElementAt(i).getPozycja.Y)), new Vector2(20f, 40f), 1.0f, SpriteEffects.None, 0);
+                    //spriteBatch.Draw(client.listaGraczy.ElementAt(i).getTekstura, client.listaGraczy.ElementAt(i).getPozycja, Color.White);
                     //czyNowaRunda = false;
                 }
+                for(int i=0; i<pociski.Count;i++)
+                {
+                    pociski.ElementAt(i).updatePosition(gameTime);
 
-                //spriteBatch.Draw(zawodnik.getTekstura, zawodnik.getPozycja, Color.White);
+                    spriteBatch.Draw(pociski.ElementAt(i).getTekstura, pociski.ElementAt(i).getPozycja, Color.White);
+                }
+
+                removeBullets(ref pociski);
+
+
+               // spriteBatch.Draw(zawodnik.getTekstura, zawodnik.getPozycja, Color.White);
                 spriteBatch.Draw(cel, zawodnik.getPozycjaKursora, Color.White);
+               // spriteBatch.DrawString(spriteFont, Game.serwer.getPredkoscWysylania.ToString(), new Vector2(50,50), Color.White);
             }
             spriteBatch.End();
 
             base.Draw(gameTime);
         }
+
+
+
+        public void removeBullets(ref List<Pocisk> lista)
+        {
+            for (int i = lista.Count-1; i > -1; i--)
+            {
+                if (lista.ElementAt(i).getPozycja.X < 0 || lista.ElementAt(i).getPozycja.Y < 0 || lista.ElementAt(i).getPozycja.Y > Game.map.getTekstura.Width || lista.ElementAt(i).getPozycja.X > Game.map.getTekstura.Height)
+
+                    lista.RemoveAt(i);
+            }
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }
