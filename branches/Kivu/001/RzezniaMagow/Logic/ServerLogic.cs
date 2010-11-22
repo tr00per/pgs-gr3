@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using System.Threading;
 using System.Timers;
 
@@ -20,9 +19,19 @@ namespace RzezniaMagow
         private byte roundNumber;
 
         private SerwerProtocol prot;
+        //private System.Timers.Timer updateTimer;
+
+        private int predkoscWysylania;
+
+        public  int getPredkoscWysylania
+        {
+            get { return predkoscWysylania; }
+            set { predkoscWysylania = value; }
+        }
 
         public ServerLogic()
         {
+            predkoscWysylania = 20;
             roundNumber = 0;
             nextPlayerID = 13;
             nextBulletID = 0;
@@ -31,6 +40,10 @@ namespace RzezniaMagow
             bindServer(server);
             players = new List<Gracz>();
             bullets = new List<Pocisk>();
+
+            //updateTimer = new System.Timers.Timer(10);
+           //updateTimer.Elapsed += new ElapsedEventHandler(updateTimerCB);
+
             server.startServer();
         }
 
@@ -42,7 +55,10 @@ namespace RzezniaMagow
             }
         }
 
-        public override void serverStarted() {}
+        public override void serverStarted() 
+        {
+            //updateTimer.Start();
+        }
         public override void serverStopped() {}
 
         /// <summary>

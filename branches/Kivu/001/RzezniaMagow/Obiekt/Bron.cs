@@ -9,30 +9,27 @@ namespace RzezniaMagow
     public class Bron : Obiekt
     {
 
-        private String nazwa;
-        private short obrazenia;   
+        private String nazwa;   
         private byte typBroni;
         private short czasLadowania;
 
         public Bron()
         {
-            typBroni = 99;
+            typBroni = 1;
         }
 
-        public Bron(float x , float y,String s, short dam, byte typ, short czas) : base (x,y)
+        public Bron(float x , float y,String s, byte typ, short czas) : base (x,y)
         {
             nazwa = s;
-            obrazenia = dam;
             typBroni = typ;
             czasLadowania = czas;
 
         }
 
-        public Bron(String s, short dam, byte typ, short czas)
+        public Bron(String s, byte typ, short czas)
 
         {
             nazwa = s;
-            obrazenia = dam;
             typBroni = typ;
             czasLadowania = czas;
 
@@ -41,7 +38,7 @@ namespace RzezniaMagow
         public Bron(Bron kopia)
         {
             nazwa = kopia.nazwa;
-            obrazenia = kopia.obrazenia;
+            
             typBroni = kopia.typBroni;
             czasLadowania = kopia.czasLadowania;
             getPozycja = new Vector2();
@@ -64,11 +61,7 @@ namespace RzezniaMagow
             get { return typBroni; }
             set { typBroni = value; }
         }
-        public short getObrazienia
-        {
-            get { return obrazenia; }
-            set { obrazenia = value; }
-        }
+       
 
         public String getNazwa
         {
