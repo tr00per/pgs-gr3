@@ -44,7 +44,7 @@ namespace RzezniaMagow
 
                                     Pocisk poc  = new Pocisk(Game.zawodnik.getPozycja.X, Game.zawodnik.getPozycja.Y,Game.zawodnik.getPozycjaKursora.X, Game.zawodnik.getPozycjaKursora.Y,
                                                                                 (byte)Game.zawodnik.getListaPociskow.Count,Game.zawodnik.getAktualnaBron.getTypBroni, Game.zawodnik.getID);
-                                    Game.zawodnik.getListaPociskow.Add(poc);
+                                    //Game.zawodnik.getListaPociskow.Add(poc);
                                     
 
                                     ///testowe wyswietlanie pociskow
