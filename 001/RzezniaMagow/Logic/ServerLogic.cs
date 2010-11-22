@@ -13,6 +13,12 @@ namespace RzezniaMagow
 
         private List<Gracz> players;
         private List<Pocisk> bullets;
+
+        public List<Pocisk> getBullets
+        {
+            get { return bullets; }
+            set { bullets = value; }
+        }
         private byte nextPlayerID;
         private byte nextBulletID;
 
@@ -111,12 +117,16 @@ namespace RzezniaMagow
           
             for (int i = 0; i < gracz.getListaPociskow.Count; i++)
             {
-                    bullets.Add(new Pocisk(gracz.getPozycja.X,gracz.getPozycja.Y,gracz.getPozycjaKursora.X,gracz.getPozycjaKursora.Y,
-                                            nextBulletID,gracz.getAktualnaBron.getTypBroni,gracz.getID));
+                    Pocisk poc = new Pocisk(gracz.getPozycja.X,gracz.getPozycja.Y,gracz.getPozycjaKursora.X,gracz.getPozycjaKursora.Y,
+                                            nextBulletID,gracz.getAktualnaBron.getTypBroni,gracz.getID);
+
+                    poc.calculateSpeed();
+                    bullets.Add(poc);
                    
                     nextBulletID++;
                 
             }
+
 
             updateTimerCB();
 
@@ -124,6 +134,21 @@ namespace RzezniaMagow
         }
 
         volatile byte _removeID;
+
+        public void removeBullets()
+        {
+            for (int i = bullets.Count - 1; i > -1; i--)
+            {
+                if (bullets.ElementAt(i).getPozycja.X < 0 || bullets.ElementAt(i).getPozycja.Y < 0 || bullets.ElementAt(i).getPozycja.Y > Game.map.getTekstura.Width || bullets.ElementAt(i).getPozycja.X > Game.map.getTekstura.Height)
+
+                    bullets.RemoveAt(i);
+            }
+
+        }
+
+
+
+
 
         public override void playerParted(byte id)
         {
