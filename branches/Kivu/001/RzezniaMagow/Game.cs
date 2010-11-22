@@ -156,8 +156,19 @@ namespace RzezniaMagow
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-           
+            if (czySerwer)
+            {
+                serwer.removeBullets();
 
+                for (int i = 0; i < serwer.getBullets.Count; i++)
+                {
+                    serwer.getBullets.ElementAt(i).updatePosition(gameTime);
+
+                   // spriteBatch.Draw(client.listaPociskow.ElementAt(i).getTekstura, client.listaPociskow.ElementAt(i).getPozycja, Color.White);
+                }
+
+
+            }
             base.Update(gameTime);
         }
 
@@ -181,14 +192,15 @@ namespace RzezniaMagow
                     //spriteBatch.Draw(client.listaGraczy.ElementAt(i).getTekstura, client.listaGraczy.ElementAt(i).getPozycja, Color.White);
                     //czyNowaRunda = false;
                 }
-                for(int i=0; i<pociski.Count;i++)
+                if(client.listaPociskow.Count>0)
+                for(int i=0; i<client.listaPociskow.Count;i++)
                 {
-                    pociski.ElementAt(i).updatePosition(gameTime);
+                    //client.listaPociskow.ElementAt(i).updatePosition(gameTime);
 
-                    spriteBatch.Draw(pociski.ElementAt(i).getTekstura, pociski.ElementAt(i).getPozycja, Color.White);
+                    spriteBatch.Draw(client.listaPociskow.ElementAt(i).getTekstura, client.listaPociskow.ElementAt(i).getPozycja, Color.White);
                 }
 
-                removeBullets(ref pociski);
+                
 
 
                // spriteBatch.Draw(zawodnik.getTekstura, zawodnik.getPozycja, Color.White);
@@ -202,17 +214,7 @@ namespace RzezniaMagow
 
 
 
-        public void removeBullets(ref List<Pocisk> lista)
-        {
-            for (int i = lista.Count-1; i > -1; i--)
-            {
-                if (lista.ElementAt(i).getPozycja.X < 0 || lista.ElementAt(i).getPozycja.Y < 0 || lista.ElementAt(i).getPozycja.Y > Game.map.getTekstura.Width || lista.ElementAt(i).getPozycja.X > Game.map.getTekstura.Height)
-
-                    lista.RemoveAt(i);
-            }
-
-        }
-
+        
 
 
 

@@ -15,7 +15,7 @@ namespace RzezniaMagow
 
         public Bron()
         {
-            typBroni = 1;
+            typBroni = 2;
         }
 
         public Bron(float x , float y,String s, byte typ, short czas) : base (x,y)

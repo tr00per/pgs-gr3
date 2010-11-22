@@ -17,8 +17,9 @@ namespace RzezniaMagow
         public DataPool() { dataInPending = false; }
         public DataPool(byte[] data)
         {
-            dataIn = new byte[data.Length];
-            data.CopyTo(dataIn, 0);
+            //dataIn = new byte[data.Length];
+            //data.CopyTo(dataIn, 0);
+            dataIn = data;
             dataInPending = true;
         }
     };
