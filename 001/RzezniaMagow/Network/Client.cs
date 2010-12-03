@@ -167,8 +167,10 @@ namespace RzezniaMagow
                         }
                         else if (packet[0] == Common.PACKET_BEGIN)
                         {
-                            Game.client.listaGraczy = new List<Gracz>();
                             listenerSem.WaitOne();
+                            //statusCallback("ROUND BEGUN!");
+                            sendUpdate(new byte[1] { id }, Common.PACKET_OK);
+                            Game.client.listaGraczy = new List<Gracz>();
                             beginRound(packet.Skip(Common.PACKET_HEADER_SIZE).ToArray());
                             enteredGame = true;
                             listenerSem.Release();
@@ -210,9 +212,14 @@ namespace RzezniaMagow
         /// <param name="data">Serialized data, without packet header.</param>
         public void sendUpdate(byte[] data)
         {
+            sendUpdate(data, Common.PACKET_COMMON);
+        }
+
+        public void sendUpdate(byte[] data, byte type)
+        {
             byte[] packet = new byte[data.Length + Common.PACKET_HEADER_SIZE];
             data.CopyTo(packet, Common.PACKET_HEADER_SIZE);
-            packet[0] = Common.PACKET_COMMON;
+            packet[0] = type;
             packet[1] = Common.checksum(packet);
 
             if (running)

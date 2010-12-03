@@ -217,12 +217,41 @@ namespace RzezniaMagow
             {
                 if (pools[ID].dataInPending)
                 {
-                    io.Write(pools[ID].dataIn, 0, pools[ID].dataIn.Length);
+                    if (pools[ID].dataIn[0] == Common.PACKET_BEGIN)
+                    {
+                        DataPool dp = pools[ID];
+                        bool received = false;
+                        io.ReadTimeout = 50;
+
+                        byte[] buf = new byte[3];
+
+                        //Console.WriteLine("Server (" + threadID + "): Round begins...");
+                        while (!received)
+                        {
+                            //Console.WriteLine("Server (" + threadID + "): Sending...");
+                            io.Write(dp.dataIn, 0, dp.dataIn.Length);
+                            io.Read(buf, 0, 3);
+                            if (buf[0] == Common.PACKET_OK)
+                            {
+                                //Console.WriteLine("Server (" + threadID + "): OK!");
+                                received = true;
+                            }
+                        }
+
+                        //Console.WriteLine("Server (" + threadID + "): Round begun!");
+                        io.ReadTimeout = Timeout.Infinite;
+                    }
+                    else
+                    {
+                        io.Write(pools[ID].dataIn, 0, pools[ID].dataIn.Length);
+                    }
+
                     pools[ID] = new DataPool();
                 }
 
                 if (cli.Connected && (pending = cli.Available) > 0)
                 {
+                    Console.Write('@');
                     packet = new byte[pending];
                     io.Read(packet, 0, pending);
 
