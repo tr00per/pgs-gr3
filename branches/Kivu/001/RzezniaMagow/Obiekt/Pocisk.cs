@@ -14,49 +14,23 @@ namespace RzezniaMagow
         private byte IDOwnera;
         private byte damage;
         private byte opoznienie;
+        private byte trafienie;
+
+
+
+       
 
        
         private Vector2 pozycjaKursora;
 
         private Vector2 predkosc;
-        public float obrotPocisku;
+       
         
         public Pocisk() : base()
         {
             pozycjaKursora = new Vector2();
-        }
-        public Pocisk(float x, float y, byte typ) : base(x,y)
-        {
-            typPocisku = typ;
-            pozycjaKursora = new Vector2();
-
-            if (typPocisku == 1)
-            {
-                this.LoadContent(Game.content.Load<Texture2D>(@"Pociski\snow"));
-                damage = 20;
-                opoznienie = 2;
-            }
-            if (typPocisku == 2)
-            {
-                this.LoadContent(Game.content.Load<Texture2D>(@"Pociski\blue"));
-                damage = 30;
-                opoznienie = 4;
-            }
-            if (typPocisku == 3)
-            {
-                this.LoadContent(Game.content.Load<Texture2D>(@"Pociski\red"));
-                damage = 40;
-                opoznienie = 6;
-            }
-            if (typPocisku == 4)
-            {
-                this.LoadContent(Game.content.Load<Texture2D>(@"Pociski\purple"));
-                damage = 50;
-                opoznienie = 10;
-            }
 
         }
-
 
 
         public Pocisk(float x, float y, float xk, float yk,byte id, byte typ, byte owner) : base(x,y,id )
@@ -73,55 +47,26 @@ namespace RzezniaMagow
             if (typPocisku == 2)
             {
                 this.LoadContent(Game.content.Load<Texture2D>(@"Pociski\blue"));
-                damage = 30;
-                opoznienie = 4;
-            }
-            if (typPocisku == 3)
-            {
-                this.LoadContent(Game.content.Load<Texture2D>(@"Pociski\red"));
-                damage = 40;
-                opoznienie = 6;
-            }
-            if (typPocisku == 4)
-            {
-                this.LoadContent(Game.content.Load<Texture2D>(@"Pociski\purple"));
-                damage = 50;
-                opoznienie = 10;
-            }
-        }
-
-        public Pocisk(Pocisk kopia, byte Id) : base(kopia, Id)
-        {
-            typPocisku = kopia.typPocisku;
-            IDOwnera = kopia.IDOwnera;
-            pozycjaKursora = kopia.pozycjaKursora;
-            if (typPocisku == 1)
-            {
-                this.LoadContent(Game.content.Load<Texture2D>(@"Pociski\snow"));
                 damage = 20;
                 opoznienie = 2;
             }
-            if (typPocisku == 2)
-            {
-                this.LoadContent(Game.content.Load<Texture2D>(@"Pociski\blue"));
-                damage = 30;
-                opoznienie = 4;
-            }
             if (typPocisku == 3)
             {
                 this.LoadContent(Game.content.Load<Texture2D>(@"Pociski\red"));
-                damage = 40;
-                opoznienie = 6;
+                damage = 20;
+                opoznienie = 2;
             }
             if (typPocisku == 4)
             {
                 this.LoadContent(Game.content.Load<Texture2D>(@"Pociski\purple"));
-                damage = 50;
-                opoznienie = 10;
+                damage = 20;
+                opoznienie = 2;
             }
+            getPunktObrotu = new Vector2(getTekstura.Width / 2, getTekstura.Height / 2);
 
         }
 
+        
         public void calculateSpeed()
         {
 
@@ -144,11 +89,28 @@ namespace RzezniaMagow
             getPozycja = new Vector2(x, y);
 
 
+
+        }
+
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+
+
+            if (CollisionDetection2D.CDPerformedWith == UseForCollisionDetection.Rectangles)
+                Primitives2D.DrawRectangle(this.RectanglePoints, spriteBatch);
+
+            // base.Draw(gameTime, spriteBatch);
         }
 
         
 
         #region GET - SET
+
+        public byte getTrafienie
+        {
+            get { return trafienie; }
+            set { trafienie = value; }
+        }
 
         public byte getDamage
         {

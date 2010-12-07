@@ -13,9 +13,9 @@ namespace RzezniaMagow
         private byte typBroni;
         private short czasLadowania;
 
-        public Bron()
+        public Bron(byte rodzaj)
         {
-            typBroni = 2;
+            typBroni = rodzaj;
         }
 
         public Bron(float x , float y,String s, byte typ, short czas) : base (x,y)

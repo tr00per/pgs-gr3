@@ -53,7 +53,7 @@ namespace RzezniaMagow
             IPAddress ip = IPAddress.Parse(address);
             statusCallback("Connecting to " + address + ":" + port.ToString());
             cli.Connect(ip, port);
-            
+
             statusCallback("Connected. Handshaking...");
             NetworkStream io = cli.GetStream();
             Thread.Sleep(500);
@@ -124,7 +124,7 @@ namespace RzezniaMagow
             io.Read(packet, 0, 3);
             if (Common.correctPacket(packet, Common.PACKET_HANDSHAKE))
             {
-                
+
                 id = packet[Common.PACKET_HEADER_SIZE];
                 clientReady(id, nick, avatar);
                 running = true;
@@ -142,18 +142,41 @@ namespace RzezniaMagow
 
             while (running)
             {
-                
+
                 if (cli.Connected && (pending = cli.Available) > 0)
                 {
                     packet = new byte[pending];
                     io.Read(packet, 0, pending);
 
-                        if (!Common.correctPacket(packet, Common.PACKET_COMMON | Common.PACKET_SRVMSG | Common.PACKET_END | Common.PACKET_BEGIN))
-                        {
-                            statusCallback("Incorrect packet: " + packet[0] + ", " + packet[1] + ".");
-                            continue;
-                        }
+                    if (!Common.correctPacket(packet, Common.PACKET_COMMON | Common.PACKET_SRVMSG | Common.PACKET_END | Common.PACKET_BEGIN))
+                    {
+                        statusCallback("Incorrect packet: " + packet[0] + ", " + packet[1] + ".");
+                        continue;
+                    }
 
+<<<<<<< .mine
+                    if (enteredGame && packet[0] == Common.PACKET_COMMON)
+                    {
+                        listenerSem.WaitOne();
+                        updateArrived(packet.Skip(Common.PACKET_HEADER_SIZE).ToArray());
+                        listenerSem.Release();
+                    }
+                    else if (packet[0] == Common.PACKET_SRVMSG)
+                    {
+                        string msg = enc.GetString(packet, Common.PACKET_HEADER_SIZE, pending - Common.PACKET_HEADER_SIZE);
+                        statusCallback("from Server: " + msg.Trim());
+                    }
+                    else if (packet[0] == Common.PACKET_BEGIN)
+                    {
+                        listenerSem.WaitOne();
+                        //statusCallback("ROUND BEGUN!");
+                        sendUpdate(new byte[1] { id }, Common.PACKET_OK);
+                        Game.client.listaGraczy = new List<Gracz>();
+                        beginRound(packet.Skip(Common.PACKET_HEADER_SIZE).ToArray());
+                        enteredGame = true;
+                        listenerSem.Release();
+                        Game.client.getCzyGra = true;
+=======
                         if (enteredGame && packet[0] == Common.PACKET_COMMON)
                         {
                             listenerSem.WaitOne();
@@ -182,6 +205,16 @@ namespace RzezniaMagow
                             cli.Client.Disconnect(true);
                         }
                    
+>>>>>>> .r101
+
+                    }
+                    else if (packet[0] == Common.PACKET_END) //server shutdown or kicked out
+                    {
+                        statusCallback("Server disconnected.");
+                        running = false;
+                        cli.Client.Disconnect(true);
+                    }
+
 
                 }
                 //Thread.Sleep(5); -- works fine without it :]

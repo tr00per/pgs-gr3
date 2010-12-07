@@ -31,17 +31,16 @@ namespace RzezniaMagow
         protected override void clientReady(byte id, string nick, byte avatar)
         {
             Game.zawodnik = new Gracz(id, nick, avatar);
-            Game.zawodnik.getPozycja = new Microsoft.Xna.Framework.Vector2(128, 128);
+           
             listaGraczy.Add(Game.zawodnik);
-            Game.kamera.getPozycja = Game.zawodnik.getPozycja;
-            Game.client.getCzyGra = true;
+            //Game.client.getCzyGra = true;
             updateTimer.Start();
         }
 
         private void updateTimerCB(object o, ElapsedEventArgs args)
         //private void updateTimerCB()
         {
-            sendUpdate(clientProtocol.createPackage(Game.zawodnik));
+            sendUpdate(clientProtocol.createPackage(ref Game.zawodnik));
                
         }
 
@@ -64,6 +63,33 @@ namespace RzezniaMagow
         {
             Console.WriteLine("Client: " + msg);
         }
+
+
+        public void BulletsCollision()
+        {
+            for (int i = listaPociskow.Count-1; i > -1; i--)
+            {
+                for (int j = 0; j < Game.map.getListaPrzeszkod.Count; j++)
+                {
+
+                    //if (CollisionDetection2D.PerPixelWR(listaPociskow.ElementAt(i).getTekstura, Game.map.getListaPrzeszkod.ElementAt(j).getTekstura,
+                    //                                listaPociskow.ElementAt(i).getPozycja, Game.map.getListaPrzeszkod.ElementAt(j).getPozycja,
+                    //                                listaPociskow.ElementAt(i).getPunktObrotu, Game.map.getListaPrzeszkod.ElementAt(j).getPunktObrotu,
+                    //                                listaPociskow.ElementAt(i).RectanglePoints, Game.map.getListaPrzeszkod.ElementAt(j).RectanglePoints,
+                    //                                listaPociskow.ElementAt(i).getKatObrotu, Game.map.getListaPrzeszkod.ElementAt(j).getKatObrotu, Game.spriteBatch))
+                    if (CollisionDetection2D.BoundingRectangle(Game.map.getListaPrzeszkod.ElementAt(j).RectanglePoints, listaPociskow.ElementAt(i).RectanglePoints))
+                    {
+                            listaPociskow.RemoveAt(i);
+                            break;
+
+                        }  
+                    
+                }
+            }
+        }
+
+
+
 
         public void fuckinStop()
         {

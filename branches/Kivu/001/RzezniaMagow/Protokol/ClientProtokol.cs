@@ -148,14 +148,24 @@ namespace RzezniaMagow
 
                             for (int i = 0; i < iloscGraczy; i++)
                             {
-
-                                
-
                                 //pobranie ID gracza
                                 byte gracz_ID = tresc[offset];
                                 offset++;
                                 //pobranie nicku gracza
                                 String nick = Encoding.ASCII.GetString(tresc, offset, nickLenght);
+                                char[] nick2;
+                                string nick3 = "null";
+                                for (int m = 0; m < nick.Length; m++)
+                                {
+                                    if ((int)nick[m] == 0)
+                                    {
+                                        nick2 = new char[m];
+                                        nick.CopyTo(0, nick2, 0, m);
+                                        nick3 = new string(nick2);
+                                        break;
+                                    }
+                                }
+
                                 offset += nickLenght;
                                 //pobranie typu avatara
                                 byte typAvatara = tresc[offset];
@@ -166,7 +176,7 @@ namespace RzezniaMagow
                                 float y = BitConverter.ToSingle(tresc, offset);
                                 offset += 4;
                                 
-                                gracz = new Gracz(gracz_ID,nick,typAvatara);
+                                gracz = new Gracz(gracz_ID,nick3,typAvatara);
                                 gracz.getPozycja = new Vector2(x,y);
 
                                 gracz.getPunkty = tresc[offset];
@@ -174,28 +184,42 @@ namespace RzezniaMagow
 
                                 gracz.getIloscZgonow = tresc[offset];
                                 offset ++;
-
-
                                 Game.client.listaGraczy.Add(gracz);
 
-
+                                if (gracz.getID == Game.zawodnik.getID)
+                                {
+                                    Game.zawodnik.getZycie = 100;
+                                    Game.zawodnik.getPunkty = gracz.getPunkty;
+                                    Game.zawodnik.getIloscZgonow = gracz.getIloscZgonow;
+                                    Game.zawodnik.getPozycja = gracz.getPozycja;
+                                    Game.kamera.getPozycja = gracz.getPozycja;
+                                }
                             }
+
                             //pobranie numeru aktualnej rundy
                             Game.client.getNrRundy = tresc[offset];
 
-                           
-                            break;
+
+                            //for (int i = 0; i < Game.client.listaGraczy.Count; i++)
+                            //{
+                            //    Game.client.listaGraczy.ElementAt(i).getIloscZgonow = Game.client.getNrRundy - 
+
+
+                            //}
+
+
+
+
+
+                                break;
                         }
                     case 16:
                         {
                             //klient otrzymuję od serwera informację w czasie trwania rozgrywki
 
                             offset = 0;
-
                             byte iloscGraczy = tresc[offset];
                             offset++;
-
-                           // byte[] listaIDgraczy = new byte[Game.client.listaGraczy.Count];
 
                             for (int m = 0; m < iloscGraczy; m++)
                             {
@@ -203,9 +227,6 @@ namespace RzezniaMagow
                                 //pobranie ID gracza
                                 byte gracz_ID = tresc[offset];
                                 offset++;
-                                //listaIDgraczy[m] = gracz_ID;
-                               
-
                                 //pobranie pozycji startowej
                                 float x = BitConverter.ToSingle(tresc, offset);
                                 offset += 4;
@@ -233,30 +254,24 @@ namespace RzezniaMagow
                                         Game.client.listaGraczy.ElementAt(i).getPozycjaKursora = new Vector2(xKursora, yKursora);
                                         Game.client.listaGraczy.ElementAt(i).getZycie = zycie;
                                         Game.client.listaGraczy.ElementAt(i).getAktualnaBron.getTypBroni = typBroni;
+                                        Game.client.listaGraczy.ElementAt(i).getKatObrotu = (float)Math.Atan2((xKursora - x), -(yKursora - y));
+                                    }
+                                    if (Game.client.listaGraczy.ElementAt(i).getID == Game.zawodnik.getID)
+                                    {
+                                        Game.zawodnik.getZycie = Game.client.listaGraczy.ElementAt(i).getZycie;
+
+                                        if (Game.zawodnik.getZycie == 0)
+                                            Game.zawodnik.getCzyZyje = false;
                                     }
                                 }
                             }
 
-                            //if (iloscGraczy != Game.client.listaGraczy.Count)
-                            //{
-                            //    for (int i = Game.client.listaGraczy.Count; i > 0; i--)
-                            //    {
-                            //        bool flagaUsuniecia = true;
-                            //        for (int j = 0; j < listaIDgraczy.Length; j++)
-                            //        {
-                            //            if(Game.client.listaGraczy.ElementAt(i).getID == listaIDgraczy[j])
-                            //            flagaUsuniecia = false;
-                            //        }
-                            //        if (flagaUsuniecia)
-                            //            Game.client.listaGraczy.RemoveAt(i);
-                            //    }
-                            //}
-
-
                             //pobranie informacje o pociskach aktulanie znajdujących się na mapie
                             byte iloscPocisków = tresc[offset];
                             offset++;
-                            Game.client.listaPociskow = new List<Pocisk>();
+                           // Game.client.listaPociskow = new List<Pocisk>();
+
+                            Pocisk poc;
                             if (iloscPocisków > 0)
                             {
                                 //byte[] listaIDPociskow = new byte[iloscPocisków];
@@ -272,7 +287,8 @@ namespace RzezniaMagow
                                     //pobranie typu pocisku
                                     byte pociskType = tresc[offset];
                                     offset++;
-
+                                    byte traf = tresc[offset];
+                                    offset++;
                                     //pobranie pozycji pocisku
                                     float x = BitConverter.ToSingle(tresc, offset);
                                     offset += 4;
@@ -284,16 +300,52 @@ namespace RzezniaMagow
                                     float yk = BitConverter.ToSingle(tresc, offset);
                                     offset += 4;
 
-                                    Game.client.listaPociskow.Add(new Pocisk(x,y,xk,yk,pocisk_ID,pociskType,pociskOwner));
+                                    bool usun = false;
 
+                                    for (int k = 0; k < Game.client.listaPociskow.Count; k++)
+                                    {
+                                        if (Game.client.listaPociskow.ElementAt(k).getID == pocisk_ID)
+                                            usun = true;
+                                    }
+
+                                    if (!usun)
+                                    {
+                                        poc = new Pocisk(x, y, xk, yk, pocisk_ID, pociskType, pociskOwner);
+                                        poc.getTrafienie = traf;
+
+                                        poc.calculateSpeed();
+                                        poc.getKatObrotu = (float)Math.Atan2(-(xk - x), (yk - y)) + MathHelper.Pi / 2;
+                                        Game.client.listaPociskow.Add(poc);
+                                    }
                                 }
                             }
 
+                            byte iloscBonusow = tresc[offset];
+                            offset++;
 
-                                
-                            
-                           
-                            break;
+                            for (int i = 0; i < iloscBonusow; i++)
+                            {
+                                Bonus bonus;
+                                bonus = new Bonus();
+
+                                byte id_bonusu = tresc[offset];
+                                offset++;
+                                byte bonusFlag = tresc[offset];
+                                offset++;
+
+                                bonus.getID = id_bonusu;
+                                bonus.getCzyZlapany = bonusFlag;
+
+                                for (int j = 0; j < Game.map.getListaBonusow.Count; j++)
+                                {
+                                    if (Game.map.getListaBonusow.ElementAt(j).getID == bonus.getID)
+                                    {
+                                        Game.map.getListaBonusow.ElementAt(j).getCzyZlapany = bonus.getCzyZlapany;
+                                        break;
+                                    }
+                                }
+                            }
+                                break;
                         }
                    
                     case 64:
@@ -310,7 +362,7 @@ namespace RzezniaMagow
                 }
             }
 
-        public byte[] createPackage(Gracz gracz)
+        public byte[] createPackage(ref Gracz gracz)
         {
             int offset = 0;
             byte[] tablica;

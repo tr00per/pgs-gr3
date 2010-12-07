@@ -32,15 +32,17 @@ namespace RzezniaMagow
 
         public Keys KONSOLA = Keys.Tab;
 
-        private int walkSpeed = 2;
-       // private bool wycisniety;
-
+        //private int kolizja ;
+        private Vector2 staraPozycja;
+        private Vector2 nowaPozycja;
 
         public Klawiatura()
         {
             this.stanKlawiatury = Keyboard.GetState();
-
-            //wycisniety = true;
+            //kolizja = 0;
+            staraPozycja = new Vector2();
+            nowaPozycja = new Vector2();
+            
         }
 
         /// <summary>
@@ -60,6 +62,17 @@ namespace RzezniaMagow
         {
             poprzedniStanKlawiatury = stanKlawiatury;
             stanKlawiatury = Keyboard.GetState();
+
+
+
+            if (stanKlawiatury.IsKeyDown(Keys.Tab))
+            {
+                Game.konsola = true;
+            }
+            if (stanKlawiatury.IsKeyUp(Keys.Tab))
+            {
+                Game.konsola = false;
+            }
 
             if (KeyJustPressed(Keys.Escape))
             {
@@ -106,65 +119,166 @@ namespace RzezniaMagow
                 
 
             }
-            if (Game.client.getCzyGra)
-            {
-                
-                    if (this.stanKlawiatury.IsKeyDown(DOL))
-                    {
-                        if (Game.zawodnik.getPozycja.Y + Game.zawodnik.getTekstura.Height < Game.map.getTekstura.Height)
-                            Game.zawodnik.getPozycja = new Vector2(Game.zawodnik.getPozycja.X, Game.zawodnik.getPozycja.Y + walkSpeed);
-
-                        Game.kamera.getPozycja = Game.zawodnik.getPozycja;
-                        //wycisniety = false;
-
-                       // System.Console.WriteLine("pozycja myszki X: " + Game.zawodnik.getPozycja.X + " pozycja myszki Y: " + Game.zawodnik.getPozycja.Y);
 
 
-                    }
-                    else if (this.stanKlawiatury.IsKeyDown(GORA))
-                    {
-                        if (Game.zawodnik.getPozycja.Y > 0)
-                            Game.zawodnik.getPozycja = new Vector2(Game.zawodnik.getPozycja.X, Game.zawodnik.getPozycja.Y - walkSpeed);
-
-                        Game.kamera.getPozycja = Game.zawodnik.getPozycja;
-                        //wycisniety = false;
-
-                    }
-                    else if (this.stanKlawiatury.IsKeyDown(LEWO))
-                    {
-                        if (Game.zawodnik.getPozycja.X > 0)
-                            Game.zawodnik.getPozycja = new Vector2(Game.zawodnik.getPozycja.X - walkSpeed, Game.zawodnik.getPozycja.Y);
-
-                        Game.kamera.getPozycja = Game.zawodnik.getPozycja;
-                        //wycisniety = false;
-                    }
-
-                    else if (this.stanKlawiatury.IsKeyDown(PRAWO))
-                    {
-                        if (Game.zawodnik.getPozycja.X + Game.zawodnik.getTekstura.Width < Game.map.getTekstura.Width)
-                            Game.zawodnik.getPozycja = new Vector2(Game.zawodnik.getPozycja.X + walkSpeed, Game.zawodnik.getPozycja.Y);
-
-                        Game.kamera.getPozycja = Game.zawodnik.getPozycja;
-                       // wycisniety = false;
-                    }
-                
-                //    if (this.stanKlawiatury.IsKeyUp(LEWO) || this.stanKlawiatury.IsKeyUp(GORA) || this.stanKlawiatury.IsKeyUp(DOL) || this.stanKlawiatury.IsKeyUp(PRAWO))
-                //{
-                //    wycisniety = true;
-                //}
                
 
-                if (KeyJustPressed(STRZAL))
-                {
-                    System.Console.WriteLine("strzal");
-                }
 
-                if (KeyJustPressed(KONSOLA))
+
+
+                if (Game.client.getCzyGra)
                 {
 
-                    System.Console.WriteLine("konsola");
+                    if (this.stanKlawiatury.IsKeyDown(DOL))
+                    {
+
+
+                        
+
+                        if (Game.zawodnik.getPozycja.Y < Game.map.getTekstura.Height - Game.map.getMapOffset)
+                        {
+                            nowaPozycja = new Vector2(Game.zawodnik.getPozycja.X, Game.zawodnik.getPozycja.Y + Game.zawodnik.getWalkSpeed);
+                            Game.zawodnik.getPozycja = nowaPozycja;
+                        }
+                        else
+                        {
+                            Game.zawodnik.getPozycja = staraPozycja;
+                        }
+                        
+
+                        bool flaga = true;
+                        //for (int i = 0; i < Game.map.getListaPrzeszkod.Count; i++)
+                        //    if (CollisionDetection2D.BoundingRectangle(Game.map.getListaPrzeszkod.ElementAt(i).RectanglePoints, Game.zawodnik.RectanglePoints))
+                        //    {
+                        //       //Game.zawodnik.getPozycja = staraPozycja;
+                        //       //flaga = false;
+                        //        //Console.WriteLine("Wykryto kolizje");
+                        //    }
+                        if(flaga)
+                            staraPozycja = nowaPozycja;
+
+                        
+
+                        Game.kamera.getPozycja = Game.zawodnik.getPozycja;
+                        //wycisniety = false;
+
+                        //System.Console.WriteLine("pozycja myszki X: " + Game.zawodnik.getPozycja.X + " pozycja myszki Y: " + Game.zawodnik.getPozycja.Y);
+
+
+                    }
+                     if (this.stanKlawiatury.IsKeyDown(LEWO))
+                    {
+
+                       
+
+                        if (Game.zawodnik.getPozycja.X > Game.map.getMapOffset)
+                        {
+                            nowaPozycja = new Vector2(Game.zawodnik.getPozycja.X - Game.zawodnik.getWalkSpeed, Game.zawodnik.getPozycja.Y);
+                            Game.zawodnik.getPozycja = nowaPozycja;
+                        }
+                        else
+                        {
+                            Game.zawodnik.getPozycja = staraPozycja;
+                        }
+
+
+                        bool flaga = true;
+                        //for (int i = 0; i < Game.map.getListaPrzeszkod.Count; i++)
+                        //    if (CollisionDetection2D.BoundingRectangle(Game.map.getListaPrzeszkod.ElementAt(i).RectanglePoints, Game.zawodnik.RectanglePoints))
+                        //    {
+                        //        //Game.zawodnik.getPozycja = staraPozycja;
+                        //        //flaga = false;
+                        //        //Console.WriteLine("Wykryto kolizje");
+                        //    }
+                        if (flaga)
+                            staraPozycja = nowaPozycja;
+
+
+
+                        Game.kamera.getPozycja = Game.zawodnik.getPozycja;
+                        //System.Console.WriteLine("pozycja myszki X: " + Game.zawodnik.getPozycja.X + " pozycja myszki Y: " + Game.zawodnik.getPozycja.Y);
+
+
+                    }
+                     if (this.stanKlawiatury.IsKeyDown(GORA))
+                    {
+                        
+
+                        if (Game.zawodnik.getPozycja.Y > Game.map.getMapOffset)
+                        {
+                            nowaPozycja = new Vector2(Game.zawodnik.getPozycja.X, Game.zawodnik.getPozycja.Y - Game.zawodnik.getWalkSpeed);
+                            Game.zawodnik.getPozycja = nowaPozycja;
+                        }
+                        else
+                        {
+                            Game.zawodnik.getPozycja = staraPozycja;
+                        }
+
+                        bool flaga = true;
+                        //for (int i = 0; i < Game.map.getListaPrzeszkod.Count; i++)
+                        //    if (CollisionDetection2D.BoundingRectangle(Game.map.getListaPrzeszkod.ElementAt(i).RectanglePoints, Game.zawodnik.RectanglePoints))
+                        //    {
+                        //        //Game.zawodnik.getPozycja = staraPozycja;
+                        //        //flaga = false;
+                        //        //Console.WriteLine("Wykryto kolizje");
+                        //    }
+                        if (flaga)
+                            staraPozycja = nowaPozycja;
+
+
+
+                        Game.kamera.getPozycja = Game.zawodnik.getPozycja;
+                        //System.Console.WriteLine("pozycja myszki X: " + Game.zawodnik.getPozycja.X + " pozycja myszki Y: " + Game.zawodnik.getPozycja.Y);
+
+
+
+                    }
+                     if (this.stanKlawiatury.IsKeyDown(PRAWO))
+                    {
+                        
+                        if (Game.zawodnik.getPozycja.X < Game.map.getTekstura.Width - Game.map.getMapOffset)
+                        {
+                            nowaPozycja = new Vector2(Game.zawodnik.getPozycja.X + Game.zawodnik.getWalkSpeed, Game.zawodnik.getPozycja.Y);
+                            Game.zawodnik.getPozycja = nowaPozycja;
+                        }
+                        else
+                        {
+                            Game.zawodnik.getPozycja = staraPozycja;
+                        }
+
+
+                        bool flaga = true;
+                        //for (int i = 0; i < Game.map.getListaPrzeszkod.Count; i++)
+                        //    if (CollisionDetection2D.BoundingRectangle(Game.map.getListaPrzeszkod.ElementAt(i).RectanglePoints, Game.zawodnik.RectanglePoints))
+                        //    {
+                        //        //Game.zawodnik.getPozycja = staraPozycja;
+                        //        //flaga = false;
+                        //        //Console.WriteLine("Wykryto kolizje");
+                        //    }
+                        if (flaga)
+                            staraPozycja = nowaPozycja;
+
+
+                        Game.kamera.getPozycja = Game.zawodnik.getPozycja;
+                        //System.Console.WriteLine("pozycja myszki X: " + Game.zawodnik.getPozycja.X + " pozycja myszki Y: " + Game.zawodnik.getPozycja.Y);
+
+
+                    }
+                    //kolizja = 0;
+
+
+
+                    if (KeyJustPressed(STRZAL))
+                    {
+                        System.Console.WriteLine("strzal");
+                    }
+
+                    if (KeyJustPressed(KONSOLA))
+                    {
+
+                        System.Console.WriteLine("konsola");
+                    }
                 }
-            }
 
         }
     }
