@@ -153,8 +153,6 @@ namespace RzezniaMagow
                         statusCallback("Incorrect packet: " + packet[0] + ", " + packet[1] + ".");
                         continue;
                     }
-
-<<<<<<< .mine
                     if (enteredGame && packet[0] == Common.PACKET_COMMON)
                     {
                         listenerSem.WaitOne();
@@ -176,7 +174,7 @@ namespace RzezniaMagow
                         enteredGame = true;
                         listenerSem.Release();
                         Game.client.getCzyGra = true;
-=======
+
                         if (enteredGame && packet[0] == Common.PACKET_COMMON)
                         {
                             listenerSem.WaitOne();
@@ -204,8 +202,6 @@ namespace RzezniaMagow
                             running = false;
                             cli.Client.Disconnect(true);
                         }
-                   
->>>>>>> .r101
 
                     }
                     else if (packet[0] == Common.PACKET_END) //server shutdown or kicked out

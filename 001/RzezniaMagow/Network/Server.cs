@@ -251,11 +251,6 @@ namespace RzezniaMagow
 
                 if (cli.Connected && (pending = cli.Available) > 0)
                 {
-<<<<<<< .mine
-                   // Console.Write('@');
-=======
-                    Console.Write('@');
->>>>>>> .r101
                     packet = new byte[pending];
                     io.Read(packet, 0, pending);
 
