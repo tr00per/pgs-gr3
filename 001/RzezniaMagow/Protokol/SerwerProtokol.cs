@@ -160,6 +160,26 @@ namespace RzezniaMagow
             offset += s.Length;
         }
 
+        public void addNumberOfBonus(ref byte[] tablica, ref int offset, byte number)
+        {
+            byte[] tab = BitConverter.GetBytes(number);
+            tablica[offset] = tab[0];
+            offset++;
+        }
+
+        public void addBonusID(ref byte[] tablica, ref int offset, byte number)
+        {
+            byte[] tab = BitConverter.GetBytes(number);
+            tablica[offset] = tab[0];
+            offset++;
+        }
+
+        public void addBonusFlag(ref byte[] tablica, ref int offset, byte number)
+        {
+            byte[] tab = BitConverter.GetBytes(number);
+            tablica[offset] = tab[0];
+            offset++;
+        }
         /// <summary>
         /// funkcja dodająca do protokołu ilość pocisków aktualnie znajdujących się na mapie
         /// </summary>
@@ -192,6 +212,12 @@ namespace RzezniaMagow
             tablica[offset] = tab[0];
             offset++;
         }
+        public void addShotHeadshot(ref byte[] tablica, ref int offset, byte x)
+        {
+            byte[] tab = BitConverter.GetBytes(x);
+            tablica[offset] = tab[0];
+            offset++;
+        }
 
         public void addShotOwnerID(ref byte[] tablica, ref int offset, byte x)
         {
@@ -217,13 +243,10 @@ namespace RzezniaMagow
         {
 
                         //serwer otrzymuję od klienta informację w czasie trwania rozgrywki
-            Gracz gracz;
+                        Gracz gracz;
            
                         //pobranie ID gracza
                         byte id_gracza = tresc[0];
-
-                        
-            
                         //pobranie pozycji x i y gracza
 
                         float x = BitConverter.ToSingle(tresc, 1);
@@ -237,7 +260,8 @@ namespace RzezniaMagow
                         //pobranie pozycji x i y kursora gracza
                         //Vector2 pozycja_kursora = new Vector2(BitConverter.ToSingle(tresc, 11), BitConverter.ToSingle(tresc, 15));
 
-                        gracz.getPozycjaKursora = new Vector2(xK, yK);
+                        //gracz.getPozycjaKursora = new Vector2(xK, yK);
+                        gracz.getPozycjaKursora = moveCursor(x,xK,y,yK);
 
                        //pobranie ilości pocisków
                         byte ilośćPocisków = tresc[17];
@@ -245,7 +269,7 @@ namespace RzezniaMagow
 
                         for (int i = 0; i < ilośćPocisków; i++)
                         {
-                            gracz.getListaPociskow.Add(new Pocisk(x, y,xK,yK, (byte)i, typPocisku, gracz.getID));
+                            gracz.getListaPociskow.Add(new Pocisk(x, y, gracz.getPozycjaKursora.X, gracz.getPozycjaKursora.Y, (byte)i, typPocisku, gracz.getID));
 
                         }
                         //pobranie typu pocisków
@@ -262,7 +286,7 @@ namespace RzezniaMagow
         /// <param name="listPocisk">lista pociskow znajdujacych sie na mapie</param>
         /// <param name="typ">typ pakietu</param>
         /// <param name="nrRundy">aktulany numer rundy</param>
-        public byte[] createPackage(List<Gracz> listGracz, List<Pocisk> listPocisk, byte typ, byte nrRundy)
+        public byte[] createPackage(List<Gracz> listGracz, List<Pocisk> listPocisk,List<Bonus> listBonus, byte typ, byte nrRundy)
         {
             byte[] tablica;
             int offset = 0;
@@ -284,8 +308,37 @@ namespace RzezniaMagow
                             addPlayerAvatar(ref tablica, ref offset, listGracz.ElementAt(i).getTypAvatara);
                             //addPlayerPosition(listGracz.ElementAt(i).getPozycja.X, listGracz.ElementAt(i).getPozycja.Y);
                             Random los= new Random();
-                            float poz1 = (float)los.NextDouble()*200;
-                            float poz2 = (float)los.NextDouble()*200;
+                            float poz1 = 0;
+                            float poz2 = 0;
+                            switch (listGracz.ElementAt(i).getID)
+                            {
+                                case 1:
+                                    {
+                                        poz1 = (float)los.NextDouble() * 100 + 20;
+                                        poz2 = (float)los.NextDouble() * 150 + 20;
+                                        break;
+                                    }
+                                case 2:
+                                    {
+                                        poz1 = (float)los.NextDouble() * 120 + 120;
+                                        poz2 = (float)los.NextDouble() * 200 + 760;
+                                        break;
+                                    }
+                                case 3:
+                                    {
+                                        poz1 = (float)los.NextDouble() * 100 + 840;
+                                        poz2 = (float)los.NextDouble() * 200 + 80;
+                                        break;
+                                    }
+                                case 4:
+                                    {
+                                        poz1 = (float)los.NextDouble() * 120 + 800;
+                                        poz2 = (float)los.NextDouble() * 200 + 760;
+                                        break;
+                                    }
+                                default: break;
+                            }
+                           
                             addPlayerPosition(ref tablica, ref offset, poz1, poz2);
 
                             addPlayerPoints(ref tablica, ref offset, listGracz.ElementAt(i).getPunkty);
@@ -301,7 +354,7 @@ namespace RzezniaMagow
                     }
                 case 16:
                     {
-                        tablica = new byte[3 + 20 * listGracz.Count + 19*listPocisk.Count];
+                        tablica = new byte[4 + 20 * listGracz.Count + 20*listPocisk.Count + 2 * listBonus.Count];
 
                         offset = 0;
 
@@ -323,11 +376,20 @@ namespace RzezniaMagow
                             addShotID(ref tablica, ref offset, listPocisk.ElementAt(i).getID);
                             addShotOwnerID(ref tablica, ref offset, listPocisk.ElementAt(i).getIDOwnera);
                             addShotType(ref tablica, ref offset, listPocisk.First().getTypPocisku);
+                            addShotHeadshot(ref tablica, ref offset, listPocisk.ElementAt(i).getTrafienie);
                             addShotPosition(ref tablica, ref offset, listPocisk.ElementAt(i).getPozycja.X, listPocisk.ElementAt(i).getPozycja.Y);
                             addCursorPosition(ref tablica, ref offset, listPocisk.ElementAt(i).getPozycjaKursora.X, listPocisk.ElementAt(i).getPozycjaKursora.Y);
                             
                         }
-                       
+                        Game.serwer.removeBullets();
+
+                        addNumberOfBonus(ref tablica, ref offset, (byte)listBonus.Count);
+                        for (int i = 0; i < listBonus.Count; i++)
+                        {
+                            addBonusID(ref tablica, ref offset,listBonus.ElementAt(i).getID);
+                            addBonusFlag(ref tablica, ref offset, listBonus.ElementAt(i).getCzyZlapany);
+                        }
+
                        // addCheckSum(calculateCheckSum(tablica));
                        
                         return tablica;
@@ -353,6 +415,47 @@ namespace RzezniaMagow
 
         }
 
+
+        public Vector2 moveCursor(float x1, float x2 ,float y1, float y2)
+        {
+            float a, b;
+
+            if (x2 - x1 != 0)
+                a = (y2 - y1) / (x2 - x1);
+            else
+            {
+                a = (y2 - y1 ) / (x2 - x1 + 0.001f);
+                //return new Vector2(x2,y2);
+            }
+
+
+            b = y1 - a * x1;
+            float xx = 0;
+            float yy = 0;
+
+            if (x1 < x2)
+                xx = x2 * 100;
+            else if (x2 < x1 && x2 > 0)
+                xx = -20;
+            else if (x1 == x2)
+            {
+                if (y2 < y1)
+                {
+                    yy = -20;
+                    return new Vector2((yy - b) / a, yy);
+                }
+                else
+                {
+                    yy = 1100;
+                    return new Vector2((yy - b) / a, yy);
+                }
+
+            }
+
+
+            return new Vector2(xx,xx*a+b);
+
+        }
 
     }
 }

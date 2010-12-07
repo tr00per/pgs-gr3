@@ -45,7 +45,7 @@ namespace RzezniaMagow
             
             // Hook up menu event handlers.
             playGameMenuEntry.Selected += PlayGameMenuEntrySelected;
-            optionsMenuEntry.Selected += OptionsMenuEntrySelected;
+            optionsMenuEntry.Selected += CreateSerwerEntrySelected;
             exitMenuEntry.Selected += OnCancel;
 
             // Add entries to the menu.
@@ -68,8 +68,9 @@ namespace RzezniaMagow
             //do odkomentowania po podlaczeniu serwera
 
             Game.client = new ClientLogic();
+            //Game.client.connect("192.168.1.3", 20000, "diubhdbbd", 1);
             Game.client.connect("127.0.0.1", 20000, "Kivu", 4);
-            //Game.client.connect("169.254.80.163", 20000, "Kivu", 4);
+            Game.czyKlient = true;
             Console.WriteLine("WAITING...");
 
             Game.screenManager.Visible = false;
@@ -83,16 +84,17 @@ namespace RzezniaMagow
         /// <summary>
         /// Event handler for when the Options menu entry is selected.
         /// </summary>
-        void OptionsMenuEntrySelected(object sender, PlayerIndexEventArgs e)
+        void CreateSerwerEntrySelected(object sender, PlayerIndexEventArgs e)
         {
             Game.serwer = new ServerLogic();
             Game.serwer.serverStarted();
             Game.czySerwer =  true;
             //Console.WriteLine("SERVER RUNNING: " + Game.serwer..ToString());
 
-            Game.client = new ClientLogic();
-            Game.client.connect("127.0.0.1", 20000, "Kivu", 1);
-            Console.WriteLine("WAITING...");
+            //Game.client = new ClientLogic();
+            //Game.client.connect("127.0.0.1", 20000, "Kivu", 1);
+            //Game.czyKlient = true;
+            //Console.WriteLine("WAITING...");
 
             Game.screenManager.Visible = false;
             Game.screenManager.RemoveScreen(this);

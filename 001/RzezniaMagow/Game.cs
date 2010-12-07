@@ -33,14 +33,16 @@ namespace RzezniaMagow
         Klawiatura klawiatura;
         Myszka mysz;
 
-        public static bool czySerwer;
+        public static bool czySerwer, czyKlient, konsola;
         volatile public static bool czyNowaRunda;
 
 
         //zmienne testowe w razie problemow do usuniecia
-        public static List<Pocisk> pociski;
-        Texture2D cel;
 
+        Texture2D cel;
+        Texture2D consola;
+        public static string message;
+        public static int numer = 100;
 
        
 
@@ -64,7 +66,9 @@ namespace RzezniaMagow
             czyNowaRunda = true;
             IsFixedTimeStep = false;
 
-            pociski = new List<Pocisk>();
+            message = null;
+
+           
         }
 
         /// <summary>
@@ -80,10 +84,10 @@ namespace RzezniaMagow
             graphics.PreferredBackBufferHeight = 600;
             graphics.SynchronizeWithVerticalRetrace = true;
 
-            IsMouseVisible = false;
+            //IsMouseVisible = false;
  
-            graphics.IsFullScreen = true;
-            
+            graphics.IsFullScreen = false;
+            CollisionDetection2D.CDPerformedWith = UseForCollisionDetection.Rectangles;
         }
 
         /// <summary>
@@ -108,8 +112,10 @@ namespace RzezniaMagow
             spriteFont = content.Load<SpriteFont>("menufont");
             
             cel = content.Load<Texture2D>("cel");
+            consola = content.Load<Texture2D>("Menu/konsola");
             map.LoadContent(content.Load<Texture2D>("Maps/mapa"));
-           
+            CollisionDetection2D.AdditionalRenderTargetForCollision = new RenderTarget2D(graphics.GraphicsDevice, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight, 1, graphics.GraphicsDevice.DisplayMode.Format);
+            Primitives2D.dotTexture = content.Load<Texture2D>("Dot");
 
            // zawodnik.LoadContent(content.Load<Texture2D>(@"Avatar\Angels"));
             // TODO: use this.Content to load your game content here
@@ -132,44 +138,58 @@ namespace RzezniaMagow
         protected override void Update(GameTime gameTime)
         {
             
-            //wysy³anie do logiki klienta informacji o graczu
+            
 
-            //if(czySerwer)
-            //    serwer.sendUpdate(16,serwer
-            //if (czyNowaRunda)
-            //{
-            //    czyNowaRunda = false;
-            //}
 
-            mysz.procesMyszy();
-            klawiatura.procesKlawiatury();
-            //if (client.getCzyGra )//&& gameTime.ElapsedRealTime.Milliseconds % 3 == 1)
-            //{
-               
-            //    client.sendUpdate(client.clientProtocol.createPackage(zawodnik));
 
-            //}
+
+            if (czySerwer)
+            {
+                klawiatura.procesKlawiatury();
+                for (int i = 0; i < serwer.getBullets.Count; i++)
+                {
+                    serwer.getBullets.ElementAt(i).updatePosition(gameTime);
+
+                }
+                serwer.removeBullets();
+
+                if(serwer.getBullets.Count>0)
+                    serwer.bulletsCollision();
+
+                if (serwer.getBullets.Count > 0)
+                    serwer.bulletsPlayersCollision();
+
+                serwer.bonusPlayersCollision();
+                serwer.trapPlayersCollision();
+            }
+
+
+
+
+            if (client.getCzyGra && Game.zawodnik.getCzyZyje)
+            {
+                mysz.procesMyszy();
+                klawiatura.procesKlawiatury();
+
+            }
+
+                for (int i = 0; i < client.listaPociskow.Count; i++)
+                {
+
+
+                    client.listaPociskow.ElementAt(i).updatePosition(gameTime);
+                }
+                removeBullets(ref client.listaPociskow);
+
+                if (client.listaPociskow.Count > 0)
+                    client.BulletsCollision();
 
             
+
 
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-
-            //if (czySerwer)
-            //{
-            //    serwer.removeBullets();
-
-            //    for (int i = 0; i < serwer.getBullets.Count; i++)
-            //    {
-            //        serwer.getBullets.ElementAt(i).updatePosition(gameTime);
-
-            //       // spriteBatch.Draw(client.listaPociskow.ElementAt(i).getTekstura, client.listaPociskow.ElementAt(i).getPozycja, Color.White);
-            //    }
-
-
-            //}
-
 
 
             base.Update(gameTime);
@@ -183,44 +203,87 @@ namespace RzezniaMagow
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            spriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.SaveState, kamera.getTransformation(graphics));
-            if (client.getCzyGra)
-            {
-                map.Draw(gameTime, spriteBatch);
 
-                for (int i = 0; i < client.listaGraczy.Count; i++)
+                spriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.SaveState, kamera.getTransformation(graphics));
+                if (client.getCzyGra)
                 {
+                    map.Draw(gameTime, spriteBatch);
 
-                    spriteBatch.Draw(client.listaGraczy.ElementAt(i).getTekstura, client.listaGraczy.ElementAt(i).getPozycja, null, Color.White, (float)Math.Atan2((client.listaGraczy.ElementAt(i).getPozycjaKursora.X - client.listaGraczy.ElementAt(i).getPozycja.X), -(client.listaGraczy.ElementAt(i).getPozycjaKursora.Y - client.listaGraczy.ElementAt(i).getPozycja.Y)), new Vector2(20f, 40f), 1.0f, SpriteEffects.None, 0);
-                    //spriteBatch.Draw(client.listaGraczy.ElementAt(i).getTekstura, client.listaGraczy.ElementAt(i).getPozycja, Color.White);
-                    //czyNowaRunda = false;
+                    for (int i = 0; i < client.listaGraczy.Count; i++)
+                    {
+                        if (client.listaGraczy.ElementAt(i).getZycie != 0)
+                        {
+                            spriteBatch.Draw(client.listaGraczy.ElementAt(i).getTekstura, client.listaGraczy.ElementAt(i).getPozycja, null, Color.White,
+                                            client.listaGraczy.ElementAt(i).getKatObrotu, client.listaGraczy.ElementAt(i).getPunktObrotu, 1.0f, SpriteEffects.None, 0);
+
+                            spriteBatch.DrawString(spriteFont, (client.listaGraczy.ElementAt(i).getNick + "  " + client.listaGraczy.ElementAt(i).getZycie), new Vector2(client.listaGraczy.ElementAt(i).getPozycja.X - 25, client.listaGraczy.ElementAt(i).getPozycja.Y - 70),
+                                                    client.listaGraczy.ElementAt(i).getFontColor);
+                            //client.listaGraczy.ElementAt(i).Draw(gameTime, spriteBatch);
+                        }
+                    }
+
+                    if (client.listaPociskow.Count > 0)
+                        for (int i = 0; i < client.listaPociskow.Count; i++)
+                        {
+                            spriteBatch.Draw(client.listaPociskow.ElementAt(i).getTekstura, client.listaPociskow.ElementAt(i).getPozycja,
+                                            null, Color.White, client.listaPociskow.ElementAt(i).getKatObrotu, client.listaPociskow.ElementAt(i).getPunktObrotu, 1.0f, SpriteEffects.None, 0);
+
+                            client.listaPociskow.ElementAt(i).Draw(gameTime, spriteBatch);
+                        }
+
+                    
+                    spriteBatch.Draw(cel, zawodnik.getPozycjaKursora, Color.White);
+                    spriteBatch.DrawString(spriteFont, zawodnik.getPunktyMany.ToString(), new Vector2(100, 100), Color.Chartreuse);
+
+                    if (message != null && numer>0)
+                    {
+                       
+                            spriteBatch.DrawString(spriteFont, message, zawodnik.getPozycja, Color.Red);
+                            numer--;
+                        
+                    }
+
                 }
-                //if (client.listaPociskow.Count > 0)
-                //    for (int i = 0; i < client.listaPociskow.Count; i++)
-                //    {
-                //        pociski.ElementAt(i).updatePosition(gameTime);
-                //        client.listaPociskow.ElementAt(i).updatePosition(gameTime);
 
-                //        spriteBatch.Draw(pociski.ElementAt(i).getTekstura, pociski.ElementAt(i).getPozycja, null, Color.White, pociski.ElementAt(i).obrotPocisku, new Vector2(25f, 12f), 1.0f, SpriteEffects.None, 0);
+                if (konsola)
+                {
+                    Vector2 kons =new Vector2(zawodnik.getPozycja.X - 250,zawodnik.getPozycja.Y-200);
+                    spriteBatch.Draw(consola , kons , Color.White);
+                    spriteBatch.DrawString(spriteFont, "Nick       Punkty     Smierci" , new Vector2(kons.X + 50, kons.Y + 100), Color.GreenYellow);
+                        
+                    for (int i = 0; i < client.listaGraczy.Count; i++)
+                    {
+                        spriteBatch.DrawString(spriteFont, client.listaGraczy.ElementAt(i).getNick, new Vector2(kons.X + 50, kons.Y + 150 + i*30), Color.Red);
+                        spriteBatch.DrawString(spriteFont, client.listaGraczy.ElementAt(i).getPunkty.ToString(), new Vector2(kons.X + 200, kons.Y + 150 + i * 30), Color.Red);
+                        spriteBatch.DrawString(spriteFont, client.listaGraczy.ElementAt(i).getIloscZgonow.ToString(), new Vector2(kons.X + 360, kons.Y + 150 + i * 30), Color.Red);
 
-                //        //spriteBatch.Draw(client.listaPociskow.ElementAt(i).getTekstura, client.listaPociskow.ElementAt(i).getPozycja, Color.White);
-                //    }
-
-                
 
 
-               // spriteBatch.Draw(zawodnik.getTekstura, zawodnik.getPozycja, Color.White);
-                spriteBatch.Draw(cel, zawodnik.getPozycjaKursora, Color.White);
-               // spriteBatch.DrawString(spriteFont, Game.serwer.getPredkoscWysylania.ToString(), new Vector2(50,50), Color.White);
-            }
-            spriteBatch.End();
+                    }
 
+                }
+
+
+
+
+                spriteBatch.End();
+            
             base.Draw(gameTime);
         }
 
 
 
-        
+        public void removeBullets(ref List<Pocisk> lista)
+        {
+            if(lista.Count>0)
+            for (int i = lista.Count - 1; i > -1; i--)
+            {
+                if (lista.ElementAt(i).getPozycja.X < 0 || lista.ElementAt(i).getPozycja.Y < 0 || lista.ElementAt(i).getPozycja.Y > Game.map.getTekstura.Width || lista.ElementAt(i).getPozycja.X > Game.map.getTekstura.Height)
+
+                    lista.RemoveAt(i);
+            }
+
+        }
 
 
 

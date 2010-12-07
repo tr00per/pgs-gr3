@@ -34,7 +34,7 @@ namespace RzezniaMagow
                     MouseState currentMouseState = Mouse.GetState();
                     if (Game.client.getCzyGra)
                     {
-
+                        if(Game.zawodnik.getPunktyMany>2)
                         if (currentMouseState.LeftButton != originalMouseState.LeftButton)
                             if (currentMouseState.LeftButton == ButtonState.Pressed)
                                 if (currentMouseState.X > 0 && currentMouseState.X < 800 && currentMouseState.Y > 0 && currentMouseState.Y < 600)
@@ -42,28 +42,25 @@ namespace RzezniaMagow
                                     //System.Console.WriteLine("strzal z myszki");
                                     Game.zawodnik.getPozycjaKursora = new Vector2(currentMouseState.X + Game.kamera.getPozycja.X - Game.graphics.PreferredBackBufferWidth / 2, currentMouseState.Y + Game.kamera.getPozycja.Y - Game.graphics.PreferredBackBufferHeight / 2);
 
-                                    //Pocisk poc  = new Pocisk(Game.zawodnik.getPozycja.X, Game.zawodnik.getPozycja.Y,Game.zawodnik.getPozycjaKursora.X, Game.zawodnik.getPozycjaKursora.Y,
-                                    //                                            (byte)Game.zawodnik.getListaPociskow.Count,Game.zawodnik.getAktualnaBron.getTypBroni, Game.zawodnik.getID);
-                                    //poc.obrotPocisku = (float)Math.Atan2(-(Game.zawodnik.getPozycjaKursora.X - Game.zawodnik.getPozycja.X), (Game.zawodnik.getPozycjaKursora.Y - Game.zawodnik.getPozycja.Y)) + MathHelper.Pi / 2;
+                                    Pocisk poc  = new Pocisk(Game.zawodnik.getPozycja.X, Game.zawodnik.getPozycja.Y,Game.zawodnik.getPozycjaKursora.X, Game.zawodnik.getPozycjaKursora.Y,
+                                                                                (byte)Game.zawodnik.getListaPociskow.Count,Game.zawodnik.getAktualnaBron.getTypBroni, Game.zawodnik.getID);
+                                    poc.getKatObrotu = (float)Math.Atan2(-(Game.zawodnik.getPozycjaKursora.X - Game.zawodnik.getPozycja.X), (Game.zawodnik.getPozycjaKursora.Y - Game.zawodnik.getPozycja.Y)) + MathHelper.Pi / 2;
 
 
-                                    //poc.calculateSpeed();
-                                    //Game.zawodnik.getListaPociskow.Add(poc);
+                                    poc.calculateSpeed();
+                                    Game.zawodnik.getListaPociskow.Add(poc);
+                                    Game.zawodnik.getPunktyMany -= 2;
                                     
 
-                                    /////testowe wyswietlanie pociskow
-                                    
-                                    //Game.pociski.Add(poc);
 
 
                                 }
 
-                        //if (currentMouseState.X != originalMouseState.X)
-                        //{
+ 
                             if (currentMouseState.X > 0 && currentMouseState.X < 800 && currentMouseState.Y > 0 && currentMouseState.Y < 600)
                             Game.zawodnik.getPozycjaKursora = new Vector2(currentMouseState.X + Game.kamera.getPozycja.X - Game.graphics.PreferredBackBufferWidth / 2, currentMouseState.Y + Game.kamera.getPozycja.Y - Game.graphics.PreferredBackBufferHeight / 2);
 
-                       // }
+                            
                         //System.Console.WriteLine("pozycja myszki X: " + currentMouseState.X + " pozycja myszki Y: " + currentMouseState.X);
 
 
