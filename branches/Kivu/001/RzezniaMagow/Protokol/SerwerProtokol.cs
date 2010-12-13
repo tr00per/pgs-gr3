@@ -321,7 +321,7 @@ namespace RzezniaMagow
                                 case 2:
                                     {
                                         poz1 = (float)los.NextDouble() * 120 + 120;
-                                        poz2 = (float)los.NextDouble() * 200 + 760;
+                                        poz2 = (float)los.NextDouble() * 180 + 780;
                                         break;
                                     }
                                 case 3:

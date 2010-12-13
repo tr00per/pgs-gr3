@@ -67,17 +67,12 @@ namespace RzezniaMagow
         {
             //do odkomentowania po podlaczeniu serwera
 
-            Game.client = new ClientLogic();
-            //Game.client.connect("192.168.1.3", 20000, "diubhdbbd", 1);
-            Game.client.connect("127.0.0.1", 20000, "Kivu", 4);
-            Game.czyKlient = true;
-            Console.WriteLine("WAITING...");
+            ClientForm ser = new ClientForm();
 
-            Game.screenManager.Visible = false;
-            Game.screenManager.RemoveScreen(this);
+            ser.Show();
 
-            for (int i = 0; i < ScreenManager.GetScreens().Count; i++ )
-                Game.screenManager.RemoveScreen(ScreenManager.GetScreens().ElementAt(i));
+            //je¿eli szukasz obs³ugi dol¹czania nowego gracza idz do klasy clientForm.cs w folderze Formularz :)
+
         }
 
 
@@ -91,10 +86,10 @@ namespace RzezniaMagow
             Game.czySerwer =  true;
             //Console.WriteLine("SERVER RUNNING: " + Game.serwer..ToString());
 
-            //Game.client = new ClientLogic();
-            //Game.client.connect("127.0.0.1", 20000, "Kivu", 1);
-            //Game.czyKlient = true;
-            //Console.WriteLine("WAITING...");
+            Game.client = new ClientLogic();
+            Game.client.connect("127.0.0.1", 20000, "Kivu", 1);
+            Game.czyKlient = true;
+            Console.WriteLine("WAITING...");
 
             Game.screenManager.Visible = false;
             Game.screenManager.RemoveScreen(this);

@@ -9,17 +9,13 @@ using System.Threading;
 
 
 
+
 namespace RzezniaMagow
 {
 
 
     public class Klawiatura
     {
-
-
-        
-        
-
         private KeyboardState stanKlawiatury;
         private KeyboardState poprzedniStanKlawiatury;
 
@@ -31,18 +27,15 @@ namespace RzezniaMagow
         public Keys STRZAL = Keys.Space;
 
         public Keys KONSOLA = Keys.Tab;
-
-        //private int kolizja ;
         private Vector2 staraPozycja;
         private Vector2 nowaPozycja;
 
         public Klawiatura()
         {
             this.stanKlawiatury = Keyboard.GetState();
-            //kolizja = 0;
+            
             staraPozycja = new Vector2();
             nowaPozycja = new Vector2();
-            
         }
 
         /// <summary>
@@ -65,11 +58,11 @@ namespace RzezniaMagow
 
 
 
-            if (stanKlawiatury.IsKeyDown(Keys.Tab))
+            if (stanKlawiatury.IsKeyDown(KONSOLA))
             {
                 Game.konsola = true;
             }
-            if (stanKlawiatury.IsKeyUp(Keys.Tab))
+            if (stanKlawiatury.IsKeyUp(KONSOLA))
             {
                 Game.konsola = false;
             }
@@ -89,9 +82,6 @@ namespace RzezniaMagow
                 Console.WriteLine("GAME: Almost done.");
                 Program.game.Exit();
 
-               // Game.screenManager.Visible = true;
-                //Game.client.getCzyGra = false;
-
             }
 
             if (KeyJustPressed(Keys.D1))
@@ -99,186 +89,125 @@ namespace RzezniaMagow
                 Game.czyNowaRunda = true;
                 
             }
-
-            if (KeyJustPressed(Keys.D2))
-            {
-
-                Game.serwer.getPredkoscWysylania++;
-                Console.WriteLine(Game.serwer.getPredkoscWysylania);
-            }
-
-            if (KeyJustPressed(Keys.D3))
-            {
-                Game.serwer.getPredkoscWysylania--;
-                Console.WriteLine(Game.serwer.getPredkoscWysylania);
-
-            }
-
             if (KeyJustPressed(Keys.D4))
             {
-                
+               
 
             }
 
+            if (Game.client.getCzyGra)
+            {
 
-               
+                if (this.stanKlawiatury.IsKeyDown(DOL))
+                {
+                    if (Game.zawodnik.getPozycja.Y < Game.map.getTekstura.Height - Game.map.getMapOffset)
+                    {
+                        nowaPozycja = new Vector2(Game.zawodnik.getPozycja.X, Game.zawodnik.getPozycja.Y + Game.zawodnik.getWalkSpeed);
+                        Game.zawodnik.getPozycja = nowaPozycja;
+                    }
+                    bool wolne = true;
+                    for (int i = 0; i < Game.map.getListaPrzeszkod.Count; i++)
+                        if (CollisionDetection2D.BoundingRectangle(Game.map.getListaPrzeszkod.ElementAt(i).RectanglePoints, Game.zawodnik.RectanglePoints))
+                        {
+                            wolne = false;
+                        }
+                    if (wolne)
+                    {
+                        staraPozycja = nowaPozycja;
+                        Game.zawodnik.getPozycja = staraPozycja;
+                    }
+                    else
+                    {
+                        Game.zawodnik.getPozycja = staraPozycja;
+                    }
+                    Game.kamera.getPozycja = Game.zawodnik.getPozycja;
 
 
-
-
-                if (Game.client.getCzyGra)
+                }
+                if (this.stanKlawiatury.IsKeyDown(LEWO))
                 {
 
-                    if (this.stanKlawiatury.IsKeyDown(DOL))
+                    if (Game.zawodnik.getPozycja.X > Game.map.getMapOffset)
                     {
-
-
-                        
-
-                        if (Game.zawodnik.getPozycja.Y < Game.map.getTekstura.Height - Game.map.getMapOffset)
-                        {
-                            nowaPozycja = new Vector2(Game.zawodnik.getPozycja.X, Game.zawodnik.getPozycja.Y + Game.zawodnik.getWalkSpeed);
-                            Game.zawodnik.getPozycja = nowaPozycja;
-                        }
-                        else
-                        {
-                            Game.zawodnik.getPozycja = staraPozycja;
-                        }
-                        
-
-                        bool flaga = true;
-                        //for (int i = 0; i < Game.map.getListaPrzeszkod.Count; i++)
-                        //    if (CollisionDetection2D.BoundingRectangle(Game.map.getListaPrzeszkod.ElementAt(i).RectanglePoints, Game.zawodnik.RectanglePoints))
-                        //    {
-                        //       //Game.zawodnik.getPozycja = staraPozycja;
-                        //       //flaga = false;
-                        //        //Console.WriteLine("Wykryto kolizje");
-                        //    }
-                        if(flaga)
-                            staraPozycja = nowaPozycja;
-
-                        
-
-                        Game.kamera.getPozycja = Game.zawodnik.getPozycja;
-                        //wycisniety = false;
-
-                        //System.Console.WriteLine("pozycja myszki X: " + Game.zawodnik.getPozycja.X + " pozycja myszki Y: " + Game.zawodnik.getPozycja.Y);
-
-
-                    }
-                     if (this.stanKlawiatury.IsKeyDown(LEWO))
-                    {
-
-                       
-
-                        if (Game.zawodnik.getPozycja.X > Game.map.getMapOffset)
-                        {
-                            nowaPozycja = new Vector2(Game.zawodnik.getPozycja.X - Game.zawodnik.getWalkSpeed, Game.zawodnik.getPozycja.Y);
-                            Game.zawodnik.getPozycja = nowaPozycja;
-                        }
-                        else
-                        {
-                            Game.zawodnik.getPozycja = staraPozycja;
-                        }
-
-
-                        bool flaga = true;
-                        //for (int i = 0; i < Game.map.getListaPrzeszkod.Count; i++)
-                        //    if (CollisionDetection2D.BoundingRectangle(Game.map.getListaPrzeszkod.ElementAt(i).RectanglePoints, Game.zawodnik.RectanglePoints))
-                        //    {
-                        //        //Game.zawodnik.getPozycja = staraPozycja;
-                        //        //flaga = false;
-                        //        //Console.WriteLine("Wykryto kolizje");
-                        //    }
-                        if (flaga)
-                            staraPozycja = nowaPozycja;
-
-
-
-                        Game.kamera.getPozycja = Game.zawodnik.getPozycja;
-                        //System.Console.WriteLine("pozycja myszki X: " + Game.zawodnik.getPozycja.X + " pozycja myszki Y: " + Game.zawodnik.getPozycja.Y);
-
-
-                    }
-                     if (this.stanKlawiatury.IsKeyDown(GORA))
-                    {
-                        
-
-                        if (Game.zawodnik.getPozycja.Y > Game.map.getMapOffset)
-                        {
-                            nowaPozycja = new Vector2(Game.zawodnik.getPozycja.X, Game.zawodnik.getPozycja.Y - Game.zawodnik.getWalkSpeed);
-                            Game.zawodnik.getPozycja = nowaPozycja;
-                        }
-                        else
-                        {
-                            Game.zawodnik.getPozycja = staraPozycja;
-                        }
-
-                        bool flaga = true;
-                        //for (int i = 0; i < Game.map.getListaPrzeszkod.Count; i++)
-                        //    if (CollisionDetection2D.BoundingRectangle(Game.map.getListaPrzeszkod.ElementAt(i).RectanglePoints, Game.zawodnik.RectanglePoints))
-                        //    {
-                        //        //Game.zawodnik.getPozycja = staraPozycja;
-                        //        //flaga = false;
-                        //        //Console.WriteLine("Wykryto kolizje");
-                        //    }
-                        if (flaga)
-                            staraPozycja = nowaPozycja;
-
-
-
-                        Game.kamera.getPozycja = Game.zawodnik.getPozycja;
-                        //System.Console.WriteLine("pozycja myszki X: " + Game.zawodnik.getPozycja.X + " pozycja myszki Y: " + Game.zawodnik.getPozycja.Y);
-
-
-
-                    }
-                     if (this.stanKlawiatury.IsKeyDown(PRAWO))
-                    {
-                        
-                        if (Game.zawodnik.getPozycja.X < Game.map.getTekstura.Width - Game.map.getMapOffset)
-                        {
-                            nowaPozycja = new Vector2(Game.zawodnik.getPozycja.X + Game.zawodnik.getWalkSpeed, Game.zawodnik.getPozycja.Y);
-                            Game.zawodnik.getPozycja = nowaPozycja;
-                        }
-                        else
-                        {
-                            Game.zawodnik.getPozycja = staraPozycja;
-                        }
-
-
-                        bool flaga = true;
-                        //for (int i = 0; i < Game.map.getListaPrzeszkod.Count; i++)
-                        //    if (CollisionDetection2D.BoundingRectangle(Game.map.getListaPrzeszkod.ElementAt(i).RectanglePoints, Game.zawodnik.RectanglePoints))
-                        //    {
-                        //        //Game.zawodnik.getPozycja = staraPozycja;
-                        //        //flaga = false;
-                        //        //Console.WriteLine("Wykryto kolizje");
-                        //    }
-                        if (flaga)
-                            staraPozycja = nowaPozycja;
-
-
-                        Game.kamera.getPozycja = Game.zawodnik.getPozycja;
-                        //System.Console.WriteLine("pozycja myszki X: " + Game.zawodnik.getPozycja.X + " pozycja myszki Y: " + Game.zawodnik.getPozycja.Y);
-
-
-                    }
-                    //kolizja = 0;
-
-
-
-                    if (KeyJustPressed(STRZAL))
-                    {
-                        System.Console.WriteLine("strzal");
+                        nowaPozycja = new Vector2(Game.zawodnik.getPozycja.X - Game.zawodnik.getWalkSpeed, Game.zawodnik.getPozycja.Y);
+                        Game.zawodnik.getPozycja = nowaPozycja;
                     }
 
-                    if (KeyJustPressed(KONSOLA))
+                    bool wolne = true;
+                    for (int i = 0; i < Game.map.getListaPrzeszkod.Count; i++)
+                        if (CollisionDetection2D.BoundingRectangle(Game.map.getListaPrzeszkod.ElementAt(i).RectanglePoints, Game.zawodnik.RectanglePoints))
+                        {
+                            wolne = false;
+                        }
+                    if (wolne)
                     {
-
-                        System.Console.WriteLine("konsola");
+                        staraPozycja = nowaPozycja;
+                        Game.zawodnik.getPozycja = staraPozycja;
                     }
+                    else
+                    {
+                        Game.zawodnik.getPozycja = staraPozycja;
+                    }
+                    Game.kamera.getPozycja = Game.zawodnik.getPozycja;
+
                 }
+                if (this.stanKlawiatury.IsKeyDown(GORA))
+                {
+
+
+                    if (Game.zawodnik.getPozycja.Y > Game.map.getMapOffset)
+                    {
+                        nowaPozycja = new Vector2(Game.zawodnik.getPozycja.X, Game.zawodnik.getPozycja.Y - Game.zawodnik.getWalkSpeed);
+                        Game.zawodnik.getPozycja = nowaPozycja;
+                    }
+
+                    bool wolne = true;
+                    for (int i = 0; i < Game.map.getListaPrzeszkod.Count; i++)
+                        if (CollisionDetection2D.BoundingRectangle(Game.map.getListaPrzeszkod.ElementAt(i).RectanglePoints, Game.zawodnik.RectanglePoints))
+                        {
+                            wolne = false;
+                        }
+                    if (wolne)
+                    {
+                        staraPozycja = nowaPozycja;
+                        Game.zawodnik.getPozycja = staraPozycja;
+                    }
+                    else
+                    {
+                        Game.zawodnik.getPozycja = staraPozycja;
+                    }
+                    Game.kamera.getPozycja = Game.zawodnik.getPozycja;
+
+                }
+                if (this.stanKlawiatury.IsKeyDown(PRAWO))
+                {
+
+                    if (Game.zawodnik.getPozycja.X < Game.map.getTekstura.Width - Game.map.getMapOffset)
+                    {
+                        nowaPozycja = new Vector2(Game.zawodnik.getPozycja.X + Game.zawodnik.getWalkSpeed, Game.zawodnik.getPozycja.Y);
+                        Game.zawodnik.getPozycja = nowaPozycja;
+                    }
+
+                    bool wolne = true;
+                    for (int i = 0; i < Game.map.getListaPrzeszkod.Count; i++)
+                        if (CollisionDetection2D.BoundingRectangle(Game.map.getListaPrzeszkod.ElementAt(i).RectanglePoints, Game.zawodnik.RectanglePoints))
+                        {
+                            wolne = false;
+                        }
+                    if (wolne)
+                    {
+                        staraPozycja = nowaPozycja;
+                        Game.zawodnik.getPozycja = staraPozycja;
+                    }
+                    else
+                    {
+                        Game.zawodnik.getPozycja = staraPozycja;
+                    }
+                    Game.kamera.getPozycja = Game.zawodnik.getPozycja;
+
+                }
+               
+            }
 
         }
     }

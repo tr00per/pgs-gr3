@@ -115,7 +115,7 @@ namespace RzezniaMagow
             for (int i = 0; i < numbers.Count; i += 2)
             {
                 Obiekt pulapka = new Obiekt(numbers[i], numbers[i + 1]);
-                pulapka.LoadContent(Game.content.Load<Texture2D>(@"Maps\kolce"));
+                pulapka.LoadContent(Game.content.Load<Texture2D>(@"Maps\kolce2"));
                 
                 pulapka.getPunktObrotu = new Vector2(0, 0);
 

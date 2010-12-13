@@ -261,7 +261,12 @@ namespace RzezniaMagow
                                         Game.zawodnik.getZycie = Game.client.listaGraczy.ElementAt(i).getZycie;
 
                                         if (Game.zawodnik.getZycie == 0)
+                                        {
                                             Game.zawodnik.getCzyZyje = false;
+                                            Game.message = "You are dead Moron ";
+                                            Game.czasPrzygotowania = 10;
+
+                                        }
                                     }
                                 }
                             }
@@ -300,15 +305,18 @@ namespace RzezniaMagow
                                     float yk = BitConverter.ToSingle(tresc, offset);
                                     offset += 4;
 
-                                    bool usun = false;
+                                    bool dodaj = true;
 
                                     for (int k = 0; k < Game.client.listaPociskow.Count; k++)
                                     {
-                                        if (Game.client.listaPociskow.ElementAt(k).getID == pocisk_ID)
-                                            usun = true;
+                                        if (Game.client.listaPociskow.ElementAt(k).getID == pocisk_ID )
+                                        {
+                                            dodaj = false;
+                                            Game.client.listaPociskow.ElementAt(k).getTrafienie = traf;
+                                        }
                                     }
 
-                                    if (!usun)
+                                    if (dodaj && traf == 0)
                                     {
                                         poc = new Pocisk(x, y, xk, yk, pocisk_ID, pociskType, pociskOwner);
                                         poc.getTrafienie = traf;

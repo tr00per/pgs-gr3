@@ -30,6 +30,7 @@ namespace RzezniaMagow
         public static Kamera2d kamera;
 
         private SpriteFont spriteFont;
+        private SpriteFont messageFont;
         Klawiatura klawiatura;
         Myszka mysz;
 
@@ -42,9 +43,8 @@ namespace RzezniaMagow
         Texture2D cel;
         Texture2D consola;
         public static string message;
-        public static int numer = 100;
+        public static int czasPrzygotowania = 50;
 
-       
 
         public Game()
         {
@@ -63,7 +63,7 @@ namespace RzezniaMagow
             
             kamera = new Kamera2d();
             czySerwer = false;
-            czyNowaRunda = true;
+            czyNowaRunda = false;
             IsFixedTimeStep = false;
 
             message = null;
@@ -84,7 +84,7 @@ namespace RzezniaMagow
             graphics.PreferredBackBufferHeight = 600;
             graphics.SynchronizeWithVerticalRetrace = true;
 
-            //IsMouseVisible = false;
+            IsMouseVisible = true;
  
             graphics.IsFullScreen = false;
             CollisionDetection2D.CDPerformedWith = UseForCollisionDetection.Rectangles;
@@ -110,6 +110,7 @@ namespace RzezniaMagow
 
 
             spriteFont = content.Load<SpriteFont>("menufont");
+            messageFont = content.Load<SpriteFont>("messagefont");
             
             cel = content.Load<Texture2D>("cel");
             consola = content.Load<Texture2D>("Menu/konsola");
@@ -158,6 +159,7 @@ namespace RzezniaMagow
 
                 if (serwer.getBullets.Count > 0)
                     serwer.bulletsPlayersCollision();
+                serwer.removeBullets();
 
                 serwer.bonusPlayersCollision();
                 serwer.trapPlayersCollision();
@@ -166,7 +168,7 @@ namespace RzezniaMagow
 
 
 
-            if (client.getCzyGra && Game.zawodnik.getCzyZyje)
+            if (client.getCzyGra && Game.zawodnik.getCzyZyje && message == null)
             {
                 mysz.procesMyszy();
                 klawiatura.procesKlawiatury();
@@ -179,8 +181,6 @@ namespace RzezniaMagow
 
                     client.listaPociskow.ElementAt(i).updatePosition(gameTime);
                 }
-                removeBullets(ref client.listaPociskow);
-
                 if (client.listaPociskow.Count > 0)
                     client.BulletsCollision();
 
@@ -218,29 +218,27 @@ namespace RzezniaMagow
 
                             spriteBatch.DrawString(spriteFont, (client.listaGraczy.ElementAt(i).getNick + "  " + client.listaGraczy.ElementAt(i).getZycie), new Vector2(client.listaGraczy.ElementAt(i).getPozycja.X - 25, client.listaGraczy.ElementAt(i).getPozycja.Y - 70),
                                                     client.listaGraczy.ElementAt(i).getFontColor);
-                            //client.listaGraczy.ElementAt(i).Draw(gameTime, spriteBatch);
                         }
                     }
 
                     if (client.listaPociskow.Count > 0)
                         for (int i = 0; i < client.listaPociskow.Count; i++)
                         {
+                            if (client.listaPociskow.ElementAt(i).getTrafienie == 0)
                             spriteBatch.Draw(client.listaPociskow.ElementAt(i).getTekstura, client.listaPociskow.ElementAt(i).getPozycja,
                                             null, Color.White, client.listaPociskow.ElementAt(i).getKatObrotu, client.listaPociskow.ElementAt(i).getPunktObrotu, 1.0f, SpriteEffects.None, 0);
-
-                            client.listaPociskow.ElementAt(i).Draw(gameTime, spriteBatch);
                         }
 
                     
                     spriteBatch.Draw(cel, zawodnik.getPozycjaKursora, Color.White);
                     spriteBatch.DrawString(spriteFont, zawodnik.getPunktyMany.ToString(), new Vector2(100, 100), Color.Chartreuse);
 
-                    if (message != null && numer>0)
+                    if (message != null)
                     {
-                       
-                            spriteBatch.DrawString(spriteFont, message, zawodnik.getPozycja, Color.Red);
-                            numer--;
-                        
+                            spriteBatch.DrawString(messageFont, message, new Vector2(zawodnik.getPozycja.X-200,zawodnik.getPozycja.Y-200), Color.Red);
+                            czasPrzygotowania--;
+                            if (czasPrzygotowania < 0)
+                                message = null;
                     }
 
                 }
@@ -249,6 +247,8 @@ namespace RzezniaMagow
                 {
                     Vector2 kons =new Vector2(zawodnik.getPozycja.X - 250,zawodnik.getPozycja.Y-200);
                     spriteBatch.Draw(consola , kons , Color.White);
+                    spriteBatch.DrawString(spriteFont, "Runda " + client.getNrRundy.ToString(), new Vector2(kons.X + 250, kons.Y + 20), Color.GreenYellow);
+                    
                     spriteBatch.DrawString(spriteFont, "Nick       Punkty     Smierci" , new Vector2(kons.X + 50, kons.Y + 100), Color.GreenYellow);
                         
                     for (int i = 0; i < client.listaGraczy.Count; i++)
@@ -273,17 +273,7 @@ namespace RzezniaMagow
 
 
 
-        public void removeBullets(ref List<Pocisk> lista)
-        {
-            if(lista.Count>0)
-            for (int i = lista.Count - 1; i > -1; i--)
-            {
-                if (lista.ElementAt(i).getPozycja.X < 0 || lista.ElementAt(i).getPozycja.Y < 0 || lista.ElementAt(i).getPozycja.Y > Game.map.getTekstura.Width || lista.ElementAt(i).getPozycja.X > Game.map.getTekstura.Height)
 
-                    lista.RemoveAt(i);
-            }
-
-        }
 
 
 
