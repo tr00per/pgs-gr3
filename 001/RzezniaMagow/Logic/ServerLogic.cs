@@ -76,6 +76,10 @@ namespace RzezniaMagow
             Gracz p = new Gracz(nextPlayerID, nick,avatar);
             
             players.Add(p);
+
+            if (players.Count > 0)
+                Game.czyNowaRunda = true;
+
             return nextPlayerID++;
         }
 
@@ -89,8 +93,7 @@ namespace RzezniaMagow
                 Game.map.bonusReset();
 
                 Console.WriteLine("### Beginning new round!   " + roundNumber);
-                Game.message = " Beginning new round!   ";
-                Game.numer = 100;
+                Game.czasPrzygotowania = 100;
                 for (int i = 0; i < players.Count; i++)
                 {
                     players.ElementAt(i).getZycie = 100;
@@ -157,16 +160,15 @@ namespace RzezniaMagow
 
         public void removeBullets()
         {
-            
-
-
             if(bullets.Count>0)
             for (int i = bullets.Count - 1; i > -1; i--)
             {
-                if (bullets.ElementAt(i).getPozycja.X < Game.map.getMapOffset || bullets.ElementAt(i).getPozycja.Y < Game.map.getMapOffset || bullets.ElementAt(i).getPozycja.Y > Game.map.getTekstura.Width - Game.map.getMapOffset || bullets.ElementAt(i).getPozycja.X > Game.map.getTekstura.Height - Game.map.getMapOffset)
+                if (bullets.ElementAt(i).getPozycja.X < Game.map.getMapOffset || bullets.ElementAt(i).getPozycja.Y < Game.map.getMapOffset
+                    || bullets.ElementAt(i).getPozycja.Y > Game.map.getTekstura.Width - Game.map.getMapOffset
+                    || bullets.ElementAt(i).getPozycja.X > Game.map.getTekstura.Height - Game.map.getMapOffset)
+                {
                     bullets.RemoveAt(i);
-                else if (bullets.ElementAt(i).getTrafienie == 1)
-                    bullets.RemoveAt(i);
+                }
             }
 
         }
@@ -179,7 +181,8 @@ namespace RzezniaMagow
                 {
                     if (CollisionDetection2D.BoundingRectangle(Game.map.getListaPrzeszkod.ElementAt(j).RectanglePoints, bullets.ElementAt(i).RectanglePoints))
                     {
-                        bullets.RemoveAt(i);
+                        bullets.ElementAt(i).getTrafienie = 1;
+                        //bullets.RemoveAt(i);
                         break;
                     }
                 }

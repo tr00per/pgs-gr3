@@ -56,6 +56,8 @@ namespace RzezniaMagow
             //tutaj cuda wianki o tym co sie dzieje przed poczatkiem rundy
             listaGraczy = new List<Gracz>();
             clientProtocol.unpack(data, Common.PACKET_BEGIN);
+            Game.message = " Beginning new round!   ";
+            Game.czasPrzygotowania = 50;
 
         }
 
@@ -71,20 +73,19 @@ namespace RzezniaMagow
             {
                 for (int j = 0; j < Game.map.getListaPrzeszkod.Count; j++)
                 {
-
-                    //if (CollisionDetection2D.PerPixelWR(listaPociskow.ElementAt(i).getTekstura, Game.map.getListaPrzeszkod.ElementAt(j).getTekstura,
-                    //                                listaPociskow.ElementAt(i).getPozycja, Game.map.getListaPrzeszkod.ElementAt(j).getPozycja,
-                    //                                listaPociskow.ElementAt(i).getPunktObrotu, Game.map.getListaPrzeszkod.ElementAt(j).getPunktObrotu,
-                    //                                listaPociskow.ElementAt(i).RectanglePoints, Game.map.getListaPrzeszkod.ElementAt(j).RectanglePoints,
-                    //                                listaPociskow.ElementAt(i).getKatObrotu, Game.map.getListaPrzeszkod.ElementAt(j).getKatObrotu, Game.spriteBatch))
                     if (CollisionDetection2D.BoundingRectangle(Game.map.getListaPrzeszkod.ElementAt(j).RectanglePoints, listaPociskow.ElementAt(i).RectanglePoints))
                     {
                             listaPociskow.RemoveAt(i);
                             break;
-
-                        }  
-                    
+                    }  
                 }
+            }
+
+            for (int i = listaPociskow.Count - 1; i > -1; i--)
+            {
+                if (listaPociskow.ElementAt(i).getPozycja.X < 0 || listaPociskow.ElementAt(i).getPozycja.Y < 0 || listaPociskow.ElementAt(i).getPozycja.Y > Game.map.getTekstura.Width || listaPociskow.ElementAt(i).getPozycja.X > Game.map.getTekstura.Height)
+
+                    listaPociskow.RemoveAt(i);
             }
         }
 

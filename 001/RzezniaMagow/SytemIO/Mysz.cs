@@ -13,11 +13,8 @@ namespace RzezniaMagow
     {
 
 
-
         MouseState originalMouseState;
         
-        
-
 
         public Myszka()
         {
@@ -29,17 +26,14 @@ namespace RzezniaMagow
         /// </summary>
         public void procesMyszy()
         {
-            
-
                     MouseState currentMouseState = Mouse.GetState();
                     if (Game.client.getCzyGra)
                     {
-                        if(Game.zawodnik.getPunktyMany>2)
+                        //if(Game.zawodnik.getPunktyMany>2)
                         if (currentMouseState.LeftButton != originalMouseState.LeftButton)
                             if (currentMouseState.LeftButton == ButtonState.Pressed)
                                 if (currentMouseState.X > 0 && currentMouseState.X < 800 && currentMouseState.Y > 0 && currentMouseState.Y < 600)
                                 {
-                                    //System.Console.WriteLine("strzal z myszki");
                                     Game.zawodnik.getPozycjaKursora = new Vector2(currentMouseState.X + Game.kamera.getPozycja.X - Game.graphics.PreferredBackBufferWidth / 2, currentMouseState.Y + Game.kamera.getPozycja.Y - Game.graphics.PreferredBackBufferHeight / 2);
 
                                     Pocisk poc  = new Pocisk(Game.zawodnik.getPozycja.X, Game.zawodnik.getPozycja.Y,Game.zawodnik.getPozycjaKursora.X, Game.zawodnik.getPozycjaKursora.Y,
@@ -50,25 +44,13 @@ namespace RzezniaMagow
                                     poc.calculateSpeed();
                                     Game.zawodnik.getListaPociskow.Add(poc);
                                     Game.zawodnik.getPunktyMany -= 2;
-                                    
-
-
 
                                 }
-
- 
                             if (currentMouseState.X > 0 && currentMouseState.X < 800 && currentMouseState.Y > 0 && currentMouseState.Y < 600)
-                            Game.zawodnik.getPozycjaKursora = new Vector2(currentMouseState.X + Game.kamera.getPozycja.X - Game.graphics.PreferredBackBufferWidth / 2, currentMouseState.Y + Game.kamera.getPozycja.Y - Game.graphics.PreferredBackBufferHeight / 2);
-
-                            
-                        //System.Console.WriteLine("pozycja myszki X: " + currentMouseState.X + " pozycja myszki Y: " + currentMouseState.X);
-
-
+                                Game.zawodnik.getPozycjaKursora = new Vector2(currentMouseState.X + Game.kamera.getPozycja.X - Game.graphics.PreferredBackBufferWidth / 2, currentMouseState.Y + Game.kamera.getPozycja.Y - Game.graphics.PreferredBackBufferHeight / 2);
+                        
                         this.originalMouseState = Mouse.GetState();
-                    }  
-                
-            
+                    }        
         }
-
     }
 }

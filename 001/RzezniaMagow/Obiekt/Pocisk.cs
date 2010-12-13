@@ -16,10 +16,6 @@ namespace RzezniaMagow
         private byte opoznienie;
         private byte trafienie;
 
-
-
-       
-
        
         private Vector2 pozycjaKursora;
 
@@ -40,7 +36,7 @@ namespace RzezniaMagow
             pozycjaKursora = new Vector2(xk, yk);
             if (typPocisku == 1)
             {
-                this.LoadContent(Game.content.Load<Texture2D>(@"Pociski\snow"));
+                this.LoadContent(Game.content.Load<Texture2D>(@"Pociski\red"));
                 damage = 20;
                 opoznienie = 2;
             }
@@ -52,7 +48,7 @@ namespace RzezniaMagow
             }
             if (typPocisku == 3)
             {
-                this.LoadContent(Game.content.Load<Texture2D>(@"Pociski\red"));
+                this.LoadContent(Game.content.Load<Texture2D>(@"Pociski\snow"));
                 damage = 20;
                 opoznienie = 2;
             }

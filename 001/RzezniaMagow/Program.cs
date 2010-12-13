@@ -1,4 +1,5 @@
 using System;
+using System.Windows.Forms;
 
 namespace RzezniaMagow
 {
@@ -10,6 +11,7 @@ namespace RzezniaMagow
         /// The main entry point for the application.
         /// </summary>
         /// 
+        [STAThread]
         static void Main(string[] args)
         {
             game = new Game();

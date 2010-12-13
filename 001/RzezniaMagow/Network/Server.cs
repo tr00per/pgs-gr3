@@ -154,6 +154,8 @@ namespace RzezniaMagow
                     Thread t = new Thread(starter);
                     t.Start();
                     threadPool.Add(t);
+
+                    
                 }
             }
         }
