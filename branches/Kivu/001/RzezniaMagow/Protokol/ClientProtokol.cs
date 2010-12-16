@@ -193,23 +193,12 @@ namespace RzezniaMagow
                                     Game.zawodnik.getIloscZgonow = gracz.getIloscZgonow;
                                     Game.zawodnik.getPozycja = gracz.getPozycja;
                                     Game.kamera.getPozycja = gracz.getPozycja;
+                                    Game.zawodnik.getCzyZyje = true;
                                 }
                             }
 
                             //pobranie numeru aktualnej rundy
                             Game.client.getNrRundy = tresc[offset];
-
-
-                            //for (int i = 0; i < Game.client.listaGraczy.Count; i++)
-                            //{
-                            //    Game.client.listaGraczy.ElementAt(i).getIloscZgonow = Game.client.getNrRundy - 
-
-
-                            //}
-
-
-
-
 
                                 break;
                         }
@@ -374,31 +363,31 @@ namespace RzezniaMagow
         {
             int offset = 0;
             byte[] tablica;
-             
-                   
-                            tablica = new byte[20];
-                            offset = 0;
-                            
-                            addPlayerID(ref tablica, ref offset, gracz.getID);
-                            addPlayerPosition(ref tablica, ref offset, gracz.getPozycja.X, gracz.getPozycja.Y);
-                            addCursorPosition(ref tablica, ref offset, gracz.getPozycjaKursora.X, gracz.getPozycjaKursora.Y);
-                            if (gracz.getListaPociskow.Count > 0)
-                            {
-                                addNumberOfShots(ref tablica, ref offset,(byte)gracz.getListaPociskow.Count);
-                                addShotType(ref tablica, ref offset, gracz.getListaPociskow.First().getTypPocisku);
 
-                            }
-                            else
-                            {
-                                addNumberOfShots(ref tablica, ref offset, 0);
-                                addShotType(ref tablica, ref offset, 0);
-                            }
-                            gracz.getListaPociskow = new List<Pocisk>();
-                            
 
-                            return tablica; 
-                       
-                   
+            tablica = new byte[20];
+            offset = 0;
+
+            addPlayerID(ref tablica, ref offset, gracz.getID);
+            addPlayerPosition(ref tablica, ref offset, gracz.getPozycja.X, gracz.getPozycja.Y);
+            addCursorPosition(ref tablica, ref offset, gracz.getPozycjaKursora.X, gracz.getPozycjaKursora.Y);
+            if (gracz.getListaPociskow.Count > 0)
+            {
+                addNumberOfShots(ref tablica, ref offset, (byte)gracz.getListaPociskow.Count);
+                addShotType(ref tablica, ref offset, gracz.getListaPociskow.First().getTypPocisku);
+
+            }
+            else
+            {
+                addNumberOfShots(ref tablica, ref offset, 0);
+                addShotType(ref tablica, ref offset, 0);
+            }
+            gracz.getListaPociskow = new List<Pocisk>();
+
+
+            return tablica;
+
+
         }
 
         

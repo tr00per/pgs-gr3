@@ -110,6 +110,7 @@ namespace RzezniaMagow
         private void clientThread(TcpClient cli, string nick, byte avatar)
         {
             statusCallback("Signing in...");
+            cli.NoDelay = true;
             NetworkStream io = cli.GetStream();
             //TODO do the proper conversion w/check
             Encoding enc = new UTF8Encoding();

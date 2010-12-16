@@ -145,15 +145,17 @@
     <Compile Include="SytemIO\Mysz.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bonus.txt">
+    <None Include="bonus.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </None>
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
-    <Content Include="trap.txt">
+    <None Include="trap.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="wall.txt" />
+    </None>
+    <None Include="wall.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <NestedContentProject Include="Content\Content.contentproj">

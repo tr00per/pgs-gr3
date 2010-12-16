@@ -148,6 +148,7 @@ namespace RzezniaMagow
                 {
                     Console.WriteLine("Server: New connection!");
                     TcpClient cli = srv.AcceptTcpClient();
+                    
                     cli.NoDelay = true;
 
                     ThreadStart starter = delegate { clientHandle(nextTreadId++, cli); };
@@ -168,6 +169,7 @@ namespace RzezniaMagow
         {
             String IP = IPAddress.Parse(((IPEndPoint)cli.Client.RemoteEndPoint).Address.ToString()).ToString();
             Console.WriteLine("Server (" + threadID + "): Client connected: " + IP);
+            cli.NoDelay = true;
             NetworkStream io = cli.GetStream();
             if (pools.Count >= maxClients)
             {
@@ -227,20 +229,20 @@ namespace RzezniaMagow
 
                         byte[] buf = new byte[3];
 
-                        //Console.WriteLine("Server (" + threadID + "): Round begins...");
+                        Console.WriteLine("Server (" + threadID + "): Round begins...");
                         while (!received)
                         {
-                            //Console.WriteLine("Server (" + threadID + "): Sending...");
+                            Console.WriteLine("Server (" + threadID + "): Sending...");
                             io.Write(dp.dataIn, 0, dp.dataIn.Length);
                             io.Read(buf, 0, 3);
                             if (buf[0] == Common.PACKET_OK)
                             {
-                                //Console.WriteLine("Server (" + threadID + "): OK!");
+                                Console.WriteLine("Server (" + threadID + "): OK!");
                                 received = true;
                             }
                         }
 
-                        //Console.WriteLine("Server (" + threadID + "): Round begun!");
+                        Console.WriteLine("Server (" + threadID + "): Round begin!");
                         io.ReadTimeout = Timeout.Infinite;
                     }
                     else
