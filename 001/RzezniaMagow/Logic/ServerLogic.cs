@@ -23,6 +23,7 @@ namespace RzezniaMagow
         private byte nextBulletID;
 
         private byte roundNumber;
+        private bool flaga;
 
         private SerwerProtocol prot;
         //private System.Timers.Timer updateTimer;
@@ -49,7 +50,7 @@ namespace RzezniaMagow
 
           // updateTimer = new System.Timers.Timer(10);
            //updateTimer.Elapsed += new ElapsedEventHandler(updateTimerCB);
-
+            flaga = true;
             server.startServer();
         }
 
@@ -77,8 +78,14 @@ namespace RzezniaMagow
             
             players.Add(p);
 
-            if (players.Count > 0)
+            if (players.Count > 1 && flaga)
+            {
                 Game.czyNowaRunda = true;
+                flaga = false;
+            }
+            else
+                flaga = true;
+
 
             return nextPlayerID++;
         }
@@ -93,7 +100,7 @@ namespace RzezniaMagow
                 Game.map.bonusReset();
 
                 Console.WriteLine("### Beginning new round!   " + roundNumber);
-                Game.czasPrzygotowania = 100;
+                //Game.czasPrzygotowania = 100;
                 for (int i = 0; i < players.Count; i++)
                 {
                     players.ElementAt(i).getZycie = 100;
@@ -307,21 +314,32 @@ namespace RzezniaMagow
                 if (players.ElementAt(i).getZycie == 0)
                     licznik++;
             }
-            if (licznik == players.Count - 1)
+            if (licznik == players.Count - 1 && flaga == false)
             {
                 Game.czyNowaRunda = true;
                 for (int i = 0; i < players.Count; i++)
                 {
                     if (players.ElementAt(i).getZycie != 0)
                         players.ElementAt(i).getPunkty++;
-                       
+
                 }
 
 
             }
-            else
-                Game.czyNowaRunda = false;
+            else if (licznik == players.Count - 2 && flaga == true)
+            {
+                Game.czyNowaRunda = true;
+                for (int i = 0; i < players.Count; i++)
+                {
+                    if (players.ElementAt(i).getZycie != 0 && players.ElementAt(i).getID != players.Last().getID)
+                        players.ElementAt(i).getPunkty++;
 
+                }
+            }
+            else
+            {
+                Game.czyNowaRunda = false;
+            }
         }
 
         public override void playerParted(byte id)
