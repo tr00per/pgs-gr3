@@ -148,7 +148,8 @@ namespace RzezniaMagow
                 {
                     packet = new byte[Common.PACKET_HEADER_SIZE];
                     io.Read(packet, 0, Common.PACKET_HEADER_SIZE);
-                    byte size = packet[1];
+                    byte packetType = packet[0];
+                    byte packetSize = packet[1];
 
                     if (!Common.correctPacket(packet, Common.PACKET_COMMON | Common.PACKET_SRVMSG | Common.PACKET_END | Common.PACKET_BEGIN))
                     {
@@ -158,37 +159,35 @@ namespace RzezniaMagow
                         continue;
                     }
 
-                    packet = new byte[size];
-                    io.Read(packet, 0, size);
+                    packet = new byte[packetSize];
+                    io.Read(packet, 0, packetSize);
 
-                    if (enteredGame && packet[0] == Common.PACKET_COMMON)
+                    if (enteredGame && packetType == Common.PACKET_COMMON)
                     {
                         listenerSem.WaitOne();
                         updateArrived(packet);
                         listenerSem.Release();
                     }
-                    else if (packet[0] == Common.PACKET_SRVMSG)
+                    else if (packetType == Common.PACKET_SRVMSG)
                     {
-                        string msg = enc.GetString(packet, 0, size);
+                        string msg = enc.GetString(packet, 0, packetSize);
                         statusCallback("from Server: " + msg.Trim());
                     }
-                    else if (packet[0] == Common.PACKET_BEGIN)
+                    else if (packetType == Common.PACKET_BEGIN)
                     {
                         listenerSem.WaitOne();
-                        //statusCallback("ROUND BEGUN!");
+                        statusCallback("ROUND BEGUN!");
                         sendUpdate(new byte[1] { id }, Common.PACKET_OK);
                         beginRound(packet);
                         enteredGame = true;
                         listenerSem.Release();
                     }
-                    else if (packet[0] == Common.PACKET_END) //server shutdown or kicked out
+                    else if (packetType == Common.PACKET_END) //server shutdown or kicked out
                     {
                         statusCallback("Server disconnected.");
                         running = false;
                         cli.Client.Disconnect(true);
                     }
-
-
                 }
                 //Thread.Sleep(5); -- works fine without it :]
             }
