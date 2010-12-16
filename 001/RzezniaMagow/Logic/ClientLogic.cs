@@ -55,6 +55,7 @@ namespace RzezniaMagow
         {
             //tutaj cuda wianki o tym co sie dzieje przed poczatkiem rundy
             listaGraczy = new List<Gracz>();
+            Game.czyNowaRunda = true;
             clientProtocol.unpack(data, Common.PACKET_BEGIN);
             Game.message = " Beginning new round!   ";
             Game.czasPrzygotowania = 50;
