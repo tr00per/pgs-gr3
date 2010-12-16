@@ -257,28 +257,29 @@ namespace RzezniaMagow
                 {
                     packet = new byte[Common.PACKET_HEADER_SIZE];
                     io.Read(packet, 0, Common.PACKET_HEADER_SIZE);
-                    int size = packet[1];
+                    byte packetType = packet[0];
+                    byte packetSize = packet[1];
 
                     if (!Common.correctPacket(packet, Common.PACKET_COMMON | Common.PACKET_END))
                     {
                         Console.WriteLine("Server (" + threadID + "): Incorrect packet: " + packet[0] + ", " + packet[1] + ".");
                         packet = new byte[pending - Common.PACKET_HEADER_SIZE];
-                        io.Read(packet, 0, packet - Common.PACKET_HEADER_SIZE);
+                        io.Read(packet, 0, pending - Common.PACKET_HEADER_SIZE);
                         continue;
                     }
 
-                    packet = new byte[size];
-                    io.Read(packet, 0, size);
+                    packet = new byte[packetSize];
+                    io.Read(packet, 0, packetSize);
 
                     //client says goodbye
-                    if (packet[0] == Common.PACKET_END)
+                    if (packetType == Common.PACKET_END)
                     {
                         slSem.WaitOne(); //this has to be linear
                         sl.playerParted(ID);
                         slSem.Release();
                         connected = false;
                     }
-                    else if (packet[0] == Common.PACKET_COMMON)
+                    else if (packetType == Common.PACKET_COMMON)
                     {
                         sl.playerHandle(packet);
                     }
