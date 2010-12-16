@@ -255,13 +255,15 @@ namespace RzezniaMagow
 
                 if (cli.Connected && (pending = cli.Available) > 0)
                 {
-                    packet = new byte[2];
-                    io.Read(packet, 0, 2);
+                    packet = new byte[Common.PACKET_HEADER_SIZE];
+                    io.Read(packet, 0, Common.PACKET_HEADER_SIZE);
                     int size = packet[1];
 
                     if (!Common.correctPacket(packet, Common.PACKET_COMMON | Common.PACKET_END))
                     {
                         Console.WriteLine("Server (" + threadID + "): Incorrect packet: " + packet[0] + ", " + packet[1] + ".");
+                        packet = new byte[pending - Common.PACKET_HEADER_SIZE];
+                        io.Read(packet, 0, packet - Common.PACKET_HEADER_SIZE);
                         continue;
                     }
 
