@@ -321,10 +321,7 @@ namespace RzezniaMagow
                 {
                     if (players.ElementAt(i).getZycie != 0)
                         players.ElementAt(i).getPunkty++;
-
                 }
-
-
             }
             else if (licznik == players.Count - 2 && flaga == true)
             {
@@ -333,7 +330,6 @@ namespace RzezniaMagow
                 {
                     if (players.ElementAt(i).getZycie != 0 && players.ElementAt(i).getID != players.Last().getID)
                         players.ElementAt(i).getPunkty++;
-
                 }
             }
             else
