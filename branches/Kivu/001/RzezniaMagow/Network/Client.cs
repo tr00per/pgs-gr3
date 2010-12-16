@@ -175,12 +175,17 @@ namespace RzezniaMagow
                     }
                     else if (packetType == Common.PACKET_BEGIN)
                     {
+                        Game.client.listaGraczy = new List<Gracz>();
                         listenerSem.WaitOne();
                         statusCallback("ROUND BEGUN!");
                         sendUpdate(new byte[1] { id }, Common.PACKET_OK);
                         beginRound(packet);
                         enteredGame = true;
                         listenerSem.Release();
+                        Game.client.getCzyGra = true;
+
+
+
                     }
                     else if (packetType == Common.PACKET_END) //server shutdown or kicked out
                     {

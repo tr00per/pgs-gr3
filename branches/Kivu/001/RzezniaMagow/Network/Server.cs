@@ -298,12 +298,12 @@ namespace RzezniaMagow
         /// <param name="data">Content of the packet (without header)</param>
         public void broadcast(byte type, byte[] data)
         {
-            Console.WriteLine("Sending " + type + " of size " + data.Length);
+            
             byte[] packet = new byte[data.Length + Common.PACKET_HEADER_SIZE];
             data.CopyTo(packet, Common.PACKET_HEADER_SIZE);
             packet[0] = type;
             packet[1] = Common.checksum(packet);
-            Console.WriteLine("Sending " + packet[0] + " of size " + packet[1]);
+            //Console.WriteLine("Sending " + packet[0] + " of size " + packet[1]);
 
             poolSem.WaitOne();
             List<byte> Keys = new List<byte>(pools.Keys);
