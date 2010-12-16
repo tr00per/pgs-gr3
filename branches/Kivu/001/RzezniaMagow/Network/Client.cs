@@ -147,17 +147,22 @@ namespace RzezniaMagow
                 if (cli.Connected && (pending = cli.Available) > 0)
                 {
                     packet = new byte[pending];
-                    io.Read(packet, 0, pending);
+                    io.Read(packet, 0, 2);
+                    byte size = packet[1];
 
                     if (!Common.correctPacket(packet, Common.PACKET_COMMON | Common.PACKET_SRVMSG | Common.PACKET_END | Common.PACKET_BEGIN))
                     {
                         statusCallback("Incorrect packet: " + packet[0] + ", " + packet[1] + ".");
                         continue;
                     }
+
+                    packet = new byte[size];
+                    io.Read(packet, 0, size);
+
                     if (enteredGame && packet[0] == Common.PACKET_COMMON)
                     {
                         listenerSem.WaitOne();
-                        updateArrived(packet.Skip(Common.PACKET_HEADER_SIZE).ToArray());
+                        updateArrived(packet);
                         listenerSem.Release();
                     }
                     else if (packet[0] == Common.PACKET_SRVMSG)
@@ -171,7 +176,7 @@ namespace RzezniaMagow
                         //statusCallback("ROUND BEGUN!");
                         sendUpdate(new byte[1] { id }, Common.PACKET_OK);
                         Game.client.listaGraczy = new List<Gracz>();
-                        beginRound(packet.Skip(Common.PACKET_HEADER_SIZE).ToArray());
+                        beginRound(packet);
                         enteredGame = true;
                         listenerSem.Release();
                         Game.client.getCzyGra = true;
@@ -179,7 +184,7 @@ namespace RzezniaMagow
                         if (enteredGame && packet[0] == Common.PACKET_COMMON)
                         {
                             listenerSem.WaitOne();
-                            updateArrived(packet.Skip(Common.PACKET_HEADER_SIZE).ToArray());
+                            updateArrived(packet);
                             listenerSem.Release();
                         }
                         else if (packet[0] == Common.PACKET_SRVMSG)
@@ -193,7 +198,7 @@ namespace RzezniaMagow
                             //statusCallback("ROUND BEGUN!");
                             sendUpdate(new byte[1] { id }, Common.PACKET_OK);
                             Game.client.listaGraczy = new List<Gracz>();
-                            beginRound(packet.Skip(Common.PACKET_HEADER_SIZE).ToArray());
+                            beginRound(packet);
                             enteredGame = true;
                             listenerSem.Release();
                         }

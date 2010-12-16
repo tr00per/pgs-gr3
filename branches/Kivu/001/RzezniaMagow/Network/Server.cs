@@ -255,14 +255,18 @@ namespace RzezniaMagow
 
                 if (cli.Connected && (pending = cli.Available) > 0)
                 {
-                    packet = new byte[pending];
-                    io.Read(packet, 0, pending);
+                    packet = new byte[2];
+                    io.Read(packet, 0, 2);
+                    int size = packet[1];
 
                     if (!Common.correctPacket(packet, Common.PACKET_COMMON | Common.PACKET_END))
                     {
                         Console.WriteLine("Server (" + threadID + "): Incorrect packet: " + packet[0] + ", " + packet[1] + ".");
                         continue;
                     }
+
+                    packet = new byte[size];
+                    io.Read(packet, 0, size);
 
                     //client says goodbye
                     if (packet[0] == Common.PACKET_END)
@@ -274,7 +278,7 @@ namespace RzezniaMagow
                     }
                     else if (packet[0] == Common.PACKET_COMMON)
                     {
-                        sl.playerHandle(packet.Skip(Common.PACKET_HEADER_SIZE).ToArray());
+                        sl.playerHandle(packet);
                     }
                 }
             }

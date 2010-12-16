@@ -66,7 +66,7 @@
             this.maskedTextBox1.Name = "maskedTextBox1";
             this.maskedTextBox1.Size = new System.Drawing.Size(128, 20);
             this.maskedTextBox1.TabIndex = 1;
-            this.maskedTextBox1.Text = "127.0.0.1";
+            this.maskedTextBox1.Text = "172.20.56.72";
             // 
             // label2
             // 
