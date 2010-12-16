@@ -203,73 +203,69 @@ namespace RzezniaMagow
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            if (!client.getCzyGra)
+            spriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.SaveState, kamera.getTransformation(graphics));
+            if (client.getCzyGra)
             {
-                Console.Write("&");
+                map.Draw(gameTime, spriteBatch);
+
+                for (int i = 0; i < client.listaGraczy.Count; i++)
+                {
+                    if (client.listaGraczy.ElementAt(i).getZycie != 0)
+                    {
+                        spriteBatch.Draw(client.listaGraczy.ElementAt(i).getTekstura, client.listaGraczy.ElementAt(i).getPozycja, null, Color.White,
+                                        client.listaGraczy.ElementAt(i).getKatObrotu, client.listaGraczy.ElementAt(i).getPunktObrotu, 1.0f, SpriteEffects.None, 0);
+
+                        //spriteBatch.DrawString(spriteFont, (client.listaGraczy.ElementAt(i).getNick + "  " + client.listaGraczy.ElementAt(i).getZycie), new Vector2(client.listaGraczy.ElementAt(i).getPozycja.X - 25, client.listaGraczy.ElementAt(i).getPozycja.Y - 70),
+                        //                        client.listaGraczy.ElementAt(i).getFontColor);
+                    }
+                }
+
+                if (client.listaPociskow.Count > 0)
+                    for (int i = 0; i < client.listaPociskow.Count; i++)
+                    {
+                        if (client.listaPociskow.ElementAt(i).getTrafienie == 0)
+                        spriteBatch.Draw(client.listaPociskow.ElementAt(i).getTekstura, client.listaPociskow.ElementAt(i).getPozycja,
+                                        null, Color.White, client.listaPociskow.ElementAt(i).getKatObrotu, client.listaPociskow.ElementAt(i).getPunktObrotu, 1.0f, SpriteEffects.None, 0);
+                    }
+
+                
+                spriteBatch.Draw(cel, zawodnik.getPozycjaKursora, Color.White);
+                spriteBatch.DrawString(spriteFont, zawodnik.getPunktyMany.ToString(), new Vector2(100, 100), Color.Chartreuse);
+
+                if (message != null)
+                {
+                        spriteBatch.DrawString(messageFont, message, new Vector2(zawodnik.getPozycja.X-200,zawodnik.getPozycja.Y-200), Color.Red);
+                        czasPrzygotowania--;
+                        if (czasPrzygotowania < 0)
+                            message = null;
+                }
+
             }
-                spriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.SaveState, kamera.getTransformation(graphics));
-                if (client.getCzyGra)
-                {
-                    map.Draw(gameTime, spriteBatch);
 
-                    for (int i = 0; i < client.listaGraczy.Count; i++)
-                    {
-                        if (client.listaGraczy.ElementAt(i).getZycie != 0)
-                        {
-                            spriteBatch.Draw(client.listaGraczy.ElementAt(i).getTekstura, client.listaGraczy.ElementAt(i).getPozycja, null, Color.White,
-                                            client.listaGraczy.ElementAt(i).getKatObrotu, client.listaGraczy.ElementAt(i).getPunktObrotu, 1.0f, SpriteEffects.None, 0);
-
-                            //spriteBatch.DrawString(spriteFont, (client.listaGraczy.ElementAt(i).getNick + "  " + client.listaGraczy.ElementAt(i).getZycie), new Vector2(client.listaGraczy.ElementAt(i).getPozycja.X - 25, client.listaGraczy.ElementAt(i).getPozycja.Y - 70),
-                            //                        client.listaGraczy.ElementAt(i).getFontColor);
-                        }
-                    }
-
-                    if (client.listaPociskow.Count > 0)
-                        for (int i = 0; i < client.listaPociskow.Count; i++)
-                        {
-                            if (client.listaPociskow.ElementAt(i).getTrafienie == 0)
-                            spriteBatch.Draw(client.listaPociskow.ElementAt(i).getTekstura, client.listaPociskow.ElementAt(i).getPozycja,
-                                            null, Color.White, client.listaPociskow.ElementAt(i).getKatObrotu, client.listaPociskow.ElementAt(i).getPunktObrotu, 1.0f, SpriteEffects.None, 0);
-                        }
-
+            if (konsola)
+            {
+                Vector2 kons =new Vector2(zawodnik.getPozycja.X - 250,zawodnik.getPozycja.Y-200);
+                spriteBatch.Draw(consola , kons , Color.White);
+                spriteBatch.DrawString(spriteFont, "Runda " + client.getNrRundy.ToString(), new Vector2(kons.X + 250, kons.Y + 20), Color.GreenYellow);
+                
+                spriteBatch.DrawString(spriteFont, "Nick       Punkty     Smierci" , new Vector2(kons.X + 50, kons.Y + 100), Color.GreenYellow);
                     
-                    spriteBatch.Draw(cel, zawodnik.getPozycjaKursora, Color.White);
-                    spriteBatch.DrawString(spriteFont, zawodnik.getPunktyMany.ToString(), new Vector2(100, 100), Color.Chartreuse);
+                for (int i = 0; i < client.listaGraczy.Count; i++)
+                {
+                    spriteBatch.DrawString(spriteFont, client.listaGraczy.ElementAt(i).getNick, new Vector2(kons.X + 50, kons.Y + 150 + i*30), Color.Red);
+                    spriteBatch.DrawString(spriteFont, client.listaGraczy.ElementAt(i).getPunkty.ToString(), new Vector2(kons.X + 200, kons.Y + 150 + i * 30), Color.Red);
+                    spriteBatch.DrawString(spriteFont, client.listaGraczy.ElementAt(i).getIloscZgonow.ToString(), new Vector2(kons.X + 360, kons.Y + 150 + i * 30), Color.Red);
 
-                    if (message != null)
-                    {
-                            spriteBatch.DrawString(messageFont, message, new Vector2(zawodnik.getPozycja.X-200,zawodnik.getPozycja.Y-200), Color.Red);
-                            czasPrzygotowania--;
-                            if (czasPrzygotowania < 0)
-                                message = null;
-                    }
+
 
                 }
 
-                if (konsola)
-                {
-                    Vector2 kons =new Vector2(zawodnik.getPozycja.X - 250,zawodnik.getPozycja.Y-200);
-                    spriteBatch.Draw(consola , kons , Color.White);
-                    spriteBatch.DrawString(spriteFont, "Runda " + client.getNrRundy.ToString(), new Vector2(kons.X + 250, kons.Y + 20), Color.GreenYellow);
-                    
-                    spriteBatch.DrawString(spriteFont, "Nick       Punkty     Smierci" , new Vector2(kons.X + 50, kons.Y + 100), Color.GreenYellow);
-                        
-                    for (int i = 0; i < client.listaGraczy.Count; i++)
-                    {
-                        spriteBatch.DrawString(spriteFont, client.listaGraczy.ElementAt(i).getNick, new Vector2(kons.X + 50, kons.Y + 150 + i*30), Color.Red);
-                        spriteBatch.DrawString(spriteFont, client.listaGraczy.ElementAt(i).getPunkty.ToString(), new Vector2(kons.X + 200, kons.Y + 150 + i * 30), Color.Red);
-                        spriteBatch.DrawString(spriteFont, client.listaGraczy.ElementAt(i).getIloscZgonow.ToString(), new Vector2(kons.X + 360, kons.Y + 150 + i * 30), Color.Red);
-
-
-
-                    }
-
-                }
+            }
 
 
 
 
-                spriteBatch.End();
+            spriteBatch.End();
             
             base.Draw(gameTime);
         }
