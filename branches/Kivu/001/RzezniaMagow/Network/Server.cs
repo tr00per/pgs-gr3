@@ -298,7 +298,6 @@ namespace RzezniaMagow
         /// <param name="data">Content of the packet (without header)</param>
         public void broadcast(byte type, byte[] data)
         {
-            
             byte[] packet = new byte[data.Length + Common.PACKET_HEADER_SIZE];
             data.CopyTo(packet, Common.PACKET_HEADER_SIZE);
             packet[0] = type;
