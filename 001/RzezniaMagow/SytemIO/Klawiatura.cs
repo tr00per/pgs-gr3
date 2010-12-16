@@ -87,6 +87,9 @@ namespace RzezniaMagow
             if (KeyJustPressed(Keys.D1))
             {
                 Game.czyNowaRunda = true;
+                SerwerProtocol prot = new SerwerProtocol();
+                byte[] data = prot.createPackage(Game.serwer.getPlayers, Game.serwer.getBullets, Game.map.getListaBonusow, Common.PACKET_BEGIN, 5);
+                Game.serwer.sendUpdate(Common.PACKET_BEGIN, data);
                 
             }
             if (KeyJustPressed(Keys.D4))

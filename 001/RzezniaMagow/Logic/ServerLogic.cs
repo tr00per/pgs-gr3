@@ -12,6 +12,12 @@ namespace RzezniaMagow
         private Server server;
 
         private List<Gracz> players;
+
+        public List<Gracz> getPlayers
+        {
+            get { return players; }
+            set { players = value; }
+        }
         private List<Pocisk> bullets;
 
         public List<Pocisk> getBullets
