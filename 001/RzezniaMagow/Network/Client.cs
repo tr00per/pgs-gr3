@@ -125,7 +125,6 @@ namespace RzezniaMagow
             io.Read(packet, 0, 3);
             if (Common.correctPacket(packet, Common.PACKET_HANDSHAKE))
             {
-
                 id = packet[Common.PACKET_HEADER_SIZE];
                 clientReady(id, nick, avatar);
                 running = true;
@@ -138,30 +137,30 @@ namespace RzezniaMagow
             }
 
             int pending = 0;
-
             bool enteredGame = false;
-
             while (running)
             {
-
                 if (cli.Connected && (pending = cli.Available) > 0)
                 {
                     packet = new byte[Common.PACKET_HEADER_SIZE];
                     io.Read(packet, 0, Common.PACKET_HEADER_SIZE);
-                    byte packetType = packet[0];
-                    byte packetSize = packet[1];
+					byte packetType = packet[0];
+					byte packetSize = packet[1];
 
                     if (!Common.correctPacket(packet, Common.PACKET_COMMON | Common.PACKET_SRVMSG | Common.PACKET_END | Common.PACKET_BEGIN))
                     {
                         statusCallback("Incorrect packet: " + packet[0] + ", " + packet[1] + ".");
-                        packet = new byte[pending - Common.PACKET_HEADER_SIZE];
-                        io.Read(packet, 0, pending - Common.PACKET_HEADER_SIZE);
+						if (pending > Common.PACKET_HEADER_SIZE)
+						{
+							packet = new byte[pending - Common.PACKET_HEADER_SIZE];
+							io.Read(packet, 0, pending - Common.PACKET_HEADER_SIZE);
+						}
                         continue;
                     }
-
-                    packet = new byte[packetSize];
-                    io.Read(packet, 0, packetSize);
-
+					
+					packet = new byte[packetSize];
+					io.Read(packet, 0, packetSize);
+					
                     if (enteredGame && packetType == Common.PACKET_COMMON)
                     {
                         listenerSem.WaitOne();
@@ -175,17 +174,13 @@ namespace RzezniaMagow
                     }
                     else if (packetType == Common.PACKET_BEGIN)
                     {
-                        Game.client.listaGraczy = new List<Gracz>();
                         listenerSem.WaitOne();
-                        statusCallback("ROUND BEGUN!");
                         sendUpdate(new byte[1] { id }, Common.PACKET_OK);
+						statusCallback("ROUND BEGUN!");
+						sendUpdate(new byte[1] { id }, Common.PACKET_OK); //when code was doubled - it worked ;)
                         beginRound(packet);
                         enteredGame = true;
                         listenerSem.Release();
-                        Game.client.getCzyGra = true;
-
-
-
                     }
                     else if (packetType == Common.PACKET_END) //server shutdown or kicked out
                     {
@@ -194,7 +189,6 @@ namespace RzezniaMagow
                         cli.Client.Disconnect(true);
                     }
                 }
-                //Thread.Sleep(5); -- works fine without it :]
             }
         }
 
