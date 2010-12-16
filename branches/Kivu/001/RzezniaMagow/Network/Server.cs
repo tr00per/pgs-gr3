@@ -17,8 +17,6 @@ namespace RzezniaMagow
         public DataPool() { dataInPending = false; }
         public DataPool(byte[] data)
         {
-            //dataIn = new byte[data.Length];
-            //data.CopyTo(dataIn, 0);
             dataIn = data;
             dataInPending = true;
         }
@@ -155,8 +153,6 @@ namespace RzezniaMagow
                     Thread t = new Thread(starter);
                     t.Start();
                     threadPool.Add(t);
-
-                    
                 }
             }
         }
@@ -211,12 +207,10 @@ namespace RzezniaMagow
             poolSem.Release();
 
             Console.WriteLine("Server (" + threadID + "): " + nick + " (" + ID + ") is ready.");
-            //sl.sendMessage(nick + " (" + ID + ") is ready.");
+            sl.sendMessage(nick + " (" + ID + ") is ready.");
 
             int pending = 0;
-
             bool connected = true;
-
             while (running && connected)
             {
                 if (pools[ID].dataInPending)
@@ -225,7 +219,6 @@ namespace RzezniaMagow
                     {
                         DataPool dp = pools[ID];
                         bool received = false;
-                        io.ReadTimeout = 50;
 
                         byte[] buf = new byte[3];
 
@@ -243,7 +236,6 @@ namespace RzezniaMagow
                         }
 
                         Console.WriteLine("Server (" + threadID + "): Round begin!");
-                        io.ReadTimeout = Timeout.Infinite;
                     }
                     else
                     {
@@ -257,24 +249,22 @@ namespace RzezniaMagow
                 {
                     packet = new byte[Common.PACKET_HEADER_SIZE];
                     io.Read(packet, 0, Common.PACKET_HEADER_SIZE);
-                    byte packetType = packet[0];
-                    byte packetSize = packet[1];
+					byte packetType = packet[0];
+					byte packetSize = packet[1];
 
                     if (!Common.correctPacket(packet, Common.PACKET_COMMON | Common.PACKET_END))
                     {
                         Console.WriteLine("Server (" + threadID + "): Incorrect packet: " + packet[0] + ", " + packet[1] + ".");
-                        packet = new byte[pending - Common.PACKET_HEADER_SIZE];
-                        io.Read(packet, 0, pending - Common.PACKET_HEADER_SIZE);
+						if (pending > Common.PACKET_HEADER_SIZE)
+						{
+							packet = new byte[pending - Common.PACKET_HEADER_SIZE];
+							io.Read(packet, 0, pending - Common.PACKET_HEADER_SIZE);
+						}
                         continue;
                     }
-
-                    packet = new byte[packetSize];
-                    int bytesRead = io.Read(packet, 0, packetSize);
-                    if (bytesRead != packetSize)
-                    {
-                        Console.WriteLine("8==o");
-                        continue;
-                    }
+					
+					packet = new byte[packetSize];
+					io.Read(packet, 0, packetSize);
 
                     //client says goodbye
                     if (packetType == Common.PACKET_END)
@@ -307,7 +297,6 @@ namespace RzezniaMagow
             data.CopyTo(packet, Common.PACKET_HEADER_SIZE);
             packet[0] = type;
             packet[1] = Common.checksum(packet);
-            //Console.WriteLine("Sending " + packet[0] + " of size " + packet[1]);
 
             poolSem.WaitOne();
             List<byte> Keys = new List<byte>(pools.Keys);

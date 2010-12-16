@@ -20,7 +20,6 @@ namespace RzezniaMagow
         public ClientLogic()
             : base(status)
         {
-
             clientProtocol = new ClientProtokol();
             listaGraczy = new List<Gracz>();
             listaPociskow = new List<Pocisk>();
@@ -34,6 +33,7 @@ namespace RzezniaMagow
            
             listaGraczy.Add(Game.zawodnik);
             //Game.client.getCzyGra = true;
+			updateTimer.Enabled = false;
             updateTimer.Start();
         }
 
@@ -47,25 +47,24 @@ namespace RzezniaMagow
         {
             //tutaj cuda wianki o tym co sie dzieje po otrzymaniu pakietu
             clientProtocol.unpack(data, Common.PACKET_COMMON);
-
         }
 
         protected override void beginRound(byte[] data)
         {
             //tutaj cuda wianki o tym co sie dzieje przed poczatkiem rundy
             listaGraczy = new List<Gracz>();
-            czyGra = true;
             clientProtocol.unpack(data, Common.PACKET_BEGIN);
             Game.message = " Beginning new round!   ";
             Game.czasPrzygotowania = 50;
-
+			Game.czyNowaRunda = true;
+			czyGra = true;
+			updateTimer.Enabled = true;
         }
 
         public static void status(string msg)
         {
             Console.WriteLine("Client: " + msg);
         }
-
 
         public void BulletsCollision()
         {

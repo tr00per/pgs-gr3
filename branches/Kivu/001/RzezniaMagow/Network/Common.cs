@@ -10,9 +10,9 @@ namespace RzezniaMagow
     {
         public static byte PACKET_OK = 1;
         public static byte PACKET_FAIL = 2;
-        public static byte PACKET_HANDSHAKE = 4;//dodanie nowego gracza
-        public static byte PACKET_BEGIN = 8;//rozpoczecie rundy
-        public static byte PACKET_COMMON = 16;//pakiety wysyłane w czasie gry
+        public static byte PACKET_HANDSHAKE = 4; //new player connection
+        public static byte PACKET_BEGIN = 8; //new round
+        public static byte PACKET_COMMON = 16; //in-game packet
         public static byte PACKET_END = 32;
         public static byte PACKET_SRVMSG = 64;
 
@@ -25,28 +25,27 @@ namespace RzezniaMagow
 
         public static bool correctPacket(byte[] data, int packetType)
         {
-            if (data.Length > 255)
-            {
-                throw new Exception("Za długi pakiet!");
-            }
             return correctPacket(data, (byte)packetType);
         }
 
         public static byte checksum(byte[] data)
         {
-            //skip header (packet type and checksum field)
-            return (byte)(data.Length - PACKET_HEADER_SIZE);
+            //skip header (packet type and checksum/size field)
+			return (byte)(data.Length - PACKET_HEADER_SIZE);
         }
 
-        internal static byte rawChecksum(byte[] data, int offset)
+        internal static byte rawChecksum(byte[] data)
         {
-            byte suma = 0;
+			throw new Exception("DO NOT USE!");
+            /*
+			byte suma = 0;
 
-            for (int i = offset; i < data.Length; ++i)
+            for (int i = 0; i < data.Length; i++)
             {
                 suma += data[i];
             }
             return suma;
+			*/
         }
     }
 }
