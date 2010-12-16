@@ -41,7 +41,6 @@ namespace RzezniaMagow
         //private void updateTimerCB()
         {
             sendUpdate(clientProtocol.createPackage(ref Game.zawodnik));
-               
         }
 
         override protected void updateArrived(byte[] data)
@@ -55,7 +54,7 @@ namespace RzezniaMagow
         {
             //tutaj cuda wianki o tym co sie dzieje przed poczatkiem rundy
             listaGraczy = new List<Gracz>();
-            Game.czyNowaRunda = true;
+            czyGra = true;
             clientProtocol.unpack(data, Common.PACKET_BEGIN);
             Game.message = " Beginning new round!   ";
             Game.czasPrzygotowania = 50;

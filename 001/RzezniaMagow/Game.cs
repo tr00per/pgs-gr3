@@ -203,7 +203,10 @@ namespace RzezniaMagow
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-
+            if (!client.getCzyGra)
+            {
+                Console.Write("&");
+            }
                 spriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.SaveState, kamera.getTransformation(graphics));
                 if (client.getCzyGra)
                 {
