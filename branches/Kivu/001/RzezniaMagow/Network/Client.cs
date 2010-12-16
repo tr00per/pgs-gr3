@@ -146,7 +146,7 @@ namespace RzezniaMagow
 
                 if (cli.Connected && (pending = cli.Available) > 0)
                 {
-                    packet = new byte[pending];
+                    packet = new byte[2];
                     io.Read(packet, 0, 2);
                     byte size = packet[1];
 
@@ -167,7 +167,7 @@ namespace RzezniaMagow
                     }
                     else if (packet[0] == Common.PACKET_SRVMSG)
                     {
-                        string msg = enc.GetString(packet, Common.PACKET_HEADER_SIZE, pending - Common.PACKET_HEADER_SIZE);
+                        string msg = enc.GetString(packet, 0, size);
                         statusCallback("from Server: " + msg.Trim());
                     }
                     else if (packet[0] == Common.PACKET_BEGIN)
@@ -175,40 +175,9 @@ namespace RzezniaMagow
                         listenerSem.WaitOne();
                         //statusCallback("ROUND BEGUN!");
                         sendUpdate(new byte[1] { id }, Common.PACKET_OK);
-                        Game.client.listaGraczy = new List<Gracz>();
                         beginRound(packet);
                         enteredGame = true;
                         listenerSem.Release();
-                        Game.client.getCzyGra = true;
-
-                        if (enteredGame && packet[0] == Common.PACKET_COMMON)
-                        {
-                            listenerSem.WaitOne();
-                            updateArrived(packet);
-                            listenerSem.Release();
-                        }
-                        else if (packet[0] == Common.PACKET_SRVMSG)
-                        {
-                            string msg = enc.GetString(packet, Common.PACKET_HEADER_SIZE, pending - Common.PACKET_HEADER_SIZE);
-                            statusCallback("from Server: " + msg.Trim());
-                        }
-                        else if (packet[0] == Common.PACKET_BEGIN)
-                        {
-                            listenerSem.WaitOne();
-                            //statusCallback("ROUND BEGUN!");
-                            sendUpdate(new byte[1] { id }, Common.PACKET_OK);
-                            Game.client.listaGraczy = new List<Gracz>();
-                            beginRound(packet);
-                            enteredGame = true;
-                            listenerSem.Release();
-                        }
-                        else if (packet[0] == Common.PACKET_END) //server shutdown or kicked out
-                        {
-                            statusCallback("Server disconnected.");
-                            running = false;
-                            cli.Client.Disconnect(true);
-                        }
-
                     }
                     else if (packet[0] == Common.PACKET_END) //server shutdown or kicked out
                     {

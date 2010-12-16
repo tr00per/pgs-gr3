@@ -20,7 +20,6 @@ namespace RzezniaMagow
 
         public static bool correctPacket(byte[] data, byte packetType)
         {
-            //return (data[0] & packetType) > 0 && (data[1] == checksum(data));
             return (data[0] & packetType) > 0;
         }
 
