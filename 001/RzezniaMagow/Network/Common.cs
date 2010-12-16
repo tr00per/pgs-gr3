@@ -26,20 +26,24 @@ namespace RzezniaMagow
 
         public static bool correctPacket(byte[] data, int packetType)
         {
+            if (data.Length > 255)
+            {
+                throw new Exception("Za długi pakiet!");
+            }
             return correctPacket(data, (byte)packetType);
         }
 
         public static byte checksum(byte[] data)
         {
             //skip header (packet type and checksum field)
-            return rawChecksum(data);
+            return (byte)(data.Length - PACKET_HEADER_SIZE);
         }
 
-        internal static byte rawChecksum(byte[] data)
+        internal static byte rawChecksum(byte[] data, int offset)
         {
             byte suma = 0;
 
-            for (int i = 0; i < data.Length; i++)
+            for (int i = offset; i < data.Length; ++i)
             {
                 suma += data[i];
             }
