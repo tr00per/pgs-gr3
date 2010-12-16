@@ -269,7 +269,12 @@ namespace RzezniaMagow
                     }
 
                     packet = new byte[packetSize];
-                    io.Read(packet, 0, packetSize);
+                    int bytesRead = io.Read(packet, 0, packetSize);
+                    if (bytesRead != packetSize)
+                    {
+                        Console.WriteLine("8==o");
+                        continue;
+                    }
 
                     //client says goodbye
                     if (packetType == Common.PACKET_END)
