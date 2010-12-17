@@ -168,7 +168,7 @@ namespace RzezniaMagow
             NetworkStream io = cli.GetStream();
             if (pools.Count >= maxClients)
             {
-                byte[] buf = { Common.PACKET_FAIL, 0 }; //refuse to connect client due to client limit
+                byte[] buf = { Common.PACKET_FAIL, 0, 0 }; //refuse to connect client due to client limit
                 io.Write(buf, 0, Common.PACKET_HEADER_SIZE);
                 io.Close();
                 cli.Client.Close();
@@ -178,28 +178,28 @@ namespace RzezniaMagow
             }
 
             Console.WriteLine("Server (" + threadID + "): Handshaking...");
-            byte[] bufin = new byte[19];
+            byte[] bufin = new byte[Common.PACKET_HEADER_SIZE + 17];
             do
             {
-                io.Read(bufin, 0, 19);
+                io.Read(bufin, 0, Common.PACKET_HEADER_SIZE + 17);
             } while (!Common.correctPacket(bufin, Common.PACKET_HANDSHAKE));
 
             //TODO do the proper conversion w/check
             Encoding enc = new UTF8Encoding();
             String nick = enc.GetString(bufin, Common.PACKET_HEADER_SIZE, 16).Trim(new char[] { ' ', '\0' });
-            byte avatar = bufin[18];
+            byte avatar = bufin[bufin.Length-1];
             Console.WriteLine("Server (" + threadID + "): " + IP + " -> " + nick);
 
-            byte[] packet = new byte[3];
+            byte[] packet = new byte[Common.PACKET_HEADER_SIZE+1];
             slSem.WaitOne(); //this has to be linear
             byte ID = sl.newPlayerConnected(nick, avatar);
             slSem.Release();
 
             packet[Common.PACKET_HEADER_SIZE] = ID;
-            packet[1] = Common.checksum(packet);
             packet[0] = Common.PACKET_HANDSHAKE;
+            BitConverter.GetBytes(Common.checksum(packet)).CopyTo(packet, 1);
 
-            io.Write(packet, 0, 3);
+            io.Write(packet, 0, packet.Length);
 
             poolSem.WaitOne();
             pools.Add(ID, new DataPool());
@@ -218,18 +218,22 @@ namespace RzezniaMagow
                     {
                         DataPool dp = pools[ID];
                         bool received = false;
-                        byte[] buf = new byte[3];
+                        byte[] buf = new byte[Common.PACKET_HEADER_SIZE+1];
 
                         Console.WriteLine("Server (" + threadID + "): Round begins...");
                         while (!received)
                         {
                             Console.WriteLine("Server (" + threadID + "): Sending...");
                             io.Write(dp.dataIn, 0, dp.dataIn.Length);
-                            io.Read(buf, 0, 3);
+                            io.Read(buf, 0, buf.Length);
                             if (buf[0] == Common.PACKET_OK)
                             {
                                 Console.WriteLine("Server (" + threadID + "): OK!");
                                 received = true;
+                            }
+                            else
+                            {
+                                Thread.Sleep(20);
                             }
                         }
                         Console.WriteLine("Server (" + threadID + "): Round begin!");
@@ -246,7 +250,7 @@ namespace RzezniaMagow
                     packet = new byte[Common.PACKET_HEADER_SIZE];
                     io.Read(packet, 0, Common.PACKET_HEADER_SIZE);
 					byte packetType = packet[0];
-					byte packetSize = packet[1];
+					ushort packetSize = BitConverter.ToUInt16(packet, 1);
 
                     if (!Common.correctPacket(packet, Common.PACKET_COMMON | Common.PACKET_END))
                     {
@@ -296,7 +300,7 @@ namespace RzezniaMagow
             byte[] packet = new byte[data.Length + Common.PACKET_HEADER_SIZE];
             data.CopyTo(packet, Common.PACKET_HEADER_SIZE);
             packet[0] = type;
-            packet[1] = Common.checksum(packet);
+            BitConverter.GetBytes(Common.checksum(packet)).CopyTo(packet, 1);
 
             poolSem.WaitOne();
             List<byte> Keys = new List<byte>(pools.Keys);
