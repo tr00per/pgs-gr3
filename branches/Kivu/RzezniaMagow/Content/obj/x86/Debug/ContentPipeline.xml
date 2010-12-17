@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Pipeline="Microsoft.Xna.Framework.Content.Pipeline">
+  <Asset Type="Pipeline:BuildItemCollection">
+    <Item>
+      <Source>Angels.jpg</Source>
+      <Name>Angels</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>D:\STUDIA\sem9\PGS\Repozytorium Pgs gr3\pgs-gr3\branches\Kivu\RzezniaMagow\bin\x86\Debug\Content\Angels.xnb</Output>
+      <Time>2010-11-10T17:11:08.2913424+01:00</Time>
+    </Item>
+    <Item>
+      <Source>Angus.jpg</Source>
+      <Name>Angus</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>D:\STUDIA\sem9\PGS\Repozytorium Pgs gr3\pgs-gr3\branches\Kivu\RzezniaMagow\bin\x86\Debug\Content\Angus.xnb</Output>
+      <Time>2010-11-10T17:11:08.3333448+01:00</Time>
+    </Item>
+    <Item>
+      <Source>Anti.jpg</Source>
+      <Name>Anti</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>D:\STUDIA\sem9\PGS\Repozytorium Pgs gr3\pgs-gr3\branches\Kivu\RzezniaMagow\bin\x86\Debug\Content\Anti.xnb</Output>
+      <Time>2010-11-10T17:11:08.3283445+01:00</Time>
+    </Item>
+    <Item>
+      <Source>Arbor.jpg</Source>
+      <Name>Arbor</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>D:\STUDIA\sem9\PGS\Repozytorium Pgs gr3\pgs-gr3\branches\Kivu\RzezniaMagow\bin\x86\Debug\Content\Arbor.xnb</Output>
+      <Time>2010-11-10T17:11:08.2523402+01:00</Time>
+    </Item>
+    <Item>
+      <Source>Arena.jpg</Source>
+      <Name>Arena</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>D:\STUDIA\sem9\PGS\Repozytorium Pgs gr3\pgs-gr3\branches\Kivu\RzezniaMagow\bin\x86\Debug\Content\Arena.xnb</Output>
+      <Time>2010-11-10T17:11:08.2743414+01:00</Time>
+    </Item>
+    <Item>
+      <Source>cel.jpg</Source>
+      <Name>cel</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+      <Options>None</Options>
+      <Output>D:\STUDIA\sem9\PGS\Repozytorium Pgs gr3\pgs-gr3\branches\Kivu\RzezniaMagow\bin\x86\Debug\Content\cel.xnb</Output>
+      <Time>2010-11-10T17:11:08.2473399+01:00</Time>
+    </Item>
+    <BuildSuccessful>true</BuildSuccessful>
+    <Settings>
+      <TargetPlatform>Windows</TargetPlatform>
+      <BuildConfiguration>Debug</BuildConfiguration>
+      <CompressContent>false</CompressContent>
+      <RootDirectory>D:\STUDIA\sem9\PGS\Repozytorium Pgs gr3\pgs-gr3\branches\Kivu\RzezniaMagow\Content\</RootDirectory>
+      <LoggerRootDirectory>D:\STUDIA\sem9\PGS\Repozytorium Pgs gr3\pgs-gr3\branches\Kivu\RzezniaMagow\</LoggerRootDirectory>
+      <IntermediateDirectory>D:\STUDIA\sem9\PGS\Repozytorium Pgs gr3\pgs-gr3\branches\Kivu\RzezniaMagow\Content\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>D:\STUDIA\sem9\PGS\Repozytorium Pgs gr3\pgs-gr3\branches\Kivu\RzezniaMagow\bin\x86\Debug\Content\</OutputDirectory>
+    </Settings>
+    <Assemblies>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.XImporter.dll</Key>
+        <Value>2009-05-28T00:16:14+02:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.VideoImporters.dll</Key>
+        <Value>2009-05-28T00:16:06+02:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.TextureImporter.dll</Key>
+        <Value>2009-05-28T00:16:16+02:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.FBXImporter.dll</Key>
+        <Value>2009-05-28T00:16:26+02:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.EffectImporter.dll</Key>
+        <Value>2009-05-28T00:16:12+02:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v3.1\References\Windows\x86\Microsoft.Xna.Framework.Content.Pipeline.AudioImporters.dll</Key>
+        <Value>2009-05-28T00:16:06+02:00</Value>
+      </Assembly>
+      <Assembly>
+        <Key>C:\Windows\assembly\GAC_32\Microsoft.Xna.Framework.Content.Pipeline\3.1.0.0__6d5c3888ef60e27d\Microsoft.Xna.Framework.Content.Pipeline.dll</Key>
+        <Value>2010-04-07T18:44:54.167956+02:00</Value>
+      </Assembly>
+    </Assemblies>
+  </Asset>
+</XnaContent>
