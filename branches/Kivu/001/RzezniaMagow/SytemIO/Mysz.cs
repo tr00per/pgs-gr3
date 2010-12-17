@@ -29,7 +29,7 @@ namespace RzezniaMagow
                     MouseState currentMouseState = Mouse.GetState();
                     if (Game.client.getCzyGra)
                     {
-                        //if(Game.zawodnik.getPunktyMany>2)
+                        if(Game.zawodnik.getPunktyMany>2)
                         if (currentMouseState.LeftButton != originalMouseState.LeftButton)
                             if (currentMouseState.LeftButton == ButtonState.Pressed)
                                 if (currentMouseState.X > 0 && currentMouseState.X < 800 && currentMouseState.Y > 0 && currentMouseState.Y < 600)
