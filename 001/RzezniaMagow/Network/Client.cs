@@ -159,7 +159,12 @@ namespace RzezniaMagow
                     }
 					
 					packet = new byte[packetSize];
-					io.Read(packet, 0, packetSize);
+					int bytesRead = io.Read(packet, 0, packetSize);
+                    if (bytesRead != packetSize)
+                    {
+                        statusCallback("Incorrect packet size: " + packetType + ", " + packetSize + ".");
+                        continue;
+                    }
 					
                     if (enteredGame && packetType == Common.PACKET_COMMON)
                     {

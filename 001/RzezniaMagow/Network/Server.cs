@@ -259,7 +259,12 @@ namespace RzezniaMagow
                         continue;
                     }
 					packet = new byte[packetSize];
-					io.Read(packet, 0, packetSize);
+					int bytesRead = io.Read(packet, 0, packetSize);
+                    if (bytesRead != packetSize)
+                    {
+                        Console.WriteLine("Server (" + threadID + "): Incorrect packet size: " + packetType + ", " + packetSize + ".");
+                        continue;
+                    }
 
                     //client says goodbye
                     if (packetType == Common.PACKET_END)

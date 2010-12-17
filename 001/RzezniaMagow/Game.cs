@@ -215,8 +215,8 @@ namespace RzezniaMagow
                         spriteBatch.Draw(client.listaGraczy.ElementAt(i).getTekstura, client.listaGraczy.ElementAt(i).getPozycja, null, Color.White,
                                         client.listaGraczy.ElementAt(i).getKatObrotu, client.listaGraczy.ElementAt(i).getPunktObrotu, 1.0f, SpriteEffects.None, 0);
 
-                        //spriteBatch.DrawString(spriteFont, (client.listaGraczy.ElementAt(i).getNick + "  " + client.listaGraczy.ElementAt(i).getZycie), new Vector2(client.listaGraczy.ElementAt(i).getPozycja.X - 25, client.listaGraczy.ElementAt(i).getPozycja.Y - 70),
-                        //                        client.listaGraczy.ElementAt(i).getFontColor);
+                        spriteBatch.DrawString(spriteFont, (client.listaGraczy.ElementAt(i).getNick + "  " + client.listaGraczy.ElementAt(i).getZycie), new Vector2(client.listaGraczy.ElementAt(i).getPozycja.X - 25, client.listaGraczy.ElementAt(i).getPozycja.Y - 70),
+                                                client.listaGraczy.ElementAt(i).getFontColor);
                     }
                 }
 
