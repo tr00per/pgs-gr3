@@ -137,7 +137,6 @@ namespace RzezniaMagow
         private void defaultWait()
         {
             Console.WriteLine("Server: Listening to clients...");
-
             int nextTreadId = 100;
 
             while (running)
@@ -219,7 +218,6 @@ namespace RzezniaMagow
                     {
                         DataPool dp = pools[ID];
                         bool received = false;
-
                         byte[] buf = new byte[3];
 
                         Console.WriteLine("Server (" + threadID + "): Round begins...");
@@ -234,14 +232,12 @@ namespace RzezniaMagow
                                 received = true;
                             }
                         }
-
                         Console.WriteLine("Server (" + threadID + "): Round begin!");
                     }
                     else
                     {
                         io.Write(pools[ID].dataIn, 0, pools[ID].dataIn.Length);
                     }
-
                     pools[ID] = new DataPool();
                 }
 
@@ -262,7 +258,6 @@ namespace RzezniaMagow
 						}
                         continue;
                     }
-					
 					packet = new byte[packetSize];
 					io.Read(packet, 0, packetSize);
 

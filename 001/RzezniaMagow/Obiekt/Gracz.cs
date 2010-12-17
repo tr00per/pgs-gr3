@@ -74,7 +74,7 @@ namespace RzezniaMagow
             getID = id;
             walkSpeed = 2;
             czyZyje = true;
-            punktyMany = 50;
+            punktyMany = 10;
 
             if (typAvatara == 1)
             {

@@ -99,8 +99,6 @@ namespace RzezniaMagow
         //private void updateTimerCB(object o, ElapsedEventArgs args)
         private void updateTimerCB()
         {
-            
-
             if (Game.czyNowaRunda)
             {
                 Game.map.bonusReset();
@@ -132,8 +130,7 @@ namespace RzezniaMagow
         {
             byte[] d = (byte[])data;
             Gracz gracz = new Gracz();
-            
-            
+                       
             gracz = prot.unpack(d);
 
             if(gracz.getListaPociskow.Count>0)
@@ -157,15 +154,11 @@ namespace RzezniaMagow
                     poc.calculateSpeed();
                     bullets.Add(poc);
 
-
                     nextBulletID++;
-                
             }
             removeBullets();
-
             updateTimerCB();
             
-
             ///Console.WriteLine(id + " send something to server.");
         }
 
