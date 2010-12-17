@@ -59,8 +59,8 @@ namespace RzezniaMagow
             Thread.Sleep(500);
             if (cli.Available > 0)
             {
-                byte[] pckt = new byte[2];
-                io.Read(pckt, 0, 2);
+                byte[] pckt = new byte[Common.PACKET_HEADER_SIZE];
+                io.Read(pckt, 0, Common.PACKET_HEADER_SIZE);
                 if (Common.correctPacket(pckt, Common.PACKET_FAIL))
                 {
                     statusCallback("Failed. Probably server is full...");
@@ -114,12 +114,12 @@ namespace RzezniaMagow
             NetworkStream io = cli.GetStream();
             //TODO do the proper conversion w/check
             Encoding enc = new UTF8Encoding();
-            byte[] packet = new byte[19];
+            byte[] packet = new byte[Common.PACKET_HEADER_SIZE + 17];
             enc.GetBytes(nick, 0, nick.Length, packet, Common.PACKET_HEADER_SIZE);
-            packet[18] = avatar;
+            packet[packet.Length-1] = avatar;
             packet[0] = Common.PACKET_HANDSHAKE;
-            packet[1] = Common.checksum(packet);
-            io.Write(packet, 0, 19);
+            BitConverter.GetBytes(Common.checksum(packet)).CopyTo(packet, 1);
+            io.Write(packet, 0, packet.Length);
 
             packet = new byte[3];
             io.Read(packet, 0, 3);
@@ -145,7 +145,7 @@ namespace RzezniaMagow
                     packet = new byte[Common.PACKET_HEADER_SIZE];
                     io.Read(packet, 0, Common.PACKET_HEADER_SIZE);
 					byte packetType = packet[0];
-					byte packetSize = packet[1];
+                    ushort packetSize = BitConverter.ToUInt16(packet, 1);
 
                     if (!Common.correctPacket(packet, Common.PACKET_COMMON | Common.PACKET_SRVMSG | Common.PACKET_END | Common.PACKET_BEGIN))
                     {
@@ -205,8 +205,8 @@ namespace RzezniaMagow
             byte[] goodbye = new byte[Common.PACKET_HEADER_SIZE + 1];
             goodbye[Common.PACKET_HEADER_SIZE] = id;
             goodbye[0] = Common.PACKET_END;
-            goodbye[1] = Common.checksum(goodbye);
-            cli.GetStream().Write(goodbye, 0, Common.PACKET_HEADER_SIZE);
+            BitConverter.GetBytes(Common.checksum(goodbye)).CopyTo(goodbye, 1);
+            cli.GetStream().Write(goodbye, 0, goodbye.Length);
         }
 
         private void asyncWrite(IAsyncResult arg)
@@ -229,7 +229,7 @@ namespace RzezniaMagow
             byte[] packet = new byte[data.Length + Common.PACKET_HEADER_SIZE];
             data.CopyTo(packet, Common.PACKET_HEADER_SIZE);
             packet[0] = type;
-            packet[1] = Common.checksum(packet);
+            BitConverter.GetBytes(Common.checksum(packet)).CopyTo(packet, 1);
 
             if (running)
             {

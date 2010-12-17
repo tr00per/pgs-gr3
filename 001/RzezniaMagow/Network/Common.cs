@@ -16,7 +16,7 @@ namespace RzezniaMagow
         public static byte PACKET_END = 32;
         public static byte PACKET_SRVMSG = 64;
 
-        public static int PACKET_HEADER_SIZE = 2;
+        public static int PACKET_HEADER_SIZE = 3;
 
         public static bool correctPacket(byte[] data, byte packetType)
         {
@@ -28,24 +28,10 @@ namespace RzezniaMagow
             return correctPacket(data, (byte)packetType);
         }
 
-        public static byte checksum(byte[] data)
+        public static ushort checksum(byte[] data)
         {
             //skip header (packet type and checksum/size field)
-			return (byte)(data.Length - PACKET_HEADER_SIZE);
-        }
-
-        internal static byte rawChecksum(byte[] data)
-        {
-			throw new Exception("DO NOT USE!");
-            /*
-			byte suma = 0;
-
-            for (int i = 0; i < data.Length; i++)
-            {
-                suma += data[i];
-            }
-            return suma;
-			*/
+			return (ushort)(data.Length - PACKET_HEADER_SIZE);
         }
     }
 }
