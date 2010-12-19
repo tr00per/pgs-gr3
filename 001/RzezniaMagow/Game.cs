@@ -34,7 +34,7 @@ namespace RzezniaMagow
         Klawiatura klawiatura;
         Myszka mysz;
 
-        public static bool czySerwer, czyKlient, konsola;
+        public static bool czySerwer, czyKlient, konsola, koniecGry;
         volatile public static bool czyNowaRunda;
 
 
@@ -42,13 +42,15 @@ namespace RzezniaMagow
 
         Texture2D cel;
         Texture2D consola;
+        Texture2D kapLewy, kapPrawy;
+        Texture2D kapLewyPusty, kapPrawyPusty;
         public static string message;
         public static int czasPrzygotowania = 50;
 
 
         public Game()
         {
-            
+
             graphics = new GraphicsDeviceManager(this);
             content = new ContentManager(Services);
             content.RootDirectory = "Content";
@@ -60,15 +62,16 @@ namespace RzezniaMagow
             screenManager = new ScreenManager(this);
 
             map = new Mapa(0, 0);
-            
+
             kamera = new Kamera2d();
             czySerwer = false;
             czyNowaRunda = false;
             IsFixedTimeStep = false;
+            koniecGry = false;
 
             message = null;
 
-           
+
         }
 
         /// <summary>
@@ -85,7 +88,7 @@ namespace RzezniaMagow
             graphics.SynchronizeWithVerticalRetrace = true;
 
             IsMouseVisible = true;
- 
+
             graphics.IsFullScreen = false;
             CollisionDetection2D.CDPerformedWith = UseForCollisionDetection.Rectangles;
         }
@@ -111,14 +114,18 @@ namespace RzezniaMagow
 
             spriteFont = content.Load<SpriteFont>("menufont");
             messageFont = content.Load<SpriteFont>("messagefont");
-            
+
             cel = content.Load<Texture2D>("cel");
             consola = content.Load<Texture2D>("Menu/konsola");
             map.LoadContent(content.Load<Texture2D>("Maps/mapa"));
+            kapLewy = content.Load<Texture2D>("pelnyLewy");
+            kapPrawy = content.Load<Texture2D>("pelnyPrawy");
+            kapLewyPusty = content.Load<Texture2D>("pustyLewy");
+            kapPrawyPusty = content.Load<Texture2D>("pustyPrawy");
             CollisionDetection2D.AdditionalRenderTargetForCollision = new RenderTarget2D(graphics.GraphicsDevice, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight, 1, graphics.GraphicsDevice.DisplayMode.Format);
             Primitives2D.dotTexture = content.Load<Texture2D>("Dot");
 
-           // zawodnik.LoadContent(content.Load<Texture2D>(@"Avatar\Angels"));
+            // zawodnik.LoadContent(content.Load<Texture2D>(@"Avatar\Angels"));
             // TODO: use this.Content to load your game content here
         }
 
@@ -138,11 +145,6 @@ namespace RzezniaMagow
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            
-            
-
-
-
 
             if (czySerwer)
             {
@@ -150,11 +152,10 @@ namespace RzezniaMagow
                 for (int i = 0; i < serwer.getBullets.Count; i++)
                 {
                     serwer.getBullets.ElementAt(i).updatePosition(gameTime);
-
                 }
                 serwer.removeBullets();
 
-                if(serwer.getBullets.Count>0)
+                if (serwer.getBullets.Count > 0)
                     serwer.bulletsCollision();
 
                 if (serwer.getBullets.Count > 0)
@@ -163,28 +164,29 @@ namespace RzezniaMagow
 
                 serwer.bonusPlayersCollision();
                 serwer.trapPlayersCollision();
+                //serwer.playerPlayerCollision();
             }
 
 
 
 
-            if (client.getCzyGra && Game.zawodnik.getCzyZyje && message == null)
+            if (client.getCzyGra && Game.zawodnik.getCzyZyje && message == null && !koniecGry)
             {
                 mysz.procesMyszy();
                 klawiatura.procesKlawiatury();
 
             }
 
-                for (int i = 0; i < client.listaPociskow.Count; i++)
-                {
+            for (int i = 0; i < client.listaPociskow.Count; i++)
+            {
 
 
-                    client.listaPociskow.ElementAt(i).updatePosition(gameTime);
-                }
-                if (client.listaPociskow.Count > 0)
-                    client.BulletsCollision();
+                client.listaPociskow.ElementAt(i).updatePosition(gameTime);
+            }
+            if (client.listaPociskow.Count > 0)
+                client.BulletsCollision();
 
-            
+
 
 
             // Allows the game to exit
@@ -201,7 +203,7 @@ namespace RzezniaMagow
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             spriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.SaveState, kamera.getTransformation(graphics));
             if (client.getCzyGra)
@@ -224,35 +226,40 @@ namespace RzezniaMagow
                     for (int i = 0; i < client.listaPociskow.Count; i++)
                     {
                         if (client.listaPociskow.ElementAt(i).getTrafienie == 0)
-                        spriteBatch.Draw(client.listaPociskow.ElementAt(i).getTekstura, client.listaPociskow.ElementAt(i).getPozycja,
-                                        null, Color.White, client.listaPociskow.ElementAt(i).getKatObrotu, client.listaPociskow.ElementAt(i).getPunktObrotu, 1.0f, SpriteEffects.None, 0);
+                            spriteBatch.Draw(client.listaPociskow.ElementAt(i).getTekstura, client.listaPociskow.ElementAt(i).getPozycja,
+                                            null, Color.White, client.listaPociskow.ElementAt(i).getKatObrotu, client.listaPociskow.ElementAt(i).getPunktObrotu, 1.0f, SpriteEffects.None, 0);
                     }
 
-                
+
                 spriteBatch.Draw(cel, zawodnik.getPozycjaKursora, Color.White);
                 spriteBatch.DrawString(spriteFont, zawodnik.getPunktyMany.ToString(), new Vector2(100, 100), Color.Chartreuse);
 
+
+                rysujKapelusze(spriteBatch);
+
+
+
                 if (message != null)
                 {
-                        spriteBatch.DrawString(messageFont, message, new Vector2(zawodnik.getPozycja.X-200,zawodnik.getPozycja.Y-200), Color.Red);
-                        czasPrzygotowania--;
-                        if (czasPrzygotowania < 0)
-                            message = null;
+                    spriteBatch.DrawString(messageFont, message, new Vector2(zawodnik.getPozycja.X - 200, zawodnik.getPozycja.Y - 200), Color.Red);
+                    czasPrzygotowania--;
+                    if (czasPrzygotowania < 0)
+                        message = null;
                 }
 
             }
 
             if (konsola)
             {
-                Vector2 kons =new Vector2(zawodnik.getPozycja.X - 250,zawodnik.getPozycja.Y-200);
-                spriteBatch.Draw(consola , kons , Color.White);
+                Vector2 kons = new Vector2(zawodnik.getPozycja.X - 250, zawodnik.getPozycja.Y - 200);
+                spriteBatch.Draw(consola, kons, Color.White);
                 spriteBatch.DrawString(spriteFont, "Runda " + client.getNrRundy.ToString(), new Vector2(kons.X + 250, kons.Y + 20), Color.GreenYellow);
-                
-                spriteBatch.DrawString(spriteFont, "Nick       Punkty     Smierci" , new Vector2(kons.X + 50, kons.Y + 100), Color.GreenYellow);
-                    
+
+                spriteBatch.DrawString(spriteFont, "Nick       Punkty     Smierci", new Vector2(kons.X + 50, kons.Y + 100), Color.GreenYellow);
+
                 for (int i = 0; i < client.listaGraczy.Count; i++)
                 {
-                    spriteBatch.DrawString(spriteFont, client.listaGraczy.ElementAt(i).getNick, new Vector2(kons.X + 50, kons.Y + 150 + i*30), Color.Red);
+                    spriteBatch.DrawString(spriteFont, client.listaGraczy.ElementAt(i).getNick, new Vector2(kons.X + 50, kons.Y + 150 + i * 30), Color.Red);
                     spriteBatch.DrawString(spriteFont, client.listaGraczy.ElementAt(i).getPunkty.ToString(), new Vector2(kons.X + 200, kons.Y + 150 + i * 30), Color.Red);
                     spriteBatch.DrawString(spriteFont, client.listaGraczy.ElementAt(i).getIloscZgonow.ToString(), new Vector2(kons.X + 360, kons.Y + 150 + i * 30), Color.Red);
 
@@ -266,12 +273,28 @@ namespace RzezniaMagow
 
 
             spriteBatch.End();
-            
+
             base.Draw(gameTime);
         }
 
 
+        public void rysujKapelusze(SpriteBatch spriteBatch)
+        {
+            Vector2 pozycjaLewa = new Vector2(Game.zawodnik.getPozycja.X + 320, Game.zawodnik.getPozycja.Y - 290);
+            Vector2 pozycjaPrawa = new Vector2(Game.zawodnik.getPozycja.X - 390, Game.zawodnik.getPozycja.Y - 290);
 
+            float poziomMany = (float)(Game.zawodnik.getPunktyMany) / 100;
+            float poziomZycia = (float)(Game.zawodnik.getZycie) / 100;
+
+            spriteBatch.Draw(kapLewyPusty, pozycjaLewa, Color.White);
+            spriteBatch.Draw(kapLewy, pozycjaLewa, new Rectangle(0, 0, kapLewy.Width, (int)(kapLewy.Height * poziomMany)), Color.White);
+
+            spriteBatch.Draw(kapPrawyPusty, pozycjaPrawa, Color.White);
+            spriteBatch.Draw(kapPrawy, pozycjaPrawa, new Rectangle(0, 0, kapPrawy.Width, (int)(kapPrawy.Height * poziomZycia)), Color.White);
+
+
+
+        }
 
 
 

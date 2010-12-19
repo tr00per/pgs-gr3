@@ -55,7 +55,7 @@ namespace RzezniaMagow
             listaGraczy = new List<Gracz>();
             clientProtocol.unpack(data, Common.PACKET_BEGIN);
             Game.message = " Beginning new round!   ";
-            Game.czasPrzygotowania = 50;
+            //Game.czasPrzygotowania = 50;
 			Game.czyNowaRunda = true;
 			czyGra = true;
 			updateTimer.Enabled = true;
