@@ -253,7 +253,7 @@ namespace RzezniaMagow
                                         {
                                             Game.zawodnik.getCzyZyje = false;
                                             Game.message = "You are dead Moron ";
-                                            Game.czasPrzygotowania = 10;
+                                            //Game.czasPrzygotowania = 10;
 
                                         }
                                     }
