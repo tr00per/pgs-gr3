@@ -29,7 +29,7 @@ namespace RzezniaMagow
                     MouseState currentMouseState = Mouse.GetState();
                     if (Game.client.getCzyGra)
                     {
-                        if(Game.zawodnik.getPunktyMany>2)
+                        if(Game.zawodnik.getPunktyMany>10)
                         if (currentMouseState.LeftButton != originalMouseState.LeftButton)
                             if (currentMouseState.LeftButton == ButtonState.Pressed)
                                 if (currentMouseState.X > 0 && currentMouseState.X < 800 && currentMouseState.Y > 0 && currentMouseState.Y < 600)
@@ -43,7 +43,7 @@ namespace RzezniaMagow
 
                                     poc.calculateSpeed();
                                     Game.zawodnik.getListaPociskow.Add(poc);
-                                    Game.zawodnik.getPunktyMany -= 2;
+                                    Game.zawodnik.getPunktyMany -= 10;
 
                                 }
                             if (currentMouseState.X > 0 && currentMouseState.X < 800 && currentMouseState.Y > 0 && currentMouseState.Y < 600)

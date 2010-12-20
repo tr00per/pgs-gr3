@@ -107,6 +107,12 @@ namespace RzezniaMagow
                 //Game.czasPrzygotowania = 100;
                 for (int i = 0; i < players.Count; i++)
                 {
+                    if (players.ElementAt(i).getZycie == 0)
+                        players.ElementAt(i).getIloscZgonow++;
+                }
+
+                for (int i = 0; i < players.Count; i++)
+                {
                     players.ElementAt(i).getZycie = 100;
                 }
 
@@ -211,7 +217,7 @@ namespace RzezniaMagow
                             if (players.ElementAt(j).getZycie > 200 || players.ElementAt(j).getZycie == 0)
                             {
                                 players.ElementAt(j).getZycie = 0;
-                                players.ElementAt(j).getIloscZgonow++;
+                                //players.ElementAt(j).getIloscZgonow++;
                             }
                           
                         }
@@ -255,7 +261,7 @@ namespace RzezniaMagow
                             if (players.ElementAt(j).getZycie > 200 || players.ElementAt(j).getZycie == 0)
                             {
                                 players.ElementAt(j).getZycie = 0;
-                                players.ElementAt(j).getIloscZgonow++;
+                                //players.ElementAt(j).getIloscZgonow++;
                             }
 
                         }
