@@ -78,6 +78,7 @@ namespace RzezniaMagow
 
         public void BulletsCollision()
         {
+            if(listaGraczy.Count>0)
             for (int i = listaPociskow.Count-1; i > -1; i--)
             {
                 for (int j = 0; j < Game.map.getListaPrzeszkod.Count; j++)
