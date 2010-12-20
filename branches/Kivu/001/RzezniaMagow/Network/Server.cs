@@ -225,7 +225,7 @@ namespace RzezniaMagow
                         {
                             Console.WriteLine("Server (" + threadID + "): Sending...");
                             io.Write(dp.dataIn, 0, dp.dataIn.Length);
-                            Thread.Sleep(30);
+                            Thread.Sleep(100);
                             io.Read(buf, 0, 4);
                             if (buf[0] == Common.PACKET_OK)
                             {
@@ -233,7 +233,7 @@ namespace RzezniaMagow
                                 received = true;
                             }
                         }
-                        Console.WriteLine("Server (" + threadID + "): Round begun!");
+                        Console.WriteLine("Server (" + threadID + "): Round begins!");
                     }
                     else
                     {

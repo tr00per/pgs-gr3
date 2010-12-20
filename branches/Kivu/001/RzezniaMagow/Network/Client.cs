@@ -181,8 +181,8 @@ namespace RzezniaMagow
                     {
                         listenerSem.WaitOne();
                         sendUpdate(new byte[1] { id }, Common.PACKET_OK);
-						statusCallback("ROUND BEGUN!");
-						sendUpdate(new byte[1] { id }, Common.PACKET_OK); //when code was doubled - it worked ;)
+						statusCallback("ROUND BEGINS!");
+						//sendUpdate(new byte[1] { id }, Common.PACKET_OK); //when code was doubled - it worked ;)
                         beginRound(packet);
                         enteredGame = true;
                         listenerSem.Release();
