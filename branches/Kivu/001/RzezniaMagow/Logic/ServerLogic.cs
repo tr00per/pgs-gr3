@@ -102,7 +102,7 @@ namespace RzezniaMagow
             if (Game.czyNowaRunda)
             {
                 Game.map.bonusReset();
-                bullets = new List<Pocisk>();
+                removeAllBullets();
                 Console.WriteLine("### Beginning new round!   " + roundNumber);
                 //Game.czasPrzygotowania = 100;
                 for (int i = 0; i < players.Count; i++)
@@ -186,7 +186,18 @@ namespace RzezniaMagow
                 }
             }
         }
-        
+        public void removeAllBullets()
+        {
+            if (bullets.Count > 0)
+            {
+                for (int i = bullets.Count - 1; i > -1; i--)
+                {
+                    bullets.RemoveAt(i);
+                }
+            }
+        }
+
+
         public void bulletsCollision()
         {
             if (bullets.Count > 0)
