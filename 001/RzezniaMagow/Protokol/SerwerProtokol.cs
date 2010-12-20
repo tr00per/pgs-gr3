@@ -314,26 +314,26 @@ namespace RzezniaMagow
                             {
                                 case 1:
                                     {
-                                        poz1 = (float)los.NextDouble() * 100 + 20;
-                                        poz2 = (float)los.NextDouble() * 150 + 20;
+                                        poz1 = (float)los.NextDouble() * 80 + 40;
+                                        poz2 = (float)los.NextDouble() * 120 + 40;
                                         break;
                                     }
                                 case 2:
                                     {
-                                        poz1 = (float)los.NextDouble() * 120 + 120;
-                                        poz2 = (float)los.NextDouble() * 180 + 780;
+                                        poz1 = (float)los.NextDouble() * 100 + 100;
+                                        poz2 = (float)los.NextDouble() * 100 + 840;
                                         break;
                                     }
                                 case 3:
                                     {
-                                        poz1 = (float)los.NextDouble() * 100 + 840;
-                                        poz2 = (float)los.NextDouble() * 200 + 80;
+                                        poz1 = (float)los.NextDouble() * 80 + 860;
+                                        poz2 = (float)los.NextDouble() * 120 + 40;
                                         break;
                                     }
                                 case 4:
                                     {
                                         poz1 = (float)los.NextDouble() * 120 + 800;
-                                        poz2 = (float)los.NextDouble() * 200 + 760;
+                                        poz2 = (float)los.NextDouble() * 160 + 800;
                                         break;
                                     }
                                 default: break;

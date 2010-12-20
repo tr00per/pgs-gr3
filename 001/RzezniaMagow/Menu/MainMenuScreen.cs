@@ -86,10 +86,10 @@ namespace RzezniaMagow
             Game.czySerwer =  true;
             //Console.WriteLine("SERVER RUNNING: " + Game.serwer..ToString());
 
-            //Game.client = new ClientLogic();
-            //Game.client.connect("127.0.0.1", 20000, "Kivu", 1);
-            //Game.czyKlient = true;
-            //Console.WriteLine("WAITING...");
+            Game.client = new ClientLogic();
+            Game.client.connect("127.0.0.1", 20000, "Kivu", 1);
+            Game.czyKlient = true;
+            Console.WriteLine("WAITING...");
 
             Game.screenManager.Visible = false;
             Game.screenManager.RemoveScreen(this);
