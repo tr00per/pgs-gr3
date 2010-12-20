@@ -27,10 +27,10 @@ Milestony w projekcie na podstawie maila od prowadząceo
 
 *Termin oddania 24.01.2010*
 
-  * Sterowanie magami i zadanie polega na zabiciu pozostałych magów
+  * Sterowanie magami i zadanie polega na zabiciu pozostałych magów +
   * Pułapki +
-  * Last man standing
-  * Do 10 zwycięstw
+  * Last man standing +
+  * Do 10 zwycięstw + 
   * Mapa większa od ekranu + 
   * Scrollowanie ekranu w zależności od położenia gracza + 
   * Przemieszczanie się klawiaturą, celowanie myszką, + 
