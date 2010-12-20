@@ -225,7 +225,7 @@ namespace RzezniaMagow
                         {
                             Console.WriteLine("Server (" + threadID + "): Sending...");
                             io.Write(dp.dataIn, 0, dp.dataIn.Length);
-                            Thread.Sleep(100);
+                            Thread.Sleep(20);
                             io.Read(buf, 0, 4);
                             if (buf[0] == Common.PACKET_OK)
                             {
@@ -252,11 +252,11 @@ namespace RzezniaMagow
                     if (!Common.correctPacket(packet, Common.PACKET_COMMON | Common.PACKET_END))
                     {
                         Console.WriteLine("Server (" + threadID + "): Incorrect packet: " + packet[0] + ", " + packet[1] + ".");
-						if (pending > Common.PACKET_HEADER_SIZE)
-						{
-							packet = new byte[pending - Common.PACKET_HEADER_SIZE];
-							io.Read(packet, 0, pending - Common.PACKET_HEADER_SIZE);
-						}
+						//if (pending > Common.PACKET_HEADER_SIZE)
+						//{
+						//	packet = new byte[pending - Common.PACKET_HEADER_SIZE];
+						//	io.Read(packet, 0, pending - Common.PACKET_HEADER_SIZE);
+						//}
                         continue;
                     }
 					packet = new byte[packetSize];
