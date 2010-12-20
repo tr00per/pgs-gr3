@@ -20,7 +20,7 @@ Milestony w projekcie na podstawie maila od prowadząceo
 
 
   * Interakcje gracza z planszą +
-  * Interakcje graczy ze sobą
+  * ~~Interakcje graczy ze sobą~~
   * Kolizje wszystko ze wszystkim +
   * Interakcje graczy z pociskami +
 
@@ -34,8 +34,8 @@ Milestony w projekcie na podstawie maila od prowadząceo
   * Mapa większa od ekranu + 
   * Scrollowanie ekranu w zależności od położenia gracza + 
   * Przemieszczanie się klawiaturą, celowanie myszką, + 
-  * Strzał = lecąca kula + 
-  * Animacja zderzenia z magiem lub innym obiektem
+  * Strzał == lecąca kula + 
+  * ~~Animacja zderzenia z magiem lub innym obiektem~~
   * Dołączanie tylko w nowych rundach (oczekiwanie do końca rundy) +
   * Plansza przechowywana lokalnie + 
   * 25 klatek na sekundę +
