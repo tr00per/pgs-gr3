@@ -308,6 +308,7 @@ namespace RzezniaMagow
                 if (players.ElementAt(i).getZycie == 0)
                     licznik++;
             }
+
             if (licznik == players.Count - 1 && flaga == false)
             {
                 Game.czyNowaRunda = true;
@@ -322,11 +323,12 @@ namespace RzezniaMagow
                 Game.czyNowaRunda = true;
                 for (int i = 0; i < players.Count; i++)
                 {
-                    if (players.ElementAt(i).getZycie != 0 && players.ElementAt(i).getCzyZyje = true)
+                    if (players.ElementAt(i).getZycie != 0 && players.ElementAt(i).getCzyZyje == true)
                         players.ElementAt(i).getPunkty++;
                 }
                 serwer.flaga = false;
             }
+            
             else
             {
                 Game.czyNowaRunda = false;

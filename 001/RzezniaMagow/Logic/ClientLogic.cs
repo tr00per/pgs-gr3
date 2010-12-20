@@ -57,7 +57,7 @@ namespace RzezniaMagow
             removeAllBullets();
             clientProtocol.unpack(data, Common.PACKET_BEGIN);
             Game.message = " Beginning new round!";
-            Game.czasPrzygotowania = 50;
+            //Game.czasPrzygotowania = 50;
 			Game.czyNowaRunda = true;
 			czyGra = true;
 			updateTimer.Enabled = true;
@@ -67,7 +67,7 @@ namespace RzezniaMagow
                 {
                     Game.koniecGry = true;
                     Game.message = "Game Over.\nThe Winner is :\n" + listaGraczy.ElementAt(i).getNick;
-                    Game.czasPrzygotowania = 10000;
+                    //Game.czasPrzygotowania = 10000;
                 }
             }
         }
