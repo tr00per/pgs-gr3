@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
 using System.Threading;
+using System.Timers;
 
 namespace RzezniaMagow
 {
@@ -36,7 +37,7 @@ namespace RzezniaMagow
 
         public static bool czySerwer, czyKlient, konsola, koniecGry;
         volatile public static bool czyNowaRunda;
-
+        private System.Timers.Timer manaTimer;
 
         //zmienne testowe w razie problemow do usuniecia
 
@@ -70,7 +71,8 @@ namespace RzezniaMagow
             koniecGry = false;
 
             message = null;
-
+            manaTimer = new System.Timers.Timer(100);
+            manaTimer.Elapsed += new ElapsedEventHandler(manaTimerTick);
 
         }
 
@@ -174,13 +176,10 @@ namespace RzezniaMagow
             {
                 mysz.procesMyszy();
                 klawiatura.procesKlawiatury();
-
             }
 
             for (int i = 0; i < client.listaPociskow.Count; i++)
             {
-
-
                 client.listaPociskow.ElementAt(i).updatePosition(gameTime);
             }
             if (client.listaPociskow.Count > 0)
@@ -232,11 +231,7 @@ namespace RzezniaMagow
 
 
                 spriteBatch.Draw(cel, zawodnik.getPozycjaKursora, Color.White);
-                
-
                 rysujKapelusze(spriteBatch);
-
-
 
                 if (message != null)
                 {
@@ -245,7 +240,6 @@ namespace RzezniaMagow
                     if (czasPrzygotowania < 0)
                         message = null;
                 }
-
             }
 
             if (konsola)
@@ -260,11 +254,7 @@ namespace RzezniaMagow
                     spriteBatch.DrawString(spriteFont, client.listaGraczy.ElementAt(i).getNick, new Vector2(kons.X + 50, kons.Y + 150 + i * 30), Color.Red);
                     spriteBatch.DrawString(spriteFont, client.listaGraczy.ElementAt(i).getPunkty.ToString(), new Vector2(kons.X + 200, kons.Y + 150 + i * 30), Color.Red);
                     spriteBatch.DrawString(spriteFont, client.listaGraczy.ElementAt(i).getIloscZgonow.ToString(), new Vector2(kons.X + 360, kons.Y + 150 + i * 30), Color.Red);
-
-
-
                 }
-
             }
 
 
@@ -285,16 +275,27 @@ namespace RzezniaMagow
             float poziomZycia = (float)(Game.zawodnik.getZycie) / 100;
 
             spriteBatch.Draw(kapLewyPusty, pozycjaLewa, Color.White);
-            spriteBatch.Draw(kapLewy, pozycjaLewa, new Rectangle(0, 0, kapLewy.Width, (int)(kapLewy.Height * poziomMany)), Color.White);
+            //spriteBatch.Draw(kapLewy, pozycjaLewa, new Rectangle(0, 0, kapLewy.Width, (int)(kapLewy.Height * poziomMany)), Color.White);
 
             spriteBatch.Draw(kapPrawyPusty, pozycjaPrawa, Color.White);
-            spriteBatch.Draw(kapPrawy, pozycjaPrawa, new Rectangle(0, 0, kapPrawy.Width, (int)(kapPrawy.Height * poziomZycia)), Color.White);
-
-
-
+            //spriteBatch.Draw(kapPrawy, pozycjaPrawa, new Rectangle(0, 0, kapPrawy.Width, (int)(kapPrawy.Height * poziomZycia)), Color.White);
+        
+            spriteBatch.Draw(kapLewy, new Vector2(pozycjaLewa.X, pozycjaLewa.Y + kapLewy.Height - (int)(kapLewy.Height * poziomMany)), new Rectangle(0, kapLewy.Height - (int)(kapLewy.Height * poziomMany), kapLewy.Width, (int)(kapLewy.Height * poziomMany)), Color.White);
+            spriteBatch.Draw(kapPrawy, new Vector2(pozycjaPrawa.X, pozycjaPrawa.Y + kapPrawy.Height - (int)(kapPrawy.Height * poziomZycia)), new Rectangle(0, kapPrawy.Height - (int)(kapPrawy.Height * poziomZycia), kapPrawy.Width, (int)(kapPrawy.Height * poziomZycia)), Color.White);
+        
+        
+        
+        
+        
+        
         }
 
+        private void manaTimerTick(object o, ElapsedEventArgs args) 
+        {
+            if (zawodnik != null && zawodnik.getPunktyMany<100)
+                zawodnik.getPunktyMany++;
 
+        }
 
 
 

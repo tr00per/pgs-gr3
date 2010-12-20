@@ -64,7 +64,7 @@ namespace RzezniaMagow
                 if (listaGraczy.ElementAt(i).getPunkty == 10)
                 {
                     Game.koniecGry = true;
-                    Game.message = "Game Over.\n The Winner is :   " + listaGraczy.ElementAt(i).getNick;
+                    Game.message = "Game Over.\n The Winner is :\n" + listaGraczy.ElementAt(i).getNick;
                     Game.czasPrzygotowania = 10000;
                 }
             }
