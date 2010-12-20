@@ -254,7 +254,7 @@ namespace RzezniaMagow
                                         if (Game.zawodnik.getZycie == 0)
                                         {
                                             Game.zawodnik.getCzyZyje = false;
-                                            Game.message = "You are dead Moron ";
+                                           //Game.message = "You are dead Moron ";
                                             //Game.czasPrzygotowania = 10;
 
                                         }

@@ -29,7 +29,7 @@ namespace RzezniaMagow
         private byte nextBulletID;
 
         private byte roundNumber;
-        private bool flaga;
+        public bool flaga;
 
         private SerwerProtocol prot;
         //private System.Timers.Timer updateTimer;
@@ -129,8 +129,8 @@ namespace RzezniaMagow
                 sendUpdate(Common.PACKET_COMMON, data);
                 
             }
-            if(players.Count>1)
-            startNewRound();
+            //if(players.Count>1)
+            //startNewRound();
         }
 
         public override void playerHandle(object data)
@@ -227,19 +227,21 @@ namespace RzezniaMagow
                 {
                     for (int j = 0; j < players.Count; j++)
                     {
-                        if (bullets.Count > 0)
-                        if (CollisionDetection2D.BoundingRectangle(players.ElementAt(j).RectanglePoints, bullets.ElementAt(i).RectanglePoints))
+                        if (bullets.Count > 0 && players.ElementAt(j).getZycie > 0)
                         {
-                            if (bullets.ElementAt(i).getTrafienie == 0 && bullets.ElementAt(i).getIDOwnera != players.ElementAt(j).getID)
+                            if (CollisionDetection2D.BoundingRectangle(players.ElementAt(j).RectanglePoints, bullets.ElementAt(i).RectanglePoints))
                             {
-                                bullets.ElementAt(i).getTrafienie = 1;
-                                players.ElementAt(j).getZycie -= bullets.ElementAt(i).getDamage;
-                                if (players.ElementAt(j).getZycie > 200 || players.ElementAt(j).getZycie == 0)
+                                if (bullets.ElementAt(i).getTrafienie == 0 && bullets.ElementAt(i).getIDOwnera != players.ElementAt(j).getID)
                                 {
-                                    players.ElementAt(j).getZycie = 0;
-                                    //players.ElementAt(j).getIloscZgonow++;
-                                }
+                                    bullets.ElementAt(i).getTrafienie = 1;
+                                    players.ElementAt(j).getZycie -= bullets.ElementAt(i).getDamage;
+                                    if (players.ElementAt(j).getZycie > 200 || players.ElementAt(j).getZycie == 0)
+                                    {
+                                        players.ElementAt(j).getZycie = 0;
+                                        //players.ElementAt(j).getIloscZgonow++;
+                                    }
 
+                                }
                             }
                         }
                     }
@@ -327,39 +329,6 @@ namespace RzezniaMagow
                         break;
                     }
                 default: break;
-            }
-        }
-
-        public void startNewRound()
-        {
-            int licznik = 0;
-
-            for (int i = 0; i < players.Count; i++)
-            {
-                if (players.ElementAt(i).getZycie == 0)
-                    licznik++;
-            }
-            if (licznik == players.Count - 1 && flaga == false)
-            {
-                Game.czyNowaRunda = true;
-                for (int i = 0; i < players.Count; i++)
-                {
-                    if (players.ElementAt(i).getZycie != 0)
-                        players.ElementAt(i).getPunkty++;
-                }
-            }
-            else if (licznik == players.Count - 2 && flaga == true)
-            {
-                Game.czyNowaRunda = true;
-                for (int i = 0; i < players.Count; i++)
-                {
-                    if (players.ElementAt(i).getZycie != 0 && players.ElementAt(i).getID != players.Last().getID)
-                        players.ElementAt(i).getPunkty++;
-                }
-            }
-            else
-            {
-                Game.czyNowaRunda = false;
             }
         }
 
