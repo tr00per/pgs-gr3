@@ -84,7 +84,7 @@ namespace RzezniaMagow
             
             players.Add(p);
 
-            if (players.Count > 1 && flaga)
+            if (players.Count > 0 && flaga)
             {
                 Game.czyNowaRunda = true;
                 flaga = false;

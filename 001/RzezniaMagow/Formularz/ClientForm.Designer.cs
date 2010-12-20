@@ -161,10 +161,10 @@
             this.LIFEradioButton.BackColor = System.Drawing.Color.Transparent;
             this.LIFEradioButton.Location = new System.Drawing.Point(220, 280);
             this.LIFEradioButton.Name = "LIFEradioButton";
-            this.LIFEradioButton.Size = new System.Drawing.Size(42, 17);
+            this.LIFEradioButton.Size = new System.Drawing.Size(49, 17);
             this.LIFEradioButton.TabIndex = 10;
             this.LIFEradioButton.TabStop = true;
-            this.LIFEradioButton.Text = "Life";
+            this.LIFEradioButton.Text = "Love";
             this.LIFEradioButton.UseVisualStyleBackColor = false;
             // 
             // ICEradioButton
