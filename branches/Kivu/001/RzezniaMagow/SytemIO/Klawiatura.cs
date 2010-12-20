@@ -94,7 +94,7 @@ namespace RzezniaMagow
             }
             if (KeyJustPressed(Keys.D4))
             {
-                Game.zawodnik.getPunktyMany = 10;
+                Game.zawodnik.getPunktyMany = 100;
             }
 
             if (Game.client.getCzyGra)

@@ -87,7 +87,7 @@ namespace RzezniaMagow
             graphics.PreferredBackBufferHeight = 600;
             graphics.SynchronizeWithVerticalRetrace = true;
 
-            IsMouseVisible = true;
+            IsMouseVisible = false;
 
             graphics.IsFullScreen = false;
             CollisionDetection2D.CDPerformedWith = UseForCollisionDetection.Rectangles;
@@ -252,8 +252,7 @@ namespace RzezniaMagow
             {
                 Vector2 kons = new Vector2(zawodnik.getPozycja.X - 250, zawodnik.getPozycja.Y - 200);
                 spriteBatch.Draw(consola, kons, Color.White);
-                spriteBatch.DrawString(spriteFont, "Runda " + client.getNrRundy.ToString(), new Vector2(kons.X + 250, kons.Y + 20), Color.GreenYellow);
-
+                
                 spriteBatch.DrawString(spriteFont, "Nick       Punkty     Smierci", new Vector2(kons.X + 50, kons.Y + 100), Color.GreenYellow);
 
                 for (int i = 0; i < client.listaGraczy.Count; i++)

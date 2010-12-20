@@ -184,6 +184,7 @@ namespace RzezniaMagow
 
                                 gracz.getIloscZgonow = tresc[offset];
                                 offset ++;
+                                gracz.getPunktyMany = 100;
                                 Game.client.listaGraczy.Add(gracz);
 
                                 if (gracz.getID == Game.zawodnik.getID)
@@ -193,6 +194,7 @@ namespace RzezniaMagow
                                     Game.zawodnik.getIloscZgonow = gracz.getIloscZgonow;
                                     Game.zawodnik.getPozycja = gracz.getPozycja;
                                     Game.kamera.getPozycja = gracz.getPozycja;
+                                    Game.zawodnik.getPunktyMany = gracz.getPunktyMany;
                                     Game.zawodnik.getCzyZyje = true;
                                 }
                             }
