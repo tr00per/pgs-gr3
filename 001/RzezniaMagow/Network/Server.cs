@@ -110,7 +110,7 @@ namespace RzezniaMagow
             sl.serverStopped();
 
             Console.WriteLine("Server: Disconnecting clients...");
-            broadcast(Common.PACKET_END, new byte[] { 0 });
+            broadcast(Common.PACKET_END, new byte[1] { 0 });
 
             running = false;
 
@@ -220,23 +220,20 @@ namespace RzezniaMagow
                         bool received = false;
                         byte[] buf = new byte[Common.PACKET_HEADER_SIZE+1];
 
-                        Console.WriteLine("Server (" + threadID + "): Round begins...");
+                        Console.WriteLine("Server (" + threadID + "): Round beginning...");
                         while (!received)
                         {
                             Console.WriteLine("Server (" + threadID + "): Sending...");
                             io.Write(dp.dataIn, 0, dp.dataIn.Length);
-                            io.Read(buf, 0, buf.Length);
+                            Thread.Sleep(15);
+                            io.Read(buf, 0, 4);
                             if (buf[0] == Common.PACKET_OK)
                             {
                                 Console.WriteLine("Server (" + threadID + "): OK!");
                                 received = true;
                             }
-                            else
-                            {
-                                Thread.Sleep(20);
-                            }
                         }
-                        Console.WriteLine("Server (" + threadID + "): Round begin!");
+                        Console.WriteLine("Server (" + threadID + "): Round begun!");
                     }
                     else
                     {
