@@ -232,8 +232,7 @@ namespace RzezniaMagow
 
 
                 spriteBatch.Draw(cel, zawodnik.getPozycjaKursora, Color.White);
-                spriteBatch.DrawString(spriteFont, zawodnik.getPunktyMany.ToString(), new Vector2(100, 100), Color.Chartreuse);
-
+                
 
                 rysujKapelusze(spriteBatch);
 
