@@ -54,17 +54,17 @@ namespace RzezniaMagow
             //tutaj cuda wianki o tym co sie dzieje przed poczatkiem rundy
             listaGraczy = new List<Gracz>();
             clientProtocol.unpack(data, Common.PACKET_BEGIN);
-            Game.message = " Beginning new round!   ";
-            //Game.czasPrzygotowania = 50;
+            Game.message = " Beginning new round!";
+            Game.czasPrzygotowania = 50;
 			Game.czyNowaRunda = true;
 			czyGra = true;
 			updateTimer.Enabled = true;
             for (int i = 0; i < listaGraczy.Count; i++)
             {
-                if (listaGraczy.ElementAt(i).getPunkty == 10)
+                if (listaGraczy.ElementAt(i).getPunkty == 4)
                 {
                     Game.koniecGry = true;
-                    Game.message = "Game Over.\n The Winner is :\n" + listaGraczy.ElementAt(i).getNick;
+                    Game.message = "Game Over.\nThe Winner is :\n" + listaGraczy.ElementAt(i).getNick;
                     Game.czasPrzygotowania = 10000;
                 }
             }
@@ -96,9 +96,6 @@ namespace RzezniaMagow
                     listaPociskow.RemoveAt(i);
             }
         }
-
-
-
 
         public void fuckinStop()
         {
