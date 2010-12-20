@@ -150,11 +150,11 @@ namespace RzezniaMagow
                     if (!Common.correctPacket(packet, Common.PACKET_COMMON | Common.PACKET_SRVMSG | Common.PACKET_END | Common.PACKET_BEGIN))
                     {
                         statusCallback("Incorrect packet: " + packet[0] + ", " + packet[1] + ".");
-						if (pending > Common.PACKET_HEADER_SIZE)
-						{
-							packet = new byte[pending - Common.PACKET_HEADER_SIZE];
-							io.Read(packet, 0, pending - Common.PACKET_HEADER_SIZE);
-						}
+						//if (pending > Common.PACKET_HEADER_SIZE)
+						//{
+						//	packet = new byte[pending - Common.PACKET_HEADER_SIZE];
+						//	io.Read(packet, 0, pending - Common.PACKET_HEADER_SIZE);
+						//}
                         continue;
                     }
 					
@@ -182,7 +182,7 @@ namespace RzezniaMagow
                         listenerSem.WaitOne();
                         sendUpdate(new byte[1] { id }, Common.PACKET_OK);
 						statusCallback("ROUND BEGINS!");
-						//sendUpdate(new byte[1] { id }, Common.PACKET_OK); //when code was doubled - it worked ;)
+						sendUpdate(new byte[1] { id }, Common.PACKET_OK); //when code was doubled - it worked ;)
                         beginRound(packet);
                         enteredGame = true;
                         listenerSem.Release();
