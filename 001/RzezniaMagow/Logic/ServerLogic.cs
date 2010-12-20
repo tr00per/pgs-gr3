@@ -173,31 +173,35 @@ namespace RzezniaMagow
 
         public void removeBullets()
         {
-            if(bullets.Count>0)
-            for (int i = bullets.Count - 1; i > -1; i--)
+            if (bullets.Count > 0)
             {
-                if (bullets.ElementAt(i).getPozycja.X < Game.map.getMapOffset || bullets.ElementAt(i).getPozycja.Y < Game.map.getMapOffset
-                    || bullets.ElementAt(i).getPozycja.Y > Game.map.getTekstura.Width - Game.map.getMapOffset
-                    || bullets.ElementAt(i).getPozycja.X > Game.map.getTekstura.Height - Game.map.getMapOffset)
+                for (int i = bullets.Count - 1; i > -1; i--)
                 {
-                    bullets.RemoveAt(i);
+                    if (bullets.ElementAt(i).getPozycja.X < Game.map.getMapOffset || bullets.ElementAt(i).getPozycja.Y < Game.map.getMapOffset
+                        || bullets.ElementAt(i).getPozycja.Y > Game.map.getTekstura.Width - Game.map.getMapOffset
+                        || bullets.ElementAt(i).getPozycja.X > Game.map.getTekstura.Height - Game.map.getMapOffset)
+                    {
+                        bullets.RemoveAt(i);
+                    }
                 }
             }
-
         }
         
         public void bulletsCollision()
         {
-            if(bullets.Count>0)
-            for (int i = bullets.Count - 1; i > -1; i--)
+            if (bullets.Count > 0)
             {
-                for (int j = 0; j < Game.map.getListaPrzeszkod.Count; j++)
+                for (int i = bullets.Count - 1; i > -1; i--)
                 {
-                    if (CollisionDetection2D.BoundingRectangle(Game.map.getListaPrzeszkod.ElementAt(j).RectanglePoints, bullets.ElementAt(i).RectanglePoints))
+                    for (int j = 0; j < Game.map.getListaPrzeszkod.Count; j++)
                     {
-                        bullets.ElementAt(i).getTrafienie = 1;
-                        //bullets.RemoveAt(i);
-                        break;
+                        if (bullets.Count > 0)
+                            if (CollisionDetection2D.BoundingRectangle(Game.map.getListaPrzeszkod.ElementAt(j).RectanglePoints, bullets.ElementAt(i).RectanglePoints))
+                            {
+                                bullets.ElementAt(i).getTrafienie = 1;
+                                //bullets.RemoveAt(i);
+                                break;
+                            }
                     }
                 }
             }
@@ -206,27 +210,30 @@ namespace RzezniaMagow
        
         public void bulletsPlayersCollision()
         {
-            for (int i = 0; i< bullets.Count; i++)
+            if(bullets.Count>0)
             {
-                for (int j = 0; j < players.Count; j++)
+                for (int i = 0; i < bullets.Count; i++)
                 {
-                    if (CollisionDetection2D.BoundingRectangle(players.ElementAt(j).RectanglePoints, bullets.ElementAt(i).RectanglePoints))
+                    for (int j = 0; j < players.Count; j++)
                     {
-                        if (bullets.ElementAt(i).getTrafienie == 0 && bullets.ElementAt(i).getIDOwnera != players.ElementAt(j).getID)
+                        if (bullets.Count > 0)
+                        if (CollisionDetection2D.BoundingRectangle(players.ElementAt(j).RectanglePoints, bullets.ElementAt(i).RectanglePoints))
                         {
-                            bullets.ElementAt(i).getTrafienie = 1;
-                            players.ElementAt(j).getZycie -= bullets.ElementAt(i).getDamage;
-                            if (players.ElementAt(j).getZycie > 200 || players.ElementAt(j).getZycie == 0)
+                            if (bullets.ElementAt(i).getTrafienie == 0 && bullets.ElementAt(i).getIDOwnera != players.ElementAt(j).getID)
                             {
-                                players.ElementAt(j).getZycie = 0;
-                                //players.ElementAt(j).getIloscZgonow++;
+                                bullets.ElementAt(i).getTrafienie = 1;
+                                players.ElementAt(j).getZycie -= bullets.ElementAt(i).getDamage;
+                                if (players.ElementAt(j).getZycie > 200 || players.ElementAt(j).getZycie == 0)
+                                {
+                                    players.ElementAt(j).getZycie = 0;
+                                    //players.ElementAt(j).getIloscZgonow++;
+                                }
+
                             }
-                          
                         }
                     }
-                }
-                
 
+                }
 
             }
 

@@ -78,24 +78,27 @@ namespace RzezniaMagow
 
         public void BulletsCollision()
         {
-            if(listaGraczy.Count>0)
-            for (int i = listaPociskow.Count-1; i > -1; i--)
+            if (listaPociskow.Count > 0)
             {
-                for (int j = 0; j < Game.map.getListaPrzeszkod.Count; j++)
+                for (int i = listaPociskow.Count - 1; i > -1; i--)
                 {
-                    if (CollisionDetection2D.BoundingRectangle(Game.map.getListaPrzeszkod.ElementAt(j).RectanglePoints, listaPociskow.ElementAt(i).RectanglePoints))
+                    for (int j = 0; j < Game.map.getListaPrzeszkod.Count; j++)
                     {
+                        if (listaPociskow.Count > 0)
+                        if (CollisionDetection2D.BoundingRectangle(Game.map.getListaPrzeszkod.ElementAt(j).RectanglePoints, listaPociskow.ElementAt(i).RectanglePoints))
+                        {
                             listaPociskow.RemoveAt(i);
                             break;
-                    }  
+                        }
+                    }
                 }
-            }
+                if (listaPociskow.Count > 0)
+                for (int i = listaPociskow.Count - 1; i > -1; i--)
+                {
+                    if (listaPociskow.ElementAt(i).getPozycja.X < 0 || listaPociskow.ElementAt(i).getPozycja.Y < 0 || listaPociskow.ElementAt(i).getPozycja.Y > Game.map.getTekstura.Width || listaPociskow.ElementAt(i).getPozycja.X > Game.map.getTekstura.Height)
 
-            for (int i = listaPociskow.Count - 1; i > -1; i--)
-            {
-                if (listaPociskow.ElementAt(i).getPozycja.X < 0 || listaPociskow.ElementAt(i).getPozycja.Y < 0 || listaPociskow.ElementAt(i).getPozycja.Y > Game.map.getTekstura.Width || listaPociskow.ElementAt(i).getPozycja.X > Game.map.getTekstura.Height)
-
-                    listaPociskow.RemoveAt(i);
+                        listaPociskow.RemoveAt(i);
+                }
             }
         }
 
