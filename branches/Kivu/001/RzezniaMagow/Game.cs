@@ -181,6 +181,7 @@ namespace RzezniaMagow
 
             for (int i = 0; i < client.listaPociskow.Count; i++)
             {
+                if (i < client.listaPociskow.Count)
                 client.listaPociskow.ElementAt(i).updatePosition(gameTime);
             }
             if (client.listaPociskow.Count > 0)
