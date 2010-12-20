@@ -167,6 +167,7 @@ namespace RzezniaMagow
                 serwer.bonusPlayersCollision();
                 serwer.trapPlayersCollision();
                 //serwer.playerPlayerCollision();
+                startNewRound(serwer.getPlayers, serwer.flaga);
             }
 
 
@@ -295,6 +296,41 @@ namespace RzezniaMagow
             if (zawodnik != null && zawodnik.getPunktyMany<100)
                 zawodnik.getPunktyMany++;
 
+        }
+
+
+        public void startNewRound(List<Gracz> players, bool flaga)
+        {
+            int licznik = 0;
+
+            for (int i = 0; i < players.Count; i++)
+            {
+                if (players.ElementAt(i).getZycie == 0)
+                    licznik++;
+            }
+            if (licznik == players.Count - 1 && flaga == false)
+            {
+                Game.czyNowaRunda = true;
+                for (int i = 0; i < players.Count; i++)
+                {
+                    if (players.ElementAt(i).getZycie != 0)
+                        players.ElementAt(i).getPunkty++;
+                }
+            }
+            else if (licznik == players.Count - 2 && flaga == true)
+            {
+                Game.czyNowaRunda = true;
+                for (int i = 0; i < players.Count; i++)
+                {
+                    if (players.ElementAt(i).getZycie != 0 && players.ElementAt(j).getCzyZyje = true)
+                        players.ElementAt(i).getPunkty++;
+                }
+                serwer.flaga = false;
+            }
+            else
+            {
+                Game.czyNowaRunda = false;
+            }
         }
 
 

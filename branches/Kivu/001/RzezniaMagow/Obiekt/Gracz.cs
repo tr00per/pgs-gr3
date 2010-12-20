@@ -42,7 +42,7 @@ namespace RzezniaMagow
             aktualnaBron = new Bron(typAvatara);
             walkSpeed = 2;
             getPunktObrotu = new Vector2(20, 40);
-            czyZyje = true;
+            czyZyje = false;
         }
 
         public Gracz(float x, float y, byte id)
@@ -56,7 +56,7 @@ namespace RzezniaMagow
             aktualnaBron = new Bron(typAvatara);
             walkSpeed = 2;
             getPunktObrotu = new Vector2(20, 40);
-            czyZyje = true;
+            czyZyje = false;
         }
 
         public Gracz(byte id) : this(0, 0, id) { walkSpeed = 2; }
@@ -73,7 +73,7 @@ namespace RzezniaMagow
             aktualnaBron = new Bron(typAvatara);
             getID = id;
             walkSpeed = 2;
-            czyZyje = true;
+            czyZyje = false;
             punktyMany = 100;
 
             if (typAvatara == 1)
@@ -115,7 +115,7 @@ namespace RzezniaMagow
             listaPociskow = new List<Pocisk>();
             aktualnaBron = kopia.aktualnaBron;
             walkSpeed = kopia.walkSpeed;
-            czyZyje = true;
+            czyZyje = false;
 
         }
 
