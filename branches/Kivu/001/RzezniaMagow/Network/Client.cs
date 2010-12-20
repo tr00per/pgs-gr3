@@ -121,11 +121,11 @@ namespace RzezniaMagow
             BitConverter.GetBytes(Common.checksum(packet)).CopyTo(packet, 1);
             io.Write(packet, 0, packet.Length);
 
-            packet = new byte[3];
-            io.Read(packet, 0, 3);
+            packet = new byte[Common.PACKET_HEADER_SIZE + 1];
+            io.Read(packet, 0, Common.PACKET_HEADER_SIZE + 1);
             if (Common.correctPacket(packet, Common.PACKET_HANDSHAKE))
             {
-                id = packet[Common.PACKET_HEADER_SIZE-1];
+                id = packet[Common.PACKET_HEADER_SIZE];
                 clientReady(id, nick, avatar);
                 running = true;
                 statusCallback("Ready!");
