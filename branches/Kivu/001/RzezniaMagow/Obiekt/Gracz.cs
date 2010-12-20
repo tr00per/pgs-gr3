@@ -90,7 +90,7 @@ namespace RzezniaMagow
             }
             if (typAvatara == 3)
             {
-                this.LoadContent(Game.content.Load<Texture2D>(@"Avatar\Reaper"));
+                this.LoadContent(Game.content.Load<Texture2D>(@"Avatar\defmag"));
                 fontColor = Color.Green;
                 getPunktObrotu = new Vector2(20, 40);
             }
