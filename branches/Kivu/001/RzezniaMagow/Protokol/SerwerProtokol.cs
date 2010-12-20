@@ -375,7 +375,7 @@ namespace RzezniaMagow
                         {
                             addShotID(ref tablica, ref offset, listPocisk.ElementAt(i).getID);
                             addShotOwnerID(ref tablica, ref offset, listPocisk.ElementAt(i).getIDOwnera);
-                            addShotType(ref tablica, ref offset, listPocisk.First().getTypPocisku);
+                            addShotType(ref tablica, ref offset, listPocisk.ElementAt(i).getTypPocisku);
                             addShotHeadshot(ref tablica, ref offset, listPocisk.ElementAt(i).getTrafienie);
                             addShotPosition(ref tablica, ref offset, listPocisk.ElementAt(i).getPozycja.X, listPocisk.ElementAt(i).getPozycja.Y);
                             addCursorPosition(ref tablica, ref offset, listPocisk.ElementAt(i).getPozycjaKursora.X, listPocisk.ElementAt(i).getPozycjaKursora.Y);
