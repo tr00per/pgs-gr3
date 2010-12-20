@@ -221,8 +221,8 @@ namespace RzezniaMagow
                         byte[] buf = new byte[Common.PACKET_HEADER_SIZE+1];
 
                         Console.WriteLine("Server (" + threadID + "): Round beginning...");
-                       /// while (!received)
-                       // {
+                        while (!received)
+                        {
                             Console.WriteLine("Server (" + threadID + "): Sending...");
                             io.Write(dp.dataIn, 0, dp.dataIn.Length);
                             Thread.Sleep(30);
@@ -232,7 +232,7 @@ namespace RzezniaMagow
                                 Console.WriteLine("Server (" + threadID + "): OK!");
                                 received = true;
                             }
-                        //}
+                        }
                         Console.WriteLine("Server (" + threadID + "): Round begun!");
                     }
                     else

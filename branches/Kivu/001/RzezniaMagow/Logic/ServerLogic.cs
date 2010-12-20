@@ -102,7 +102,7 @@ namespace RzezniaMagow
             if (Game.czyNowaRunda)
             {
                 Game.map.bonusReset();
-
+                bullets = new List<Pocisk>();
                 Console.WriteLine("### Beginning new round!   " + roundNumber);
                 //Game.czasPrzygotowania = 100;
                 for (int i = 0; i < players.Count; i++)
@@ -117,6 +117,7 @@ namespace RzezniaMagow
                 }
 
                 roundNumber++;
+                
                 byte[] data = prot.createPackage(players, bullets,Game.map.getListaBonusow, Common.PACKET_BEGIN, roundNumber);
                 sendUpdate(Common.PACKET_BEGIN, data);
                 Game.czyNowaRunda = false;
