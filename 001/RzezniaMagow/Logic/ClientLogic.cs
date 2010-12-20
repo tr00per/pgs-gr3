@@ -30,7 +30,7 @@ namespace RzezniaMagow
         protected override void clientReady(byte id, string nick, byte avatar)
         {
             Game.zawodnik = new Gracz(id, nick, avatar);
-           
+            Game.manaTimer.Start();
             listaGraczy.Add(Game.zawodnik);
             //Game.client.getCzyGra = true;
 			updateTimer.Enabled = false;

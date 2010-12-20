@@ -37,7 +37,7 @@ namespace RzezniaMagow
 
         public static bool czySerwer, czyKlient, konsola, koniecGry;
         volatile public static bool czyNowaRunda;
-        private System.Timers.Timer manaTimer;
+        public static System.Timers.Timer manaTimer;
 
         //zmienne testowe w razie problemow do usuniecia
 
