@@ -53,7 +53,8 @@ namespace RzezniaMagow
         {
             //tutaj cuda wianki o tym co sie dzieje przed poczatkiem rundy
             listaGraczy = new List<Gracz>();
-            listaPociskow = new List<Pocisk>();
+           // listaPociskow = new List<Pocisk>();
+            removeAllBullets();
             clientProtocol.unpack(data, Common.PACKET_BEGIN);
             Game.message = " Beginning new round!";
             Game.czasPrzygotowania = 50;
@@ -101,6 +102,17 @@ namespace RzezniaMagow
                 }
             }
         }
+        public void removeAllBullets()
+        {
+            if (listaPociskow.Count > 0)
+            {
+                for (int i = listaPociskow.Count - 1; i > -1; i--)
+                {
+                        listaPociskow.RemoveAt(i);
+                }
+            }
+        }
+
 
         public void fuckinStop()
         {
